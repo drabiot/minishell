@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 15:22:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/19 16:58:44 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 14:22:53 by nberduck          #+#    #+#             */
+/*   Updated: 2024/03/19 15:33:43 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include "../include/minishell.h"
 
-/*
-** Takes as a parameter a node and frees the memory of
-** the node’s content using the function ’del’ given
-** as a parameter and free the node. The memory of
-** ’next’ must not be freed
-*/
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+int	ft_echo(char *str, int option)
 {
-	
-	if (!lst || !del)
-		return ;
-	del(lst->content);
-	free(lst);
+	if (!str || (option != 1 && option != 0))
+		return (1);
+	printf("%s", str);
+	//For option -n
+	if (option == 1)
+		printf("\n");
+	return (0);
 }
