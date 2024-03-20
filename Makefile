@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/03/19 17:05:45 by nberduck         ###   ########.fr        #
+#    Updated: 2024/03/20 17:54:45 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,10 +47,14 @@ OBJS_DIR	=		obj/
 
 SRCS		=		main.c \
 					parser/prompt.c \
+					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
 					builtins/ft_env.c \
-					builtins/ft_unset.c
+					builtins/ft_unset.c \
+					builtins/ft_export.c \
+					builtins/ft_cd.c \
+					builtins/ft_exit.c
 
 OBJS		=		$(SRCS:.c=.o)
 
