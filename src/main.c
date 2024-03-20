@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/19 17:15:19 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:51:58 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,30 @@ int main(int argc, char **argv, char **envp)
    // (void)argv;
 
    t_envp = ft_envp_creation(envp);
-   ft_envp_print(t_envp);
-   ft_lstclear(&t_envp, free);
+   // ft_envp_print(t_envp);
+   // ft_lstclear(&t_envp, free);
    
    // ft_echo(argv[1], 1);
    
    // char  *str;
    // str = ft_pwd();
-   // if (!str)
-   //    return (1);
    // printf("%s\n", str);
    // free(str);
    
    // ft_env(envp);
+   
+   // printf("\n\nUnset\n\n");
+   // ft_unset(&t_envp, &argv[1]);
+   // ft_envp_print(t_envp);
 
-   ft_unset(envp, &argv[1]);
+   // ft_export(&t_envp, &argv[1]);
+   // ft_envp_print(t_envp);
 
+   // ft_cd(argv[1]);
+
+   ft_exit(ft_atoi(argv[1]));
+   
+   ft_envp_print(NULL);
+   ft_lstclear(&t_envp, free);
    return (0);
 }

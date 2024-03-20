@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:22:49 by tchartie          #+#    #+#             */
-/*   Updated: 2023/11/07 13:44:02 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:58:44 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 */
 void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
+	
 	if (!lst || !del)
 		return ;
 	del(lst->content);

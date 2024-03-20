@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchartie <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 18:05:50 by tchartie          #+#    #+#              #
-#    Updated: 2023/12/04 01:01:23 by tchartie         ###   ########.fr        #
+#    Updated: 2024/03/19 15:18:02 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ SRCS 		= 		ft_isalpha.c \
 					ft_split.c \
 					ft_strmapi.c \
 					ft_striteri.c \
-					ft_random.c
+					ft_random.c \
 
 OBJS		=		$(SRCS:.c=.o)
 
