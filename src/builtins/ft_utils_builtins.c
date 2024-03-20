@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   ft_utils_builtins.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 15:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 18:00:46 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/20 16:22:23 by nberduck          #+#    #+#             */
+/*   Updated: 2024/03/20 16:29:49 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void ft_tmp_free(char **tmp)
 	free(tmp);
 }
 
-static t_list *split_args(char **args)
+t_list *split_args(char **args)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -49,50 +49,4 @@ static t_list *split_args(char **args)
 		i++;
 	}
 	return (arg);
-}
-static ft_find_arg(t_list **t_envp, char **arg)
-{
-	t_list *tmp;
-	unsigned int	i;
-	unsigned int	j;
-
-	i = 0;
-	while (arg)
-	{
-		while (tmp)
-		{
-			j = 0;
-			while ((str *)tmp->content[j] == arg[j])
-				j++;
-			if ((str *)tmp->content[j] == '=')
-			{
-				//Need to delete node here
-				tmp = NULL;
-			}
-			tmp = tmp->next;
-		}
-		i++;
-	}
-}
-
-int	ft_unset(t_list **t_envp, char **args)
-{
-	t_list *arg;
-	
-	//Need to find better name for arg and args
-	arg = split_args(args);
-	if (!arg)
-		return (1);
-
-	ft_find_arg(t_envp, arg);
-	
-	t_list *tmp;
-	tmp = arg;
-	while (tmp)
-	{
-		printf("%s\n", (char *)tmp->content);
-		tmp = tmp->next;
-	}
-	ft_lstclear(&arg, free);
-	return (0);
 }
