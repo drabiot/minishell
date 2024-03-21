@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/20 17:51:58 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:10:30 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv, char **envp)
 
    // ft_cd(argv[1]);
 
-   ft_exit(ft_atoi(argv[1]));
+   // ft_exit(ft_atoi(argv[1]));
    
    ft_envp_print(NULL);
    ft_lstclear(&t_envp, free);

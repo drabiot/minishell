@@ -6,93 +6,75 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 18:00:46 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:09:34 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void ft_tmp_free(char **tmp)
+static void ft_delete_arg(t_list **t_envp, unsigned int place)
 {
 	unsigned int	i;
-	
+	t_list			*tmp;
+	t_list			*next_after_clear;
+
+	char *tmp_content;
 	i = 0;
-	while (tmp[i])
+	tmp = *t_envp;
+	while (i < place - 1)
 	{
-		free(tmp[i]);
+		tmp_content = (char *)tmp->content;
+		printf("%s\n", tmp_content);
+		tmp = tmp->next;
 		i++;
 	}
-	free(tmp);
+	next_after_clear = tmp->next->next;
+	ft_lstdelone(tmp->next, free);
+	tmp->next = next_after_clear;
 }
 
-static t_list *split_args(char **args)
-{
-	unsigned int	i;
-	unsigned int	j;
-	char			**tmp;
-	t_list			*arg;
-
-	i = 0;
-	j = 0;
-	arg = NULL;
-	while (args[i])
-	{
-		tmp = ft_split(args[i], ' ');
-		j = 0;
-		while (tmp[j])
-		{
-			ft_lstadd_back(&arg, ft_lstnew(ft_strdup(tmp[j])));
-			j++;
-		}
-		ft_tmp_free(tmp);
-		tmp = NULL;
-		i++;
-	}
-	return (arg);
-}
-static ft_find_arg(t_list **t_envp, char **arg)
+static void ft_find_arg(t_list **t_envp, t_list *arg)
 {
 	t_list *tmp;
 	unsigned int	i;
-	unsigned int	j;
+	int	place;
+	char			*tmp_content;
+	char			*arg_content;
 
-	i = 0;
-	while (arg)
+	place = 0;
+	arg_content = (char *)arg->content;
+	tmp = *t_envp;
+	while (tmp)
 	{
-		while (tmp)
+		tmp_content = (char *)tmp->content;
+		i = 0;
+		while (tmp_content[i] == arg_content[i])
+			i++;
+		if (tmp_content[i] == '=')
 		{
-			j = 0;
-			while ((str *)tmp->content[j] == arg[j])
-				j++;
-			if ((str *)tmp->content[j] == '=')
-			{
-				//Need to delete node here
-				tmp = NULL;
-			}
-			tmp = tmp->next;
+			ft_delete_arg(t_envp, place);
+			tmp = NULL;
 		}
-		i++;
+		else
+			tmp = tmp->next;
+		place++;
 	}
 }
 
 int	ft_unset(t_list **t_envp, char **args)
 {
-	t_list *arg;
+	t_list	*t_args;
+	t_list	*tmp;
 	
-	//Need to find better name for arg and args
-	arg = split_args(args);
-	if (!arg)
+	t_args = split_args(args);
+	if (!t_args)
 		return (1);
-
-	ft_find_arg(t_envp, arg);
-	
-	t_list *tmp;
-	tmp = arg;
+	tmp = t_args;
 	while (tmp)
 	{
-		printf("%s\n", (char *)tmp->content);
+		ft_find_arg(t_envp, tmp);
 		tmp = tmp->next;
 	}
-	ft_lstclear(&arg, free);
+	ft_lstclear(&t_args, free);
 	return (0);
 }
