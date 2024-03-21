@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/21 15:10:30 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:57:47 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ static void ft_envp_print(t_list *t_envp)
    }
 }
 
+static void	ft_signal(int sign)
+{
+   static int t = 0;
+   if (sign == SIGINT)
+      printf("\rctrl + c detected\n");
+   else if (sign == SIGQUIT)
+      printf("\rctrl + \\ detected\n");
+   t++;
+   if (t == 3)
+      exit(0);
+}
 int main(int argc, char **argv, char **envp)
 {
    t_list *t_envp;
@@ -59,7 +70,7 @@ int main(int argc, char **argv, char **envp)
    
    (void)argc;
    // (void)envp;
-   // (void)argv;
+   (void)argv;
 
    t_envp = ft_envp_creation(envp);
    // ft_envp_print(t_envp);
@@ -87,5 +98,20 @@ int main(int argc, char **argv, char **envp)
    
    ft_envp_print(NULL);
    ft_lstclear(&t_envp, free);
+
+   //Part for signal
+   //Need static function ft_signal
+   
+   signal(SIGINT, ft_signal);
+   signal(SIGQUIT, ft_signal);
+   // signal(,ft_signal);
+   while (1)
+			pause();
+   // struct sigaction	signal_receive;
+
+	// signal_receive.sa_sigaction = ft_signal_receive_print;
+	// signal_receive.sa_flags = SA_SIGINFO;
+	// sigaction(SIGINT, &signal_receive, NULL);
+	// sigaction(SIGUSR2, &signal_receive, NULL);
    return (0);
 }
