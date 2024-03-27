@@ -6,11 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2024/03/20 17:54:45 by nberduck         ###   ########.fr        #
-=======
 #    Updated: 2024/03/25 17:38:11 by tchartie         ###   ########.fr        #
->>>>>>> origin
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +47,8 @@ OBJS_DIR	=		obj/
 
 SRCS		=		main.c \
 					parser/prompt.c \
-<<<<<<< HEAD
+					parser/lexer.c \
+					parser/tokenizer.c \
 					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
@@ -60,10 +57,6 @@ SRCS		=		main.c \
 					builtins/ft_export.c \
 					builtins/ft_cd.c \
 					builtins/ft_exit.c
-=======
-					parser/lexer.c \
-					parser/tokenizer.c
->>>>>>> origin
 
 OBJS		=		$(SRCS:.c=.o)
 
