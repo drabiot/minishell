@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/21 15:57:47 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:58:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	ft_signal(int sign)
 int main(int argc, char **argv, char **envp)
 {
    t_list *t_envp;
+   int		exit;
    // int  ret;
 
    // (void)argc;
@@ -105,13 +106,18 @@ int main(int argc, char **argv, char **envp)
    signal(SIGINT, ft_signal);
    signal(SIGQUIT, ft_signal);
    // signal(,ft_signal);
-   while (1)
-			pause();
+   // while (1)
+	//		pause();
    // struct sigaction	signal_receive;
 
 	// signal_receive.sa_sigaction = ft_signal_receive_print;
 	// signal_receive.sa_flags = SA_SIGINFO;
 	// sigaction(SIGINT, &signal_receive, NULL);
 	// sigaction(SIGUSR2, &signal_receive, NULL);
+   exit = -1;
+	while (exit != 0)
+	{
+		exit = prompt();
+	}
    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/26 22:35:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:01:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ static void	grab_token(t_input *cmd, t_token *token)
 	if (is_redirection(cmd, token))
 		return ;
 	while (cmd->str[cmd->i + 1] && (!(is_white_space(cmd->str, cmd->i + 1)
-				|| is_special_char(cmd->str, cmd->i + 1))))
+				|| is_special_char(cmd->str, cmd->i + 1))
+				|| (quote == 0 && (cmd->str[cmd->i] != '\''
+				|| cmd->str[cmd->i] != '"'))))
 	{
 		quote = cmd->str[cmd->i];
 		if (quote == '\'' || quote == '"')
