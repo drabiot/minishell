@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/20 17:33:27 by tchartie         ###   ########.fr       */
+/*   Created: 2024/03/20 18:21:45 by tchartie          #+#    #+#             */
+/*   Updated: 2024/03/25 17:34:25 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/libft.h"
+#ifndef LEXER_H
+# define LEXER_H
 
-int	prompt(void)
+typedef struct s_input
 {
-	char	*input;
-	char	**arg;
+	char    *str;
+    int     i;
+}			t_input;
 
-	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
-	if (!(ft_strncmp(input, "exit", 4)))
-		return (0);
-	add_history(input);
-	arg = lexer(input);
-	return (1);
-}
+typedef struct s_token
+{
+	int     start;
+    int     end;
+}			t_token;
+
+#endif //LEXER_H
