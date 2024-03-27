@@ -6,7 +6,11 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2024/03/20 17:54:45 by nberduck         ###   ########.fr        #
+=======
+#    Updated: 2024/03/25 17:38:11 by tchartie         ###   ########.fr        #
+>>>>>>> origin
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +51,7 @@ OBJS_DIR	=		obj/
 
 SRCS		=		main.c \
 					parser/prompt.c \
+<<<<<<< HEAD
 					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
@@ -55,6 +60,10 @@ SRCS		=		main.c \
 					builtins/ft_export.c \
 					builtins/ft_cd.c \
 					builtins/ft_exit.c
+=======
+					parser/lexer.c \
+					parser/tokenizer.c
+>>>>>>> origin
 
 OBJS		=		$(SRCS:.c=.o)
 
@@ -70,7 +79,7 @@ makelibft :
 					@make -C $(LIBFT_DIR) all --no-print-directory
 
 $(NAME) :			$(OBJS_F) | makelibft
-					@$(CC) $(OBJS_F) -o $(NAME) -Llibft -lft -I$(INCLUDE_DIR)
+					@$(CC) $(OBJS_F) -o $(NAME) -Llibft -lft -lreadline -I$(INCLUDE_DIR)
 					@echo "$(GREEN)Pipex successfully compiled! $(BASE_COLOR)"
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
@@ -91,3 +100,7 @@ fclean :
 					@rm -rf $(NAME)
 					@echo "$(CYAN)Minishell executable file cleanned! $(BASE_COLOR)"
 					@make -C $(LIBFT_DIR) fclean --no-print-directory
+
+re :				fclean all
+
+.PHONY :			all makelibft clean fclean re
