@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:52:19 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/27 23:51:10 by nberduck          #+#    #+#             */
+/*   Updated: 2024/03/28 21:59:57 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#ifndef TYPE_H
+# define TYPE_H
 
-int	prompt(void)
-{
-	char	*input;
-	char	**arg;
+# define WORD 1
+# define PIPE 2
+# define HERE_DOC 3
+# define LIMITER 4
+# define COMMAND 5
+# define INPUT 6
+# define APPEND_REDIR 7
+# define TRUNC_REDIR 8
 
-	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
-	if (!(ft_strncmp(input, "exit", 4)))
-		return (0);
-	add_history(input);
-	arg = lexer(input);
-	return (1);
-}
+
+#endif

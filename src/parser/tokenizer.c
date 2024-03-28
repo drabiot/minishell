@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:01:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/03/28 21:39:43 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,34 @@ static void	grab_token(t_input *cmd, t_token *token)
 
 void	tokenizer(t_input *cmd)
 {
-	t_token	token;
+	unsigned int		index = 0;
+	t_token				token;
+	t_cmd				*start;
+	char				*arg;
 
+	start = NULL;
 	token = (t_token){0};
-	while (cmd->str[cmd->i] && cmd->str[cmd->i + 1])
+	while (cmd->str[cmd->i])
 	{
 		grab_token(cmd, &token);
 		char c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
 		printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
+		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
+		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
+		index++;
+	}
+	
+	//t_cmd test
+	t_cmd *tmp;
+
+	printf("\n\n");
+	tmp = start;
+	while (tmp)
+	{
+		printf("arg : '%s'\ntype : %i\nindex : %i.\n", tmp->arg, tmp->type, tmp->index);
+		tmp = tmp->next;
 	}
 }
