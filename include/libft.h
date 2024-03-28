@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:05:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/19 15:17:53 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:25:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
+
+typedef char	t_bool;
+
+# define FALSE 0
+# define TRUE 1
 
 /* ********************************************************** */
 /*                                                            */
@@ -139,6 +143,7 @@ int		ft_tolower(int character);
 /*              in the string s               */
 /* ****************************************** */
 char	*ft_strchr(const char *s, int c);
+char	*ft_strmultichr(const char *s, char *c);
 
 /* ****************************************** */
 /*                ft_strrchr.c                */
@@ -255,6 +260,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 /*          end with a NULL pointer           */
 /* ****************************************** */
 char	**ft_split(char const *s, char c);
+char	**ft_multisplit(char const *s, char *sep);
 
 /* ****************************************** */
 /*                 ft_itoa.c                  */

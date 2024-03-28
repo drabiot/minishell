@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_lstadd_front_cmd.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:52:19 by nberduck         ###   ########.fr       */
+/*   Created: 2023/11/06 22:45:51 by tchartie          #+#    #+#             */
+/*   Updated: 2024/03/28 21:11:01 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	prompt(void)
+void	ft_lstadd_front_cmd(t_cmd **lst, t_cmd *new)
 {
-	char	*input;
-	char	**arg;
-
-	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
-	if (!(ft_strncmp(input, "exit", 4)))
-		return (0);
-	add_history(input);
-	arg = lexer(input);
-	return (1);
+	if (lst && new)
+	{
+		new->next = *lst;
+		*lst = new;
+	}
 }

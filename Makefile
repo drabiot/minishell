@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/03/20 17:54:45 by nberduck         ###   ########.fr        #
+#    Updated: 2024/03/28 21:14:02 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,10 @@ OBJS_DIR	=		obj/
 
 SRCS		=		main.c \
 					parser/prompt.c \
+					parser/lexer.c \
+					parser/tokenizer.c \
+					parser/cmd_creation/cmd_creation.c \
+					parser/cmd_creation/ft_find_type.c \
 					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
@@ -54,7 +58,13 @@ SRCS		=		main.c \
 					builtins/ft_unset.c \
 					builtins/ft_export.c \
 					builtins/ft_cd.c \
-					builtins/ft_exit.c
+					builtins/ft_exit.c \
+					libft_cmd/ft_lstadd_back_cmd.c \
+					libft_cmd/ft_lstadd_front_cmd.c \
+					libft_cmd/ft_lstclear_cmd.c \
+					libft_cmd/ft_lstdelone_cmd.c \
+					libft_cmd/ft_lstlast_cmd.c \
+					libft_cmd/ft_lstnew_cmd.c
 
 OBJS		=		$(SRCS:.c=.o)
 
@@ -70,13 +80,15 @@ makelibft :
 					@make -C $(LIBFT_DIR) all --no-print-directory
 
 $(NAME) :			$(OBJS_F) | makelibft
-					@$(CC) $(OBJS_F) -o $(NAME) -Llibft -lft -I$(INCLUDE_DIR)
+					@$(CC) $(OBJS_F) -o $(NAME) -Llibft -lft -lreadline -I$(INCLUDE_DIR)
 					@echo "$(GREEN)Pipex successfully compiled! $(BASE_COLOR)"
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
 					@mkdir -p $(OBJS_DIR)
 					@mkdir -p obj/parser
+					@mkdir -p obj/parser/cmd_creation
 					@mkdir -p obj/builtins
+					@mkdir -p obj/libft_cmd
 					@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
 					@$(CC) $(GFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
@@ -91,3 +103,7 @@ fclean :
 					@rm -rf $(NAME)
 					@echo "$(CYAN)Minishell executable file cleanned! $(BASE_COLOR)"
 					@make -C $(LIBFT_DIR) fclean --no-print-directory
+
+re :				fclean all
+
+.PHONY :			all makelibft clean fclean re

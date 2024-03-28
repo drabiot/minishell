@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:52:19 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
+/*   Updated: 2024/03/28 21:21:34 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	prompt(void)
+char	**lexer(char *input)
 {
-	char	*input;
-	char	**arg;
+	t_input	cmd;
 
-	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
-	if (!(ft_strncmp(input, "exit", 4)))
-		return (0);
-	add_history(input);
-	arg = lexer(input);
-	return (1);
+	cmd = (t_input){0};
+	cmd.str = input;
+	cmd.i = 0;
+	tokenizer(&cmd);
+	return (NULL);
 }
