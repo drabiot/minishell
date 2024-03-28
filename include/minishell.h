@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 21:15:00 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:55:07 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef struct s_cmd
     struct s_cmd    *next;
 }			        t_cmd;
 
-int prompt(void);
-char	**lexer(char *input);
-void	tokenizer(t_input *cmd);
+int prompt(t_list *t_envp);
+char	**lexer(char *input, t_list *t_envp);
+void	tokenizer(t_input *cmd, t_list *t_envp);
 
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 void	ft_lstadd_front_cmd(t_cmd **lst, t_cmd *new);
@@ -57,7 +57,12 @@ void	ft_lstclear_cmd(t_cmd **lst);
 void	ft_lstdelone_cmd(t_cmd *lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
+
 t_cmd	*ft_cmd_creation(char *arg, int index);
 int     ft_find_type(char *arg);
+
+void ft_expand(t_cmd **list, t_list *t_envp);
+int ft_verif_main(char *arg);
+void	ft_expand_modif_main(t_cmd *list, t_list *t_envp);
 
 #endif //MINISHELL_H

@@ -6,13 +6,13 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:52:19 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:53:51 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	prompt(void)
+int	prompt(t_list *t_envp)
 {
 	char	*input;
 	char	**arg;
@@ -21,6 +21,6 @@ int	prompt(void)
 	if (!(ft_strncmp(input, "exit", 4)))
 		return (0);
 	add_history(input);
-	arg = lexer(input);
+	arg = lexer(input, t_envp);
 	return (1);
 }
