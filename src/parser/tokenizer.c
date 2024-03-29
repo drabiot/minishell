@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 21:39:43 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:55:35 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	grab_token(t_input *cmd, t_token *token)
 	token->end = cmd->i;
 }
 
-void	tokenizer(t_input *cmd)
+void	tokenizer(t_input *cmd, t_list *t_envp)
 {
 	unsigned int		index = 0;
 	t_token				token;
@@ -91,6 +91,7 @@ void	tokenizer(t_input *cmd)
 		index++;
 	}
 	
+	ft_expand(&start, t_envp);
 	//t_cmd test
 	t_cmd *tmp;
 

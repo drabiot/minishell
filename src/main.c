@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 19:58:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:04:26 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int main(int argc, char **argv, char **envp)
    // ft_exit(ft_atoi(argv[1]));
    
    ft_envp_print(NULL);
-   ft_lstclear(&t_envp, free);
 
    //Part for signal
    //Need static function ft_signal
@@ -117,7 +116,8 @@ int main(int argc, char **argv, char **envp)
    exit = -1;
 	while (exit != 0)
 	{
-		exit = prompt();
+		exit = prompt(t_envp);
 	}
+   // ft_lstclear(&t_envp, free);
    return (0);
 }

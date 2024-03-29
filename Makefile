@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/03/28 21:14:02 by nberduck         ###   ########.fr        #
+#    Updated: 2024/03/28 23:21:15 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,9 @@ SRCS		=		main.c \
 					parser/tokenizer.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \
+					parser/expand/expand_main.c \
+					parser/expand/expand_verif.c \
+					parser/expand/expand_modif.c \
 					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
@@ -87,6 +90,7 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
 					@mkdir -p $(OBJS_DIR)
 					@mkdir -p obj/parser
 					@mkdir -p obj/parser/cmd_creation
+					@mkdir -p obj/parser/expand
 					@mkdir -p obj/builtins
 					@mkdir -p obj/libft_cmd
 					@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
