@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 23:55:35 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:53:44 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,5 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 		printf("arg : '%s'\ntype : %i\nindex : %i.\n", tmp->arg, tmp->type, tmp->index);
 		tmp = tmp->next;
 	}
+	ft_lstclear_cmd(&start);
 }
