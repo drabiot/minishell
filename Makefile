@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/03/28 23:21:15 by nberduck         ###   ########.fr        #
+#    Updated: 2024/04/06 17:46:34 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,8 @@ SRCS		=		main.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \
+					parser/expand/expand_split.c \
+					parser/expand/expand_tokenizer.c \
 					builtins/ft_utils_builtins.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \

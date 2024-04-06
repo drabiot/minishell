@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/29 00:04:26 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/04 22:04:03 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,14 @@ int main(int argc, char **argv, char **envp)
 	{
 		exit = prompt(t_envp);
 	}
-   // ft_lstclear(&t_envp, free);
+   // t_list *tmp;
+
+   // tmp = t_envp;
+   // while (tmp)
+   // {
+   //    printf("%s\n", (char *)tmp->content);
+   //    tmp = tmp->next;
+   // }
+   ft_lstclear(&t_envp, free);
    return (0);
 }

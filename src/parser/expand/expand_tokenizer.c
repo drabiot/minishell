@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   expand_tokenizer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/02 17:53:44 by nberduck         ###   ########.fr       */
+/*   Created: 2024/04/06 17:12:44 by nberduck          #+#    #+#             */
+/*   Updated: 2024/04/06 17:43:07 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/libft.h"
+#include "../../../include/minishell.h"
+#include "../../../include/libft.h"
 
 static t_bool	is_white_space(char *str, int i)
 {
@@ -69,7 +69,7 @@ static void	grab_token(t_input *cmd, t_token *token)
 	token->end = cmd->i;
 }
 
-void	tokenizer(t_input *cmd, t_list *t_envp)
+t_cmd	*expand_tokenizer(t_input *cmd)
 {
 	unsigned int		index = 0;
 	t_token				token;
@@ -83,24 +83,12 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 		grab_token(cmd, &token);
 		char c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
-		printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
+		printf("2 : start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
 		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
 		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
 		index++;
 	}
-	
-	ft_expand(&start, t_envp);
-	//t_cmd test
-	t_cmd *tmp;
-
-	printf("\n\n");
-	tmp = start;
-	while (tmp)
-	{
-		printf("arg : '%s'\ntype : %i\nindex : %i.\n", tmp->arg, tmp->type, tmp->index);
-		tmp = tmp->next;
-	}
-	ft_lstclear_cmd(&start);
+	return (start);
 }

@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/28 21:18:16 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/04 20:56:23 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int ft_is_cmd(char *arg)
 	if (!ft_strcmp(arg, "env"))
 		return (1);
 	if (!ft_strcmp(arg, "exit"))
+		return (1);
+	if (!ft_strcmp(arg, "$?"))
 		return (1);
 	return (0);
 }
