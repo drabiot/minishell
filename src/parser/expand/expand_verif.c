@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:15:38 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/29 00:05:31 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/04 20:59:56 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static int	ft_verif_name(char *arg)
 		i++;
 	if (arg[i + 1] >= '0' && arg[i + 1] <= '9')
 		return (1);
-	// if (!(arg[i + 1] >= 'a' && arg[i + 1] <= 'z') && !(arg[i + 1] >= 'A' && arg[i + 1] <= 'Z') && arg[i + 1] != '_')
-	// 	return (1);
 	return (0);
 }
 

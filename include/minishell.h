@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 23:55:07 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:28:24 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int     ft_find_type(char *arg);
 
 void ft_expand(t_cmd **list, t_list *t_envp);
 int ft_verif_main(char *arg);
-void	ft_expand_modif_main(t_cmd *list, t_list *t_envp);
+void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_list *t_envp);
+void	expand_split(t_cmd *list, t_cmd *before, char *content);
+t_cmd	*expand_tokenizer(t_input *cmd);
 
 #endif //MINISHELL_H

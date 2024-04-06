@@ -6,13 +6,21 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/29 00:16:35 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:28:43 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
+char	*ft_last_return(void)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	return (tmp);	
+}
+
+static void ft_expand_modif(t_cmd *main, t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
 	char	*end_part;
@@ -28,26 +36,27 @@ static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
 		with_content = ft_strjoin(first_part, content);
 		full = ft_strjoin(with_content, end_part);
 	}
-	// printf("1 : %s\n", first_part);
-	// printf("2 : %s\n", content);
-	// printf("3 : %s\n", end_part);
-	// printf("4 : %s\n", full);
 	free(list->arg);
 	list->arg = full;
 	free(first_part);
 	free(end_part);
 	if (content)
+	{
+		free(content);
 		free(with_content);
+	}
+	expand_split(main, list, full);
 }
 
-char	*ft_getenv(char *name, t_list *t_envp)
+char	*ft_getenv(char *name, t_list *t_envp, int i)
 {
 	t_list	*tmp;
 	char	*name_var;
 	char	*name_tmp;
 	char	*content;
-	int		i;
 	
+	// if (ft_strcmp(name, "$?"))
+	// 	return (ft_last_return());
 	tmp = t_envp;
 	while (tmp)
 	{
@@ -59,15 +68,15 @@ char	*ft_getenv(char *name, t_list *t_envp)
 		if (!ft_strcmp(name_var, name))
 		{
 			content = ft_substr(name_tmp, i + 1, ft_strlen(name_tmp) - i);
-			free(name_tmp);
 			free(name_var);
 			return (content);
 		}
+		free(name_var);
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
-void	ft_expand_modif_main(t_cmd *list, t_list *t_envp)
+void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_list *t_envp)
 {
 	int		i;
 	int		start;
@@ -91,7 +100,7 @@ void	ft_expand_modif_main(t_cmd *list, t_list *t_envp)
 		i++;
 	}
 	name = ft_substr(list->arg, start, end - start + 2);
-	printf("%s\n", name);
-	content = ft_getenv(name, t_envp);
-	ft_expand_modif(list, content, start, end);
+	content = ft_getenv(name, t_envp, 0);
+	free(name);
+	ft_expand_modif(main, list, content, start, end);
 }
