@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/06 18:28:24 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:46:30 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,23 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_cmd
+{
+	char            *arg;
+    int             type;
+    unsigned int    index;
+    struct s_cmd    *next;
+}			        t_cmd;
+
 /* ****************************************** */
 /*                Builtins                	  */
 /*    Prototype for builtins's main fonction  */
 /* ****************************************** */
-int		ft_echo(char *str, int option);
+int		ft_echo(int fd, char *str, int option);
 char	*ft_pwd(void);
 int		ft_env(char **envp);
 int		ft_unset(t_list **envp, char **args);
-int		ft_export(t_list **t_envp, char **args);
+int		ft_export(t_list **t_envp, t_cmd **args);
 int		ft_cd(char *path);
 int		ft_exit(int	exit);
 
@@ -38,14 +46,7 @@ int		ft_exit(int	exit);
 /*Prototype for builtins utils's main fonction*/
 /* ****************************************** */
 t_list	*split_args(char **args);
-
-typedef struct s_cmd
-{
-	char            *arg;
-    int             type;
-    unsigned int    index;
-    struct s_cmd    *next;
-}			        t_cmd;
+int     ft_check_quote_and_delete(t_cmd **t_args);
 
 int prompt(t_list *t_envp);
 char	**lexer(char *input, t_list *t_envp);

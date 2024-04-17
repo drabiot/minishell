@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/04 22:04:03 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:14:26 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	ft_signal(int sign)
    if (t == 3)
       exit(0);
 }
+
 int main(int argc, char **argv, char **envp)
 {
    t_list *t_envp;
@@ -107,12 +108,8 @@ int main(int argc, char **argv, char **envp)
    // signal(,ft_signal);
    // while (1)
 	//		pause();
-   // struct sigaction	signal_receive;
 
-	// signal_receive.sa_sigaction = ft_signal_receive_print;
-	// signal_receive.sa_flags = SA_SIGINFO;
-	// sigaction(SIGINT, &signal_receive, NULL);
-	// sigaction(SIGUSR2, &signal_receive, NULL);
+ 
    exit = -1;
 	while (exit != 0)
 	{

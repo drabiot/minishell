@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/04/06 17:46:34 by nberduck         ###   ########.fr        #
+#    Updated: 2024/04/17 10:55:57 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ SRCS		=		main.c \
 					builtins/ft_export.c \
 					builtins/ft_cd.c \
 					builtins/ft_exit.c \
+					builtins/ft_utils_export.c \
 					libft_cmd/ft_lstadd_back_cmd.c \
 					libft_cmd/ft_lstadd_front_cmd.c \
 					libft_cmd/ft_lstclear_cmd.c \

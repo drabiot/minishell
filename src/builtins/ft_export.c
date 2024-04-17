@@ -6,54 +6,51 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 17:20:35 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:52:08 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	ft_verif_args(t_list *t_args)
+static int	ft_verif_args(t_cmd *args)
 {
 	unsigned int	i;
-	char			*content;
 	
-	while (t_args)
+	while (args)
 	{
-		content = (char *)t_args->content;
-		printf("%s\n", content);
-		if (content[0] >= '0' && content[0] <= '9')
+		if (ft_isdigit(args->arg[0]))
 		{
-			printf("export: '%s': not a valid identifier\n", content);
+			printf("texport: '%s': not a valid identifier\n", args->arg);
 			return (1);
 		}
 		i = 0;
-		while (content[i])
+		while (args->arg[i] != '=')
 		{
-			if(!(content[i] >= 'a' && content[i] <= 'z') && !(content[i] >= 'A' && content[i] <= 'Z'))
+			if(!ft_isalpha(args->arg[i]) && args->arg[i] != '_')
 			{
-				printf("export: '%s': not a valid identifier\n", content);
+				printf("export: '%s': not a valid identifier\n", args->arg);
 				return (1);
 			}
 			i++;
 		}
-		t_args = t_args->next;
+		args = args->next;
 	}
 	return (0);
 }
 static void	ft_env_print(t_list *t_envp)
 {
 	t_list			*tmp;
-	char			*content;
 	unsigned int	i;
 	int				name_end;
+	char			*content;
 	
 
 	tmp = t_envp;
 	while (tmp)
 	{
+		content = (char *)tmp->content;
 		i = 0;
 		name_end = 0;
-		content = (char *)tmp->content;
 		printf("declare -x ");
 		while (content[i] && name_end != -1)
 		{
@@ -67,20 +64,21 @@ static void	ft_env_print(t_list *t_envp)
    }
 }
 
-int	ft_export(t_list **t_envp, char **args)
+int	ft_export(t_list **t_envp, t_cmd **args)
 {
-	t_list	*t_args;
-	t_list	*curr;
+	t_cmd	*curr;
 	t_list	*tmp;
-	t_args = split_args(args);
-	if (!t_args)
+	if (!args)
 		ft_env_print(*t_envp);
-	if (!ft_verif_args(t_args))
+	if (!ft_verif_args(*args))
 	{
-		curr = t_args;
+		if (ft_check_quote_and_delete(args))
+			return (1);
+		ft_expand(args, *t_envp);
+		curr = *args;
 		while (curr)
 		{
-			tmp = ft_lstnew(ft_strdup(curr->content));
+			tmp = ft_lstnew(ft_strdup(curr->arg));
 			ft_lstadd_back(t_envp, tmp);
 		curr = curr->next;
 		}

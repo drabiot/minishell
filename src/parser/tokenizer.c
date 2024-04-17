@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/02 17:53:44 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:50:40 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,19 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 		index++;
 	}
 	
-	ft_expand(&start, t_envp);
-	//t_cmd test
+	// ft_expand(&start, t_envp);
+	// //t_cmd test
 	t_cmd *tmp;
 
-	printf("\n\n");
+	// printf("\n\n");
+	// tmp = start;
+	// while (tmp)
+	// {
+	// 	printf("arg : '%s'\ntype : %i\nindex : %i.\n", tmp->arg, tmp->type, tmp->index);
+	// 	tmp = tmp->next;
+	// }
+
+	ft_export(&t_envp, &start);
 	tmp = start;
 	while (tmp)
 	{
