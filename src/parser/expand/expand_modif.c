@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/06 18:28:43 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:43:07 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ char	*ft_getenv(char *name, t_list *t_envp, int i)
 	char	*name_var;
 	char	*name_tmp;
 	char	*content;
-	
-	// if (ft_strcmp(name, "$?"))
-	// 	return (ft_last_return());
+
 	tmp = t_envp;
 	while (tmp)
 	{

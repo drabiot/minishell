@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/06 18:39:14 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:34:51 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void ft_expand(t_cmd **list, t_list *t_envp)
 				ft_expand_modif_main(*list, tmp, t_envp);
 				tmp = t_next;
 			}
+			else
+				tmp = tmp->next;
 		}
 		else
 			tmp = tmp->next;
