@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 23:55:07 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:52:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef struct s_cmd
     struct s_cmd    *next;
 }			        t_cmd;
 
+typedef struct s_cwd
+{
+	char	*relative_path;
+	char	*absolute_path;
+}			t_cwd;
+
 int prompt(t_list *t_envp);
 char	**lexer(char *input, t_list *t_envp);
 void	tokenizer(t_input *cmd, t_list *t_envp);
@@ -58,8 +64,8 @@ void	ft_lstdelone_cmd(t_cmd *lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
 
-t_cmd	*ft_cmd_creation(char *arg, int index);
-int     ft_find_type(char *arg);
+t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
+int     ft_find_type(char *arg, t_cmd *prev);
 
 void ft_expand(t_cmd **list, t_list *t_envp);
 int ft_verif_main(char *arg);

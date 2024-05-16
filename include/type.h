@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:51:10 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/28 21:59:57 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:06:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define INPUT 6
 # define APPEND_REDIR 7
 # define TRUNC_REDIR 8
+# define REDIR_FILE 9
+# define INFILE 10
 
 
 #endif
