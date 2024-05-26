@@ -6,40 +6,60 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/16 20:14:26 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:36:25 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static t_list  *ft_envp_creation(char **envp)
+int     ft_name_len(char *tmp)
 {
-	t_list			*list;
-	t_list			*tmp;
+   int   i;
+   
+   if (!tmp)
+      return (0);
+   i = 0;
+   while (tmp[i] != '=' && tmp[i])
+      i++;
+   return (i);
+}
+t_glob  *ft_envp_creation(char **envp)
+{
+	t_glob			*list;
+	t_glob			*tmp;
+   char           *name;
+   char           *content;
+   int            name_end;
 	unsigned int	i;
 
 	i = 0 ;
    list = NULL;
 	while (envp[i])
 	{
-		tmp = ft_lstnew(ft_strdup(envp[i]));
-		ft_lstadd_back(&list, tmp);
+      name_end = ft_name_len(envp[i]);
+      name = ft_substr(envp[i], 0, name_end);
+      content = ft_substr(envp[i], name_end + 1, ft_strlen(envp[i]));
+      if (envp[i][name_end] && envp[i][name_end] == '=')
+         tmp = ft_lstnew_glob(name, 1, content);
+      else
+         tmp = ft_lstnew_glob(name, 0, content);
+		ft_lstadd_back_glob(&list, tmp);
       i++;
 	}
    return (list);
 }
 
-static void ft_envp_print(t_list *t_envp)
+static void ft_envp_print(t_glob *t_envp)
 {
    int   i;
    
    i = 0;
-   t_list *tmp;
+   t_glob *tmp;
 
    tmp = t_envp;
    while (tmp)
    {
-      printf("%s\n", (char *)tmp->content);
+      printf("name: %s, equal:%i, content: %s.\n", (char *)tmp->name, (int)tmp->equal, (char *)tmp->content);
       printf("%i\n", i);
       tmp = tmp->next;
       i++;
@@ -60,7 +80,7 @@ static void	ft_signal(int sign)
 
 int main(int argc, char **argv, char **envp)
 {
-   t_list *t_envp;
+   t_glob *t_envp;
    int		exit;
    // int  ret;
 
@@ -98,7 +118,7 @@ int main(int argc, char **argv, char **envp)
 
    // ft_exit(ft_atoi(argv[1]));
    
-   ft_envp_print(NULL);
+   // ft_envp_print(t_envp);
 
    //Part for signal
    //Need static function ft_signal
@@ -123,6 +143,7 @@ int main(int argc, char **argv, char **envp)
    //    printf("%s\n", (char *)tmp->content);
    //    tmp = tmp->next;
    // }
-   ft_lstclear(&t_envp, free);
+   ft_envp_print(t_envp);
+   ft_lstclear_glob(&t_envp);
    return (0);
 }

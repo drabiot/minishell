@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/23 10:24:36 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 14:54:39 by nberduck          #+#    #+#             */
+/*   Updated: 2024/03/19 15:33:51 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-char	**lexer(char *input, t_glob *t_envp)
+char	*ft_pwd(void)
 {
-	t_input	cmd;
-
-	cmd = (t_input){0};
-	cmd.str = input;
-	cmd.i = 0;
-	tokenizer(&cmd, t_envp);
-	return (NULL);
+	char *pwd;
+	unsigned int len;
+	
+	len = 10;
+	pwd = malloc(len*sizeof(char));
+	if (!pwd)
+		return (NULL);
+	while (!getcwd(pwd, len))
+	{ 
+		len += 10;
+		free(pwd);
+		pwd = malloc(len*sizeof(char));
+		if (!pwd)
+			return (NULL);
+	}
+	//Caution errno is set to ERANGE in getcwd
+	return (pwd);
 }

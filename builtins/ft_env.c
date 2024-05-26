@@ -1,52 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_builtins.c                                :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 16:22:23 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/23 10:12:59 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 15:30:20 by nberduck          #+#    #+#             */
+/*   Updated: 2024/03/19 16:18:38 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void ft_tmp_free(char **tmp)
+int	ft_env(char **envp)
 {
 	unsigned int	i;
-	
-	i = 0;
-	while (tmp[i])
-	{
-		free(tmp[i]);
-		i++;
-	}
-	free(tmp);
-}
-
-t_glob*split_args(char **args)
-{
-	unsigned int	i;
-	unsigned int	j;
-	char			**tmp;
-	t_glob			*arg;
 
 	i = 0;
-	j = 0;
-	arg = NULL;
-	while (args[i])
+	if (!envp)
+		return (1);
+	while (envp[i])
 	{
-		tmp = ft_split(args[i], ' ');
-		j = 0;
-		while (tmp[j])
-		{
-			ft_lstadd_back_glob(&arg, ft_lstnew(ft_strdup(tmp[j])));
-			j++;
-		}
-		ft_tmp_free(tmp);
-		tmp = NULL;
+		printf("%s\n", envp[i]);
 		i++;
 	}
-	return (arg);
+	return (0);
 }

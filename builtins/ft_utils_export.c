@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/26 15:36:09 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:46:25 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,4 @@ int	ft_check_quote_and_delete(t_cmd **args)
 		tmp = tmp->next;
 	}
 	return (0);
-}
-
-t_glob  *ft_globsolo_creation(char *arg)
-{
-	t_glob			*tmp;
-	char           *name;
-	char           *content;
-	int            name_end;
-
-	name_end = ft_name_len(arg);
-    name = ft_substr(arg, 0, name_end);
-    content = ft_substr(arg, name_end + 1, ft_strlen(arg));
-    if (arg[name_end] && arg[name_end] == '=')
-       tmp = ft_lstnew_glob(name, 1, content);
-    else
-       tmp = ft_lstnew_glob(name, 0, content);
-   return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/04/17 11:50:40 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:39:48 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	grab_token(t_input *cmd, t_token *token)
 	token->end = cmd->i;
 }
 
-void	tokenizer(t_input *cmd, t_list *t_envp)
+void	tokenizer(t_input *cmd, t_glob *t_envp)
 {
 	unsigned int		index = 0;
 	t_token				token;
@@ -91,9 +91,9 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 		index++;
 	}
 	
-	// ft_expand(&start, t_envp);
+	ft_expand(&start, t_envp);
 	// //t_cmd test
-	t_cmd *tmp;
+	t_glob *tmp;
 
 	// printf("\n\n");
 	// tmp = start;
@@ -103,12 +103,13 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 	// 	tmp = tmp->next;
 	// }
 
-	ft_export(&t_envp, &start);
-	tmp = start;
+	ft_export(&t_envp, start);
+	tmp = t_envp;
 	while (tmp)
 	{
-		printf("arg : '%s'\ntype : %i\nindex : %i.\n", tmp->arg, tmp->type, tmp->index);
+		printf("name : %s,equal : %i,content : %s.\n", tmp->name, tmp->equal, tmp->content);
 		tmp = tmp->next;
 	}
+	// (void)t_envp;
 	ft_lstclear_cmd(&start);
 }

@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/04/17 10:55:57 by nberduck         ###   ########.fr        #
+#    Updated: 2024/05/26 14:36:33 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,28 +49,28 @@ SRCS		=		main.c \
 					parser/prompt.c \
 					parser/lexer.c \
 					parser/tokenizer.c \
-					parser/cmd_creation/cmd_creation.c \
-					parser/cmd_creation/ft_find_type.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \
 					parser/expand/expand_split.c \
 					parser/expand/expand_tokenizer.c \
-					builtins/ft_utils_builtins.c \
-					builtins/ft_echo.c \
-					builtins/ft_pwd.c \
-					builtins/ft_env.c \
-					builtins/ft_unset.c \
 					builtins/ft_export.c \
-					builtins/ft_cd.c \
-					builtins/ft_exit.c \
 					builtins/ft_utils_export.c \
+					parser/cmd_creation/cmd_creation.c \
+					parser/cmd_creation/ft_find_type.c \
 					libft_cmd/ft_lstadd_back_cmd.c \
 					libft_cmd/ft_lstadd_front_cmd.c \
 					libft_cmd/ft_lstclear_cmd.c \
 					libft_cmd/ft_lstdelone_cmd.c \
 					libft_cmd/ft_lstlast_cmd.c \
-					libft_cmd/ft_lstnew_cmd.c
+					libft_cmd/ft_lstnew_cmd.c \
+					libft_glob/ft_lstadd_back_glob.c \
+					libft_glob/ft_lstadd_front_glob.c \
+					libft_glob/ft_lstclear_glob.c \
+					libft_glob/ft_lstdelone_glob.c \
+					libft_glob/ft_lstlast_glob.c \
+					libft_glob/ft_lstnew_glob.c
+
 
 OBJS		=		$(SRCS:.c=.o)
 
@@ -96,6 +96,7 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
 					@mkdir -p obj/parser/expand
 					@mkdir -p obj/builtins
 					@mkdir -p obj/libft_cmd
+					@mkdir -p obj/libft_glob
 					@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
 					@$(CC) $(GFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 

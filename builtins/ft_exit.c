@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/23 10:24:36 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/20 17:48:41 by nberduck          #+#    #+#             */
+/*   Updated: 2024/04/04 22:12:11 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-char	**lexer(char *input, t_glob *t_envp)
+int	ft_exit(int	exit)
 {
-	t_input	cmd;
-
-	cmd = (t_input){0};
-	cmd.str = input;
-	cmd.i = 0;
-	tokenizer(&cmd, t_envp);
-	return (NULL);
+	printf("%i\n", exit);
+	if (exit != 0)
+		return (1);
+	return (0);
 }

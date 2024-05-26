@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/17 11:43:07 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/23 10:10:22 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static void ft_expand_modif(t_cmd *main, t_cmd *list, char *content, int start, 
 	expand_split(main, list, full);
 }
 
-char	*ft_getenv(char *name, t_list *t_envp, int i)
+char	*ft_getenv(char *name, t_glob *t_envp, int i)
 {
-	t_list	*tmp;
+	t_glob	*tmp;
 	char	*name_var;
 	char	*name_tmp;
 	char	*content;
@@ -74,7 +74,7 @@ char	*ft_getenv(char *name, t_list *t_envp, int i)
 	}
 	return (NULL);
 }
-void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_list *t_envp)
+void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_glob *t_envp)
 {
 	int		i;
 	int		start;

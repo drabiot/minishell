@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_lstnew_glob.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/23 10:24:36 by nberduck         ###   ########.fr       */
+/*   Created: 2023/11/06 14:41:40 by tchartie          #+#    #+#             */
+/*   Updated: 2024/05/23 10:05:38 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**lexer(char *input, t_glob *t_envp)
+t_glob	*ft_lstnew_glob(char *name, int equal, char *content)
 {
-	t_input	cmd;
+	t_glob	*array;
 
-	cmd = (t_input){0};
-	cmd.str = input;
-	cmd.i = 0;
-	tokenizer(&cmd, t_envp);
-	return (NULL);
+	array = (t_glob *)malloc(sizeof(t_glob));
+	if (!array)
+		return (NULL);
+	array->next = NULL;
+	array->name = name;
+    array->equal = equal;
+    array->content = content;
+	return (array);
 }
