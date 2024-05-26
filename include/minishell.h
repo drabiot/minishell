@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/26 14:51:09 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:11:22 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct s_cmd
     unsigned int    index;
     struct s_cmd    *next;
 }			        t_cmd;
+
+typedef struct s_cwd
+{
+	char	*relative_path;
+	char	*absolute_path;
+}			t_cwd;
 
 typedef struct s_glob
 {
@@ -78,8 +84,8 @@ void	ft_lstdelone_cmd(t_cmd *lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
 
-t_cmd	*ft_cmd_creation(char *arg, int index);
-int     ft_find_type(char *arg);
+t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
+int     ft_find_type(char *arg, t_cmd *prev);
 
 void ft_expand(t_cmd **list, t_glob *t_envp);
 int ft_verif_main(char *arg);

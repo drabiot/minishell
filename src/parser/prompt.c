@@ -6,18 +6,51 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/23 10:06:41 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:50:26 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static void	create_path(t_cwd *path, t_glob *t_envp)
+{
+	int	i;
+	int	nb_slash;
+	char	*first_part;
+	char	*last_part;
+
+	while (t_envp->next)
+	{
+		first_part = ft_strjoin(t_envp->name, "=");
+		last_part = ft_strjoin(first_part, t_envp->content);
+		if (ft_strncmp(last_part, "PWD=", 4) == 0)
+			path->relative_path = last_part + 4;
+		free(first_part);
+		// free(last_part); // cause of invalid read
+		t_envp = t_envp->next;
+	}
+	i = 0;
+	nb_slash = 0;
+	while (nb_slash < 4)
+	{
+		if (path->relative_path[i] == '/')
+			nb_slash++;
+		i++;
+	}
+	path->absolute_path = ft_strjoin("~/", path->relative_path + i);
+}
+
 int	prompt(t_glob *t_envp)
 {
-	char	*input;
-	char	**arg;
+	char		*input;
+	char		**arg;
+	t_cwd		path;
 
+	path = (t_cwd){0};
+	create_path(&path, t_envp);
+	printf("\x1b[0;95m%s ", path.absolute_path);
 	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
+	free(path.absolute_path);
 	if (!(ft_strncmp(input, "exit", 4)))
 		return (0);
 	add_history(input);

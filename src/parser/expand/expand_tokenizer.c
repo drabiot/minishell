@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 17:12:44 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/06 17:43:07 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:09:34 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ t_cmd	*expand_tokenizer(t_input *cmd)
 		grab_token(cmd, &token);
 		char c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
-		printf("2 : start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
+		printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
 		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
-		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index));
+		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
 		index++;
