@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/26 15:36:25 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:46:16 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,52 @@ int     ft_name_len(char *tmp)
       i++;
    return (i);
 }
+
+void   ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
+{
+   t_glob   *tmp;
+   t_glob   *last;
+
+   if (!*list)
+   {
+      *list = new;
+      return ;
+   }
+   tmp = *list;
+   last = NULL;
+   while (tmp->next)
+   {
+      if (ft_strcmp(tmp->name, new->name) > 0)
+      {
+         if (!last)
+         {
+            *list = new;
+            new->next = tmp;
+            return ;
+         }
+         last->next = new;
+         new->next = tmp;
+         return ;  
+      }
+      if (ft_strcmp(tmp->name, new->name) == 0)
+      {
+         if (new->equal == 0)
+         {
+            ft_lstdelone_glob(new);
+            return ;
+         }
+         free(tmp->content);
+         tmp->content = ft_strdup(new->content);
+         tmp->equal = 1;
+         ft_lstdelone_glob(new);
+         return ;
+      }
+      last = tmp;
+      tmp = tmp->next;
+   }
+   ft_lstadd_back_glob(list, new);
+}
+
 t_glob  *ft_envp_creation(char **envp)
 {
 	t_glob			*list;
@@ -43,7 +89,7 @@ t_glob  *ft_envp_creation(char **envp)
          tmp = ft_lstnew_glob(name, 1, content);
       else
          tmp = ft_lstnew_glob(name, 0, content);
-		ft_lstadd_back_glob(&list, tmp);
+		ft_lstadd_back_alpha_envp(&list, tmp);
       i++;
 	}
    return (list);

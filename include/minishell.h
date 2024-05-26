@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/26 16:11:22 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:36:52 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int ft_verif_main(char *arg);
 void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_glob *t_envp);
 void	expand_split(t_cmd *list, t_cmd *before, char *content);
 t_cmd	*expand_tokenizer(t_input *cmd);
+t_glob	*ft_lstadd_back_alpha(t_glob **list, t_glob *new);
+void   ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new);
 
 t_glob  *ft_envp_creation(char **envp);
 t_glob  *ft_globsolo_creation(char *envp);
