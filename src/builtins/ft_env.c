@@ -6,23 +6,29 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/19 16:18:38 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:09:57 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-int	ft_env(char **envp)
+int	ft_env(int fd, t_glob **t_envp)
 {
-	unsigned int	i;
+	t_glob			*tmp;
+	char	*first_part;
+	char	*last_part;
 
-	i = 0;
-	if (!envp)
+	if (!*t_envp)
 		return (1);
-	while (envp[i])
+	tmp = *t_envp;
+	while (tmp)
 	{
-		printf("%s\n", envp[i]);
-		i++;
+		first_part = ft_strjoin(tmp->name, "=");
+		last_part = ft_strjoin(first_part, tmp->content);
+		ft_putstr_fd(last_part, fd);
+		free(first_part);
+		free(last_part);
+		tmp = tmp->next;
 	}
 	return (0);
 }

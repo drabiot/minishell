@@ -6,11 +6,11 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/26 18:57:02 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:44:32 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 static char	*ft_delete_quote(char *str)
 {
@@ -19,7 +19,7 @@ static char	*ft_delete_quote(char *str)
 
 	split_part = ft_split(str, '"');
 	tmp = ft_strjoin(split_part[0], split_part[1]);
-	printf("%s\n", tmp);
+	// printf("%s\n", tmp);
 	return (tmp);
 }
 

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_builtins.c                                :+:      :+:    :+:   */
+/*   execution_other_cmd_clear.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 16:22:23 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/23 10:12:59 by nberduck         ###   ########.fr       */
+/*   Created: 2024/06/01 18:54:27 by nberduck          #+#    #+#             */
+/*   Updated: 2024/06/01 19:02:16 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-static void ft_tmp_free(char **tmp)
+void	ft_clear_tab(char **tmp)
 {
-	unsigned int	i;
+	int	i;
 	
 	i = 0;
 	while (tmp[i])
@@ -25,28 +25,22 @@ static void ft_tmp_free(char **tmp)
 	free(tmp);
 }
 
-t_glob*split_args(char **args)
+void	ft_clear_argvs(char ***argvs)
 {
-	unsigned int	i;
-	unsigned int	j;
-	char			**tmp;
-	t_glob			*arg;
+	int	i;
+	int	j;
 
 	i = 0;
-	j = 0;
-	arg = NULL;
-	while (args[i])
+	while (argvs[i])
 	{
-		tmp = ft_split(args[i], ' ');
 		j = 0;
-		while (tmp[j])
+		while (argvs[i][j])
 		{
-			ft_lstadd_back_glob(&arg, ft_lstnew(ft_strdup(tmp[j])));
+			free(argvs[i][j]);
 			j++;
 		}
-		ft_tmp_free(tmp);
-		tmp = NULL;
+		free(argvs[i]);
 		i++;
 	}
-	return (arg);
+	free(argvs);
 }

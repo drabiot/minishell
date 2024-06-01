@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/05/26 14:36:33 by nberduck         ###   ########.fr        #
+#    Updated: 2024/06/01 18:58:30 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,22 +54,34 @@ SRCS		=		main.c \
 					parser/expand/expand_modif.c \
 					parser/expand/expand_split.c \
 					parser/expand/expand_tokenizer.c \
-					builtins/ft_export.c \
-					builtins/ft_utils_export.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \
+					builtins/ft_export.c \
+					builtins/ft_utils_export.c \
+					builtins/ft_echo.c \
+					builtins/ft_pwd.c \
+					builtins/ft_env.c \
+					builtins/ft_unset.c \
+					builtins/ft_cd.c \
+					builtins/ft_exit.c \
 					libft_cmd/ft_lstadd_back_cmd.c \
 					libft_cmd/ft_lstadd_front_cmd.c \
 					libft_cmd/ft_lstclear_cmd.c \
 					libft_cmd/ft_lstdelone_cmd.c \
 					libft_cmd/ft_lstlast_cmd.c \
 					libft_cmd/ft_lstnew_cmd.c \
+					libft_cmd/ft_lstnmap_cmd.c \
 					libft_glob/ft_lstadd_back_glob.c \
 					libft_glob/ft_lstadd_front_glob.c \
 					libft_glob/ft_lstclear_glob.c \
 					libft_glob/ft_lstdelone_glob.c \
 					libft_glob/ft_lstlast_glob.c \
-					libft_glob/ft_lstnew_glob.c
+					libft_glob/ft_lstnew_glob.c \
+					execution/execution_main.c \
+					execution/execution_builtins.c \
+					execution/execution_other_cmd.c \
+					execution/execution_other_cmd_clear.c \
+					execution/execution_utils.c
 
 
 OBJS		=		$(SRCS:.c=.o)
@@ -97,6 +109,7 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
 					@mkdir -p obj/builtins
 					@mkdir -p obj/libft_cmd
 					@mkdir -p obj/libft_glob
+					@mkdir -p obj/execution
 					@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
 					@$(CC) $(GFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 

@@ -6,11 +6,11 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:54:39 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/19 15:33:51 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:44:25 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 char	*ft_pwd(void)
 {

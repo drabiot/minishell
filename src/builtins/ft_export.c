@@ -6,16 +6,16 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/26 19:37:21 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:44:23 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-static int	ft_verif_args(t_cmd *args)
+static int	ft_verif_args(int fd, t_cmd *args)
 {
 	unsigned int	i;
-	
+	(void)fd;
 	while (args)
 	{
 		i = 0;
@@ -32,13 +32,13 @@ static int	ft_verif_args(t_cmd *args)
 	}
 	return (0);
 }
-static void	ft_env_print(t_glob *t_envp)
+static void	ft_env_print(int fd, t_glob *t_envp)
 {
 	t_glob			*tmp;
 	unsigned int	i;
 	int				name_end;
 	
-
+	(void)fd;
 	tmp = t_envp;
 	while (tmp)
 	{
@@ -51,22 +51,20 @@ static void	ft_env_print(t_glob *t_envp)
 		tmp = tmp->next;
    }
 }
-
-int	ft_export(t_glob **t_envp, t_cmd *args)
+//Have to do with fd
+int	ft_export(int fd, t_glob **t_envp, t_cmd *args)
 {
 	t_cmd	*curr;
 	t_glob	*tmp;
-	// printf("%p.\n", args);
 	while (args)
 	{
 		if (!args || !args->arg)
 		{
-			ft_env_print(*t_envp);
+			ft_env_print(fd, *t_envp);
 			return(0);
 		}
-		printf("%s.\n", args->arg);
 		ft_expand(&args, *t_envp);
-		if (!ft_verif_args(args))
+		if (!ft_verif_args(fd, args))
 		{
 			if (ft_check_quote_and_delete(&args))
 				return (1);
@@ -74,7 +72,6 @@ int	ft_export(t_glob **t_envp, t_cmd *args)
 			while (curr)
 			{
 				tmp = ft_globsolo_creation(args->arg);
-				printf("%s\n", tmp->name);
 				ft_lstadd_back_alpha_envp(t_envp, tmp);
 			curr = curr->next;
 			}

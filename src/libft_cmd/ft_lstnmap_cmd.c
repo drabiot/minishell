@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_lstnmap_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/29 22:57:12 by nberduck         ###   ########.fr       */
+/*   Created: 2024/05/30 01:06:41 by nberduck          #+#    #+#             */
+/*   Updated: 2024/05/30 01:38:32 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**lexer(char *input, t_glob *t_envp)
+t_cmd	*ft_lstnmap_cmd(t_cmd *cmd)
 {
-	t_input	cmd;
-
-	cmd = (t_input){0};
-	cmd.str = input;
-	cmd.i = 0;
-	tokenizer(&cmd, t_envp);
-	return (NULL);
+	t_cmd	*start;
+	t_cmd	*buff;
+	t_cmd	*tmp;
+	int		tmp_len;
+	
+	start = ft_lstnew_cmd(cmd->arg, cmd->type, 0);
+	if (!cmd->next)
+		return (start);
+	tmp_len = 1;
+	tmp = cmd->next;
+	while (tmp && tmp->type == WORD)
+	{
+		buff = ft_lstnew_cmd(tmp->arg, tmp->type, tmp_len);
+		ft_lstadd_back_cmd(&start, buff);
+		tmp = tmp->next;
+		tmp_len++;
+	}
+	return (start);
 }

@@ -6,51 +6,40 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/21 15:09:34 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:44:28 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-static void ft_delete_arg(t_list **t_envp, unsigned int place)
+static void ft_delete_arg(t_glob **t_envp, unsigned int place)
 {
 	unsigned int	i;
-	t_list			*tmp;
-	t_list			*next_after_clear;
+	t_glob			*tmp;
+	t_glob			*next_after_clear;
 
-	char *tmp_content;
 	i = 0;
 	tmp = *t_envp;
 	while (i < place - 1)
 	{
-		tmp_content = (char *)tmp->content;
-		printf("%s\n", tmp_content);
 		tmp = tmp->next;
 		i++;
 	}
 	next_after_clear = tmp->next->next;
-	ft_lstdelone(tmp->next, free);
+	ft_lstdelone_glob(tmp->next);
 	tmp->next = next_after_clear;
 }
 
-static void ft_find_arg(t_list **t_envp, t_list *arg)
+static void ft_find_arg(t_glob **t_envp, t_cmd *arg)
 {
-	t_list *tmp;
-	unsigned int	i;
-	int	place;
-	char			*tmp_content;
-	char			*arg_content;
+	t_glob *tmp;
+	unsigned int	place;
 
 	place = 0;
-	arg_content = (char *)arg->content;
 	tmp = *t_envp;
 	while (tmp)
 	{
-		tmp_content = (char *)tmp->content;
-		i = 0;
-		while (tmp_content[i] == arg_content[i])
-			i++;
-		if (tmp_content[i] == '=')
+		if (ft_strcmp(tmp->name, arg->arg) == 0)
 		{
 			ft_delete_arg(t_envp, place);
 			tmp = NULL;
@@ -61,20 +50,17 @@ static void ft_find_arg(t_list **t_envp, t_list *arg)
 	}
 }
 
-int	ft_unset(t_list **t_envp, char **args)
+int	ft_unset(t_glob **t_envp, t_cmd *args)
 {
-	t_list	*t_args;
-	t_list	*tmp;
+	t_cmd	*tmp;
 	
-	t_args = split_args(args);
-	if (!t_args)
+	if (!args)
 		return (1);
-	tmp = t_args;
+	tmp = args;
 	while (tmp)
 	{
 		ft_find_arg(t_envp, tmp);
 		tmp = tmp->next;
 	}
-	ft_lstclear(&t_args, free);
 	return (0);
 }

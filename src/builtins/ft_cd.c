@@ -6,18 +6,20 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 17:47:48 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/30 05:22:06 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-int	ft_cd(char *path)
+int	ft_cd(t_cmd *cmd)
 {
 	char	*path_start;
 	char	*path_join_half;
 	char	*path_join;
-	
+	char	*path;
+
+	path = cmd->arg;
 	if (path[0] == '/')
 	{
 		if (chdir(path) == -1)

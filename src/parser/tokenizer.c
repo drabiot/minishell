@@ -6,12 +6,11 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/26 16:07:50 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/05/30 05:19:02 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/libft.h"
 
 static t_bool	is_white_space(char *str, int i)
 {
@@ -92,16 +91,27 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	}
 	
 	ft_expand(&start, t_envp);
-	//t_cmd test
-	t_glob *tmp;
+	// t_cmd *test;
+	// t_cmd *tmp;
 
-	ft_export(&t_envp, start);
-	tmp = t_envp;
-	while (tmp)
-	{
-		printf("name : %s,equal : %i,content : %s.\n", tmp->name, tmp->equal, tmp->content);
-		tmp = tmp->next;
-	}
+	// printf("%i|\n", start->next->type);
+	// test = ft_cut_cmd(start);
+	// tmp = test;
+	// while (tmp)
+	// {
+	// 	printf("arg :%s, type :%i, index,%i\n", tmp->arg, tmp->type, tmp->index);
+	// 	tmp = tmp->next;
+	// }
+	// ft_lstclear_cmd(&test);
+	ft_execution_main(&t_envp, start);
+	// ft_export(&t_envp, start);
+	// ft_unset(&t_envp, start);
+	// tmp = t_envp;
+	// while (tmp)
+	// {
+	// 	printf("name : %s,equal : %i,content : %s.\n", tmp->name, tmp->equal, tmp->content);
+	// 	tmp = tmp->next;
+	// }
 	// (void)t_envp;
 	ft_lstclear_cmd(&start);
 }
