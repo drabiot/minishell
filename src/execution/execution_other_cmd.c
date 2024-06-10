@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/01 19:52:18 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/08 23:41:12 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	**ft_set_argument_argv(t_cmd *cmd, char *path)
 	
 	tmp = ft_lstlast_cmd(cmd);
 	tmp_index = (int)tmp->index;
-	printf("%i.\n", tmp_index);
+	// printf("%i.\n", tmp_index);
 	return_tab = (char **)malloc((tmp_index + 2) * sizeof (char *));
 	if (!return_tab)
 		return (NULL);
@@ -56,7 +56,6 @@ static char	**ft_set_argument_argv(t_cmd *cmd, char *path)
 		}
 		else
 		{
-			printf("t\n");
 			return_tab[i] = NULL;
 			return(return_tab);
 		}
@@ -117,14 +116,14 @@ static char	**ft_set_char_envp(t_glob **t_envp)
 	return (return_tab);
 }
 
-static	int ft_execute_cmd(int fd, char **paths, char **envp, char ***argvs)
+static	int ft_execute_cmd(char **paths, char **envp, char ***argvs)
 {
 	int	return_value;
 	int	i;
+	// pid_t p;
 
 	return_value = -1;
 	i = 0;
-	(void)fd;
 	while (return_value != 0 && paths[i])
 	{
 		return_value = access(argvs[i][0], X_OK);
@@ -133,18 +132,22 @@ static	int ft_execute_cmd(int fd, char **paths, char **envp, char ***argvs)
 	}
 	if (!paths[i])
 		return (1);
+	// p = fork();
+	// if (p < 0)
+	// 	return (1);
+	// if (p == 0)
 	execve(argvs[i][0], argvs[i], envp);
+	// printf("\n");
 	// printf("fqffg%i\n", return_value);
 	return (return_value);
 }
-int	ft_execute_other_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
+int	ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd)
 {
 	char	**paths;
 	char	**envp;
 	char	***argvs;
 	int	i;
 	// int	j;	
-	(void)fd;
 	paths = ft_get_path(t_envp);
 	envp = ft_set_char_envp(t_envp);
 	argvs = ft_set_argv(cmd, paths);
@@ -172,7 +175,7 @@ int	ft_execute_other_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 	// 	}
 	// 	i++;
 	// }
-	ft_execute_cmd(fd, paths, envp, argvs);
+	ft_execute_cmd(paths, envp, argvs);
 	ft_clear_tab(paths);
 	ft_clear_tab(envp);
 	ft_clear_argvs(argvs);

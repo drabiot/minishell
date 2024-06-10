@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/06/01 18:58:30 by nberduck         ###   ########.fr        #
+#    Updated: 2024/06/09 23:22:34 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,9 @@ SRCS		=		main.c \
 					execution/execution_builtins.c \
 					execution/execution_other_cmd.c \
 					execution/execution_other_cmd_clear.c \
+					execution/execution_pipe.c \
+					execution/execution_here_doc.c \
+					execution/execution_here_doc_utils.c \
 					execution/execution_utils.c
 
 

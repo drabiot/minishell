@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:05:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/20 17:25:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/09 21:41:57 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ typedef char	t_bool;
 
 # define FALSE 0
 # define TRUE 1
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 /* ********************************************************** */
 /*                                                            */
@@ -425,5 +429,19 @@ void	ft_srand(unsigned int seed);
 /*            number between them             */
 /* ****************************************** */
 int		ft_rand(int a, int b);
+
+
+/* ****************************************** */
+/*                get_next_line               */
+/*       Read first line not read in fd       */
+/* ****************************************** */
+char	*get_next_line(int fd);
+char	*ft_substr_gnl(char *s, int start, int len, int clear);
+char	*ft_strjoin_gnl(char *s1, char *s2);
+char	*ft_read_line(int fd);
+char	ft_find_newline(char *last_line);
+char	*ft_div_line(char *current_line, char *last_line, int i);
+char	*ft_find_line(char *current_line, char **last_line, int fd);
+char	*ft_find_readed_line(char **last_line);
 
 #endif //LIBFT_H

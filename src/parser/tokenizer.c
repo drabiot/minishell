@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/30 05:19:02 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:40:49 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 		grab_token(cmd, &token);
 		char c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
-		printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
+		// printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
 		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
 		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
 		cmd->str[token.end + 1] = c;

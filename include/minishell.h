@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/01 18:59:39 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/10 12:04:36 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 typedef struct s_cmd
 {
@@ -53,7 +56,7 @@ void	ft_lstclear_cmd(t_cmd **lst);
 void	ft_lstdelone_cmd(t_cmd *lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
-t_cmd	*ft_lstnmap_cmd(t_cmd *cmd);
+t_cmd	*ft_lstnmap_cmd(t_cmd *cmd, int npipe);
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
 int     ft_find_type(char *arg, t_cmd *prev);
 
@@ -108,10 +111,11 @@ void	tokenizer(t_input *cmd, t_glob *t_envp);
 /*      Prototype for execution fonction      */
 /* ****************************************** */
 int     ft_execution_main(t_glob **t_envp, t_cmd *cmd);
-int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd);
-// int     ft_execute_other_cmd(int fd, t_glob **t_envp, t_cmd *cmd);
-int     ft_execute_other_cmd(int fd, t_glob **t_envp, t_cmd *cmd);
+int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
+int     ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd);
 int     ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd);
+int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
+int     ft_here_doc(t_glob **t_list, t_cmd *cmd);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -123,5 +127,7 @@ int	    ft_tab_len(char	**tab);
 int     ft_glob_len(t_glob *tmp);
 void	ft_clear_tab(char	**tmp);
 void	ft_clear_argvs(char ***argvs);
+
+char	*ft_expand_line(t_glob **t_list, char *line);
 
 #endif //MINISHELL_H

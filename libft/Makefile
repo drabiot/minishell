@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 18:05:50 by tchartie          #+#    #+#              #
-#    Updated: 2024/03/19 15:18:02 by nberduck         ###   ########.fr        #
+#    Updated: 2024/06/09 01:24:55 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,8 @@ SRCS 		= 		ft_isalpha.c \
 					ft_strmapi.c \
 					ft_striteri.c \
 					ft_random.c \
+					get_next_line.c \
+					get_next_line_utils.c
 
 OBJS		=		$(SRCS:.c=.o)
 
