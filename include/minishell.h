@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/18 20:49:16 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 22:31:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int		ft_exit(int fd, t_cmd *cmd);
 int     prompt(t_glob *t_envp);
 char	**lexer(char *input, t_glob *t_envp);
 void	tokenizer(t_input *cmd, t_glob *t_envp);
+void	handle_quote(t_cmd *start);
 
 /* ****************************************** */
 /*                 Execution                  */

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
+#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/06/18 19:35:07 by nberduck         ###   ########.fr        #
+#    Updated: 2024/06/18 22:31:00 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS		=		main.c \
 					parser/prompt.c \
 					parser/lexer.c \
 					parser/tokenizer.c \
+					parser/quote_manager.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \

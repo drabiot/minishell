@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 19:36:38 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 22:33:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	ft_have_expand(char *arg)
 	i = 0;
 	while (arg[i])
 	{
-		if (arg[i] == '$')
+		if (arg[i] == '$' && arg[i + 1] && arg[i + 1] != ' ')
 			return (1);
 		i++;
 	}

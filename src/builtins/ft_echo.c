@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:22:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 19:06:03 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 22:34:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	ft_echo(int fd, t_cmd *cmd)
 	while (tmp)
 	{
 		ft_putstr_fd(tmp->arg, fd);
+		if (tmp->next)
+			ft_putstr_fd(" ", fd);
 		tmp = tmp->next;
 	}
 	//For option -n
