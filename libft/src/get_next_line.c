@@ -5,116 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 15:48:25 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/09 21:40:23 by nberduck         ###   ########.fr       */
+/*   Created: 2023/11/14 14:08:18 by tchartie          #+#    #+#             */
+/*   Updated: 2024/06/13 19:58:46 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-char	*ft_read_line(int fd)
-{
-	int		bytes;
-	char	*buff;
+/*
+ * Take a file descriptor & copy the content to a stash
+ */
 
-	buff = malloc(BUFFER_SIZE);
+char	*read_buff(int fd, char *stash)
+{
+	char	*buff;
+	int		reading;
+
+	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	reading = 1;
 	if (!buff)
 		return (NULL);
-	bytes = read(fd, buff, BUFFER_SIZE);
-	if (!bytes || bytes == -1)
+	while (!new_line(stash) && reading != 0)
 	{
-		free(buff);
-		return (NULL);
+		reading = (int)read(fd, buff, BUFFER_SIZE);
+		if ((!stash && reading == 0) || reading == -1)
+		{
+			free(buff);
+			return (NULL);
+		}
+		buff[reading] = '\0';
+		stash = ft_strjoin(stash, buff);
 	}
-	buff = ft_substr_gnl(buff, 0, bytes, 1);
-	return (buff);
+	free(buff);
+	return (stash);
 }
 
-char	*ft_div_line(char *current_line, char *last_line, int i)
-{
-	if (current_line[i + 1])
-		last_line = ft_substr_gnl(current_line, i + 1,
-				ft_strlen(&current_line[i + 1]), 0);
-	else if (current_line && last_line)
-	{
-		free(last_line);
-		last_line = NULL;
-	}
-	return (last_line);
-}
+/*
+ * Take the stash and copy its content until he detect a newline
+ */
 
-char	*ft_find_line(char *current_line, char **last_line, int fd)
+char	*add_to_line(char *stash)
 {
-	char	*line;
 	int		i;
+	char	*line;
 
 	i = 0;
-	while (current_line[i])
-	{
-		if (current_line[i] == '\n')
-		{
-			*last_line = ft_div_line(current_line, *last_line, i);
-			current_line = ft_substr_gnl(current_line, 0, i + 1, 1);
-			break ;
-		}
-		if (current_line[i + 1] == 0)
-		{
-			line = ft_read_line(fd);
-			if (!line)
-				break ;
-			current_line = ft_strjoin_gnl(current_line, line);
-		}
+	if (!stash || !stash[0])
+		return (NULL);
+	while (stash[i] && stash[i] != '\n')
 		i++;
-	}
-	return (current_line);
+	if (stash[i] == '\n')
+		i++;
+	line = malloc(sizeof(char) * (i + 1));
+	if (!line)
+		return (NULL);
+	line = ft_strcpy(line, stash, 0);
+	return (line);
 }
 
-char	*ft_find_readed_line(char **last_line)
+/*
+ * clean the stash of what he added in add_to_line()
+ */
+
+char	*clean_stash(char *stash)
 {
-	int		len_last_line;
-	char	*current_line;
+	int		i;
+	int		len;
+	char	*tmp;
 
-	if (last_line && ft_find_newline(*last_line) != -1)
+	i = 0;
+	if (!stash || !stash[0])
 	{
-		len_last_line = ft_find_newline(*last_line);
-		current_line = ft_substr_gnl(*last_line, 0, len_last_line + 1, 0);
-		if (*last_line && last_line[0][len_last_line + 1])
-			*last_line = ft_substr_gnl(*last_line, len_last_line + 1,
-					ft_strlen(&last_line[0][len_last_line + 1]), 1);
-		else
-		{
-			free(*last_line);
-			*last_line = NULL;
-		}
-		return (current_line);
+		free(stash);
+		return (NULL);
 	}
-	return (NULL);
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	len = ft_strlen(stash) - i;
+	tmp = malloc(sizeof(char) * (len + 1));
+	if (!tmp)
+		return (NULL);
+	tmp = ft_strcpy(tmp, &stash[i], 1);
+	free(stash);
+	return (tmp);
 }
+
+/*
+ * Take a file descriptor & return the line we wanted
+ */
 
 char	*get_next_line(int fd)
 {
-	static char	*last_line = NULL;
-	char		*current_line;
+	static char	*stash[1024];
+	char		*line;
 
-	if (fd < 0 || fd > 1024 || BUFFER_SIZE < 1)
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	current_line = ft_find_readed_line(&last_line);
-	if (current_line)
-		return (current_line);
-	current_line = ft_read_line(fd);
-	if (!current_line && !last_line)
+	stash[fd] = read_buff(fd, stash[fd]);
+	line = add_to_line(stash[fd]);
+	stash[fd] = clean_stash(stash[fd]);
+	if (!stash[fd] && !line)
+	{
+		free(stash[fd]);
 		return (NULL);
-	if (!current_line && last_line)
-	{
-		current_line = ft_substr_gnl(last_line, 0, ft_strlen(last_line), 1);
-		last_line = NULL;
-		return (current_line);
 	}
-	if (last_line && last_line)
-	{
-		current_line = ft_strjoin_gnl(last_line, current_line);
-		last_line = NULL;
-	}
-	current_line = ft_find_line(current_line, &last_line, fd);
-	return (current_line);
+	return (line);
 }

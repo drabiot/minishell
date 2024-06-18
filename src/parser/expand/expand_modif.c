@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/23 10:10:22 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:36:09 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_last_return(void)
 	return (tmp);	
 }
 
-static void ft_expand_modif(t_cmd *main, t_cmd *list, char *content, int start, int end)
+static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
 	char	*end_part;
@@ -45,36 +45,26 @@ static void ft_expand_modif(t_cmd *main, t_cmd *list, char *content, int start, 
 		free(content);
 		free(with_content);
 	}
-	expand_split(main, list, full);
+	list->arg = full;
 }
 
 char	*ft_getenv(char *name, t_glob *t_envp, int i)
 {
 	t_glob	*tmp;
-	char	*name_var;
 	char	*name_tmp;
-	char	*content;
 
 	tmp = t_envp;
 	while (tmp)
 	{
 		i = 0;
-		name_tmp = (char *)tmp->content;
-		while (name_tmp && name_tmp[i] != '=')
-			i++;
-		name_var = ft_substr(name_tmp, 0, i);
-		if (!ft_strcmp(name_var, name))
-		{
-			content = ft_substr(name_tmp, i + 1, ft_strlen(name_tmp) - i);
-			free(name_var);
-			return (content);
-		}
-		free(name_var);
+		name_tmp = (char *)tmp->name;
+		if (!ft_strcmp(name_tmp, name))
+			return (tmp->content);
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
-void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_glob *t_envp)
+void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 {
 	int		i;
 	int		start;
@@ -99,6 +89,7 @@ void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_glob *t_envp)
 	}
 	name = ft_substr(list->arg, start, end - start + 2);
 	content = ft_getenv(name, t_envp, 0);
+	// printf("%s\n", content);
 	free(name);
-	ft_expand_modif(main, list, content, start, end);
+	ft_expand_modif(list, content, start, end);
 }

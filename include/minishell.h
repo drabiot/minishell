@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/10 12:04:36 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:36:18 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ int     ft_name_len(char *tmp);
 /* ****************************************** */
 void    ft_expand(t_cmd **list, t_glob *t_envp);
 int     ft_verif_main(char *arg);
-void	ft_expand_modif_main(t_cmd *main, t_cmd *list, t_glob *t_envp);
-void	expand_split(t_cmd *list, t_cmd *before, char *content);
+void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp);
 t_cmd	*expand_tokenizer(t_input *cmd);
 
 /* ****************************************** */
@@ -111,11 +110,14 @@ void	tokenizer(t_input *cmd, t_glob *t_envp);
 /*      Prototype for execution fonction      */
 /* ****************************************** */
 int     ft_execution_main(t_glob **t_envp, t_cmd *cmd);
-int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
+// int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
 int     ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd);
 int     ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd);
-int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
+// int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
 int     ft_here_doc(t_glob **t_list, t_cmd *cmd);
+int     ft_append_redir(t_glob **t_envp, t_cmd *cmd);
+int	    ft_trunc_redir(t_glob **t_envp, t_cmd *cmd);
+int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -129,5 +131,16 @@ void	ft_clear_tab(char	**tmp);
 void	ft_clear_argvs(char ***argvs);
 
 char	*ft_expand_line(t_glob **t_list, char *line);
+
+t_bool	is_white_space(char *str, int i);
+t_bool	is_special_char(char *str, int i);
+t_bool	is_redirection(t_input *cmd, t_token *token);
+void	grab_token(t_input *cmd, t_token *token);
+
+int     have_call_function(char *line);
+char	*create_file(int *tmp_fd);
+char	*ft_call_function_main(char *line, t_glob **t_envp);
+int	have_call_function(char *line);
+int	ft_get_end_call_function(char *line);
 
 #endif //MINISHELL_H

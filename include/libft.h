@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 18:05:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/09 21:41:57 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:01:09 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,5 +443,25 @@ char	ft_find_newline(char *last_line);
 char	*ft_div_line(char *current_line, char *last_line, int i);
 char	*ft_find_line(char *current_line, char **last_line, int fd);
 char	*ft_find_readed_line(char **last_line);
+
+/* ********************************************************** */
+/*                                                            */
+/*                    get_next_line_utils                     */
+/*                                                            */
+/* ********************************************************** */
+
+/* ****************************************** */
+/*                  new_line                  */
+/*   See if there a newline into the stash    */
+/* ****************************************** */
+
+int		new_line(char *str);
+
+/* ****************************************** */
+/*                 ft_strcpy                  */
+/*         Take a string and copy it          */
+/* ****************************************** */
+
+char	*ft_strcpy(char *dst, const char *src, int check_nl);
 
 #endif //LIBFT_H

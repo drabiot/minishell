@@ -6,27 +6,27 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/02 17:40:49 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:24:30 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static t_bool	is_white_space(char *str, int i)
+t_bool	is_white_space(char *str, int i)
 {
 	if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		return (1);
 	return (0);
 }
 
-static t_bool	is_special_char(char *str, int i)
+t_bool	is_special_char(char *str, int i)
 {
 	if (str[i] == '|' || str[i] == '<' || str[i] == '>')
 		return (1);
 	return (0);
 }
 
-static t_bool	is_redirection(t_input *cmd, t_token *token)
+t_bool	is_redirection(t_input *cmd, t_token *token)
 {
 	char	c;
 
@@ -39,7 +39,7 @@ static t_bool	is_redirection(t_input *cmd, t_token *token)
 	return (1);
 }
 
-static void	grab_token(t_input *cmd, t_token *token)
+void	grab_token(t_input *cmd, t_token *token)
 {
 	char	quote;
 
@@ -74,6 +74,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	t_token				token;
 	t_cmd				*start;
 	char				*arg;
+	// t_cmd 				*tmp;
 
 	start = NULL;
 	token = (t_token){0};
@@ -92,11 +93,16 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	
 	ft_expand(&start, t_envp);
 	// t_cmd *test;
-	// t_cmd *tmp;
+	// tmp = t_envp;
+	// while (tmp)
+	// {
+	// 	printf("name :%s, content:%s.\n", tmp->name, tmp->content);
+	// 	tmp = tmp->next;
+	// }
 
 	// printf("%i|\n", start->next->type);
 	// test = ft_cut_cmd(start);
-	// tmp = test;
+	// tmp = start;
 	// while (tmp)
 	// {
 	// 	printf("arg :%s, type :%i, index,%i\n", tmp->arg, tmp->type, tmp->index);

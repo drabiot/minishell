@@ -5,74 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 15:48:21 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/09 21:40:07 by nberduck         ###   ########.fr       */
+/*   Created: 2023/11/14 14:08:29 by tchartie          #+#    #+#             */
+/*   Updated: 2024/06/13 20:02:01 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-char	*ft_substr_gnl(char *s, int start, int len, int clear)
-{
-	char	*finalstr;
-	int		i;
+/*
+ * See if there a newline in the string
+ */
 
-	if (!s)
-		return (NULL);
-	finalstr = malloc((len + 1) * sizeof(char));
-	if (!finalstr)
-		return (NULL);
-	i = 0;
-	while (i < len && s[start + i])
-	{
-		finalstr[i] = s[start + i];
-		i++;
-	}
-	finalstr[i] = 0;
-	if (clear == 1)
-		free(s);
-	return (finalstr);
-}
-
-char	*ft_strjoin_gnl(char *s1, char *s2)
-{
-	char			*finalstr;
-	unsigned int	finallen;
-	unsigned int	i;
-	unsigned int	j;
-
-	if (!s1 || !s2)
-	{
-		free(s1);
-		free(s2);
-		return (NULL);
-	}
-	i = -1;
-	j = -1;
-	finallen = ft_strlen(s1) + ft_strlen(s2);
-	finalstr = malloc((finallen + 1) * sizeof(char));
-	if (!finalstr)
-		return (NULL);
-	while (s1[++i])
-		finalstr[i] = s1[i];
-	while (s2[++j])
-		finalstr[i + j] = s2[j];
-	finalstr[i + j] = 0;
-	free(s1);
-	free(s2);
-	return (finalstr);
-}
-
-char	ft_find_newline(char *last_line)
+int	new_line(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (last_line && last_line[i])
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		if (last_line[i] == '\n')
+		if (str[i] == '\n')
 			return (i);
 		i++;
 	}
-	return (-1);
+	return (0);
+}
+
+
+/*
+ * If check_nl == 0 : Copy the source until he see a newline to destination
+ * If check_nl != 0 : Copy the source to destination
+ */
+
+char	*ft_strcpy(char *dst, const char *src, int check_nl)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (check_nl == 0)
+	{
+		while (src[i] != '\n' && src[i])
+			dst[j++] = src[i++];
+		if (src[i] == '\n')
+			dst[j++] = src[i++];
+	}
+	else if (check_nl != 0)
+	{
+		while (src[i])
+			dst[j++] = src[i++];
+	}
+	dst[i] = '\0';
+	return (dst);
 }

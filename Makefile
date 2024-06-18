@@ -6,7 +6,7 @@
 #    By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/06/09 23:22:34 by nberduck         ###   ########.fr        #
+#    Updated: 2024/06/18 19:35:07 by nberduck         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRCS		=		main.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \
-					parser/expand/expand_split.c \
 					parser/expand/expand_tokenizer.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \
@@ -84,6 +83,8 @@ SRCS		=		main.c \
 					execution/execution_pipe.c \
 					execution/execution_here_doc.c \
 					execution/execution_here_doc_utils.c \
+					execution/execution_call_function.c \
+					execution/execution_redir.c \
 					execution/execution_utils.c
 
 

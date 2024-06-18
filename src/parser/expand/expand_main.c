@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/23 10:10:01 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:36:38 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void ft_expand(t_cmd **list, t_glob *t_envp)
 			if (ft_have_expand(tmp->arg) && !ft_verif_main(tmp->arg))
 			{
 				t_next->next = tmp->next;
-				ft_expand_modif_main(*list, tmp, t_envp);
+				ft_expand_modif_main(tmp, t_envp);
 				tmp = t_next;
 			}
 			else

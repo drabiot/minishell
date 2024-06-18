@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 00:14:12 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/10 12:07:39 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:45:30 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static char	*generate_random_file(char *tmp_file)
 	return (final_file);
 }
 
-static char	*create_file(int *tmp_fd)
+char	*create_file(int *tmp_fd)
 {
 	char	*tmp_file;
 
 	tmp_file = ft_strdup("tmp");
 	if (!tmp_file)
 		return (NULL);
-	*tmp_fd = open(tmp_file, O_EXCL | O_CREAT, S_IRWXU);
+	*tmp_fd = open(tmp_file, O_EXCL | O_WRONLY | O_CREAT, S_IRWXU);
 	while (*tmp_fd == -1)
 	{
 		tmp_file = generate_random_file(tmp_file);
@@ -53,7 +53,10 @@ static void	set_infile(t_glob **t_envp, int *tmp_fd, char *limiter, int have_quo
 	len_limiter = ft_strlen(limiter);
 	ft_putstr_fd("> ", STDOUT_FILENO);
 	line = get_next_line(STDIN_FILENO);
-	if (have_quote)
+	// printf("%s\n", line);
+	if (have_call_function(line) != -1)
+		line = ft_call_function_main(line, t_envp);
+	if (!have_quote)
 		line = ft_expand_line(t_envp , line);
 	while (line && ft_strncmp(line, limiter, len_limiter + 1))
 	{
@@ -61,7 +64,9 @@ static void	set_infile(t_glob **t_envp, int *tmp_fd, char *limiter, int have_quo
 		free(line);
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
-		if (have_quote)
+		if (have_call_function(line) != -1)
+			line = ft_call_function_main(line, t_envp);
+		if (!have_quote)
 			line = ft_expand_line(t_envp , line);
 	}
 	if (line)
@@ -87,6 +92,15 @@ static char	*ft_delete_quote(char *arg)
 	line[i - 1] = '\0';
 	return (line);
 }
+
+static void ft_modif_cmd(t_cmd **cmd)
+{
+	t_cmd *next;
+	
+	next = (*cmd)->next->next;
+	ft_lstdelone_cmd((*cmd)->next);
+	(*cmd)->next = next;
+}
 int	ft_here_doc(t_glob **t_envp, t_cmd *cmd)
 {
 	int		tmp_fd;
@@ -99,6 +113,8 @@ int	ft_here_doc(t_glob **t_envp, t_cmd *cmd)
 	if (!tmp_name)
 		return (1);
 	have_quote = 0;
+	ft_modif_cmd(&cmd);
+	printf("%s\n", cmd->next->arg);
 	if (cmd->next->arg[0] == '"' || cmd->next->arg[0] == '\'')
 	{
 		have_quote = 1;
@@ -108,17 +124,29 @@ int	ft_here_doc(t_glob **t_envp, t_cmd *cmd)
 	}
 	limiter = ft_strjoin(cmd->next->arg, "\n");
 	set_infile(t_envp, &tmp_fd, limiter, have_quote);
-	tmp_fd = open(tmp_name, O_RDONLY);
-	line = get_next_line(tmp_fd);
-	while (line)
-	{
-		free(cmd->next->arg);
-		cmd->next->arg = line;
-		ft_start_execution(1, t_envp, cmd, 1);
-		free(line);
-		line = get_next_line(tmp_fd);
-	}
-	close(tmp_fd);
+	// free(cmd->next->arg);
+	cmd->next->arg = ft_strdup(tmp_name);
+	// printf("%s, %s, %p", cmd->arg, cmd->next->arg, cmd->next->next);
+	// t_cmd *tmp;
+
+	// tmp = cmd;
+	// while (tmp)
+	// {
+	// 	printf("%s, %p\n", tmp->arg, tmp->next);
+	// 	tmp = tmp->next;
+	// }
+	ft_execution_cmd(1, t_envp, cmd);
+	// tmp_fd = open(tmp_name, O_RDONLY);
+	// line = get_next_line(tmp_fd);
+	// while (line)
+	// {
+	// 	free(cmd->next->arg);
+	// 	cmd->next->arg = line;
+	// 	ft_start_execution(1, t_envp, cmd, 1);
+	// 	free(line);
+	// 	line = get_next_line(tmp_fd);
+	// }
+	// close(tmp_fd);
 	unlink(tmp_name);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/08 23:41:12 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:03:34 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static	int ft_execute_cmd(char **paths, char **envp, char ***argvs)
 {
 	int	return_value;
 	int	i;
-	// pid_t p;
+	pid_t pid;
 
 	return_value = -1;
 	i = 0;
@@ -132,11 +132,14 @@ static	int ft_execute_cmd(char **paths, char **envp, char ***argvs)
 	}
 	if (!paths[i])
 		return (1);
-	// p = fork();
-	// if (p < 0)
-	// 	return (1);
-	// if (p == 0)
-	execve(argvs[i][0], argvs[i], envp);
+	pid = fork();
+	if (pid < 0)
+		return (1);
+	if (pid == 0)
+	{
+		execve(argvs[i][0], argvs[i], envp);
+	}
+	waitpid(pid, NULL, 0);
 	// printf("\n");
 	// printf("fqffg%i\n", return_value);
 	return (return_value);
