@@ -103,7 +103,7 @@ makelibft :
 
 $(NAME) :			$(OBJS_F) | makelibft
 					@$(CC) $(OBJS_F) -o $(NAME) -Llibft -lft -lreadline -I$(INCLUDE_DIR)
-					@echo "$(GREEN)Pipex successfully compiled! $(BASE_COLOR)"
+					@echo "$(GREEN)Minishell successfully compiled! $(BASE_COLOR)"
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCLUDE)
 					@mkdir -p $(OBJS_DIR)

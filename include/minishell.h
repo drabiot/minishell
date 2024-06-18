@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/18 19:36:18 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:49:16 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,17 @@ t_cmd	*ft_lstnmap_cmd(t_cmd *cmd, int npipe);
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
 int     ft_find_type(char *arg, t_cmd *prev);
 
-/* ****************************************** */
-/*                Global                	  */
-/*    Prototype for Global's utils fonction   */
-/* ****************************************** */
+t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
+int     ft_find_type(char *arg, t_cmd *prev);
+
 void	ft_lstadd_back_glob(t_glob **lst, t_glob *new);
 void	ft_lstadd_front_glob(t_glob **lst, t_glob *new);
 void	ft_lstclear_glob(t_glob **lst);
 void	ft_lstdelone_glob(t_glob *lst);
 t_glob	*ft_lstlast_glob(t_glob *lst);
-t_glob	*ft_lstnew_glob(char *arg, int type, char *content);
+t_glob	*ft_lstnew_glob(char *name, int equal, char *content);
+t_glob  *ft_globsolo_creation(char *arg);
 void   ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new);
-t_glob  *ft_envp_creation(char **envp);
-t_glob  *ft_globsolo_creation(char *envp);
 int     ft_name_len(char *tmp);
 
 /* ****************************************** */

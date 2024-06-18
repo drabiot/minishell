@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/29 22:57:12 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:42:17 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	**lexer(char *input, t_glob *t_envp)
 {
 	t_input	cmd;
+	
 
 	cmd = (t_input){0};
 	cmd.str = input;
