@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/18 22:32:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/19 19:59:12 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 		cmd->i++;
 		index++;
 	}
-	handle_quote(start);
 	ft_expand(&start, t_envp);
+	handle_quote(start);
 	// t_cmd *test;
 	// tmp = t_envp;
 	// while (tmp)

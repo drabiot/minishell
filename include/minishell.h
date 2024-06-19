@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/18 22:31:45 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/19 20:05:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_cwd
 {
 	char	*relative_path;
 	char	*absolute_path;
+    int     return_code;
 }			t_cwd;
 
 typedef struct s_glob
@@ -43,7 +44,8 @@ typedef struct s_glob
     char                *name;
     int                 equal;
     char                *content;
-    struct s_glob    *next;
+    struct s_glob		*next;
+    struct s_cwd		*utils;
 }                       t_glob;
 
 /* ****************************************** */
