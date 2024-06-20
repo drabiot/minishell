@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/19 22:43:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:25:08 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
 	char	*with_content;
 	char	*full;
 	
+	with_content = NULL;
 	first_part = ft_substr(list->arg, 0, start - 1);
 	end_part = ft_substr(list->arg, end + 2, ft_strlen(list->arg) - end);
 	if (!content)
@@ -38,14 +39,14 @@ static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
 	}
 	free(list->arg);
 	list->arg = full;
-	free(first_part);
-	free(end_part);
+	if (first_part)
+		free(first_part);
+	if (end_part)
+		free(end_part);
 	if (content)
-	{
 		free(content);
+	if (with_content)
 		free(with_content);
-	}
-	list->arg = full;
 }
 
 char	*ft_getenv(char *name, t_glob *t_envp, int i)
@@ -94,5 +95,5 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 		content = ft_getenv(name, t_envp, 0);
 	//printf("name: %s, content: %s\n", name, content);
 	free(name);
-	ft_expand_modif(list, content, start, end);
+	ft_expand_modif(list, ft_substr(content, 0, ft_strlen(content)), start, end);
 }

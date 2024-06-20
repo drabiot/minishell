@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/19 19:59:12 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:58:31 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	t_token				token;
 	t_cmd				*start;
 	char				*arg;
-	// t_cmd 				*tmp;
 
 	start = NULL;
 	token = (t_token){0};
@@ -110,6 +109,8 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	// }
 	// ft_lstclear_cmd(&test);
 	ft_execution_main(&t_envp, start);
+	// if (t_envp->utils->return_code)
+	// 	exit (t_envp->utils->return_code);
 	// ft_export(&t_envp, start);
 	// ft_unset(&t_envp, start);
 	// tmp = t_envp;
@@ -119,5 +120,6 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	// 	tmp = tmp->next;
 	// }
 	// (void)t_envp;
-	ft_lstclear_cmd(&start);
+	//if (start)
+	//ft_lstclear_cmd(&start);
 }

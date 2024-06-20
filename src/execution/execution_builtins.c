@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:50:05 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/19 19:59:52 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:47:15 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd)
 	return_value = 0;
 	if (ft_strcmp(cmd->arg, "cd") == 0)
 	{
-		return_value = ft_cd(cmd);
+		return_value = ft_cd(cmd, t_envp);
 		return (return_value);
 	}
 	if (ft_strcmp(cmd->arg, "echo") == 0)
@@ -57,7 +57,7 @@ int	ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd)
 	}
 	if (ft_strcmp(cmd->arg, "exit") == 0)
 	{
-		return_value = ft_exit(fd, cmd); // Have to do exit
+		return_value = ft_exit(fd, cmd, t_envp); // Have to do exit
 		return (return_value);
 	}
 	return (ft_find_builtins_part2(fd, t_envp, cmd));

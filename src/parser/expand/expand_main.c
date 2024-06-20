@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/19 22:30:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:00:54 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void ft_expand(t_cmd **list, t_glob *t_envp)
 			}
 			if (!(ft_have_expand(tmp->arg, tmp, t_envp) && !ft_verif_main(tmp->arg)))
 				tmp = tmp->next;
-			tmp = t_next;
+			else
+				tmp = t_next;
 		}
 		else
 			tmp = tmp->next;

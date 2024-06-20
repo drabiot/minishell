@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/08 22:40:09 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:01:13 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,10 @@ int main(int argc, char **argv, char **envp)
 {
    t_glob *t_envp;
    int		exit;
+   t_cwd		path;
+
+	path = (t_cwd){0};
+	path.return_code = 0;
    // int  ret;
 
    // (void)argc;
@@ -141,6 +145,7 @@ int main(int argc, char **argv, char **envp)
    (void)argv;
 
    t_envp = ft_envp_creation(envp);
+   add_glob_utils(t_envp, &path);
    // ft_envp_print(t_envp);
    // ft_lstclear(&t_envp, free);
    

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/19 20:08:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:36:40 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 	path->absolute_path = ft_strjoin("~/", path->relative_path + i);
 }*/
 
-static void	add_glob_utils(t_glob *t_envp, t_cwd *utils)
+void	add_glob_utils(t_glob *t_envp, t_cwd *utils)
 {
 	t_glob	*cpy;
 
@@ -58,17 +58,13 @@ int	prompt(t_glob *t_envp)
 {
 	char		*input;
 	char		**arg;
-	t_cwd		path;
-
-	path = (t_cwd){0};
-	path.return_code = 0;
-	add_glob_utils(t_envp, &path);
+	
 	//create_path(&path, t_envp);
 	//printf("\x1b[0;95m%s ", path.absolute_path);
 	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
 	//free(path.absolute_path);
-	if (!(ft_strncmp(input, "exit", 4)))
-		return (0);
+	// if (!(ft_strncmp(input, "exit", 4)))
+	// 	return (0);
 	add_history(input);
 	arg = lexer(input, t_envp);
 	return (1);

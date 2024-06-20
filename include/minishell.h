@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/19 20:05:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:47:10 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int		ft_env(int fd, t_glob **envp);
 int		ft_unset(t_glob **envp, t_cmd *args);
 int		ft_export(int fd, t_glob **t_envp, t_cmd *args);
 int     ft_check_quote_and_delete(t_cmd **t_args);
-int		ft_cd(t_cmd *cmd);
-int		ft_exit(int fd, t_cmd *cmd);
+int		ft_cd(t_cmd *cmd, t_glob **t_envp);
+int		ft_exit(int fd, t_cmd *cmd, t_glob **t_envp);
 
 /* ****************************************** */
 /*                  Parser                    */
@@ -105,6 +105,7 @@ int     prompt(t_glob *t_envp);
 char	**lexer(char *input, t_glob *t_envp);
 void	tokenizer(t_input *cmd, t_glob *t_envp);
 void	handle_quote(t_cmd *start);
+void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 
 /* ****************************************** */
 /*                 Execution                  */
