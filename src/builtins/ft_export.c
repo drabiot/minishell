@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/20 20:12:59 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:26:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static int	ft_verif_args(int fd, t_cmd *args)
 	unsigned int	i;
 	(void)fd;
 	// printf("%s\n", args->arg);
-	if (args->arg[0]  && args->arg[0] == '=')
+	if (!args)
+		return (1);
+	if (args->arg[0] && args->arg[0] == '=')
 	{
 		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
@@ -65,18 +67,18 @@ static void	ft_env_print(int fd, t_glob *t_envp)
    }
 }
 
-int	ft_export(int fd, t_glob **t_envp, t_cmd *args)
+int	ft_export(int fd, t_glob *t_envp, t_cmd *args)
 {
 	t_cmd	*curr;
 	t_glob	*tmp;
 	if (!args->next)
 	{
-		ft_env_print(fd, *t_envp);
+		ft_env_print(fd, t_envp);
 		return(0);
 	}
 	while (args)
 	{
-		ft_expand(&args, *t_envp);
+		ft_expand(&args, t_envp);
 		if (!ft_verif_args(fd, args->next))
 		{
 			if (ft_check_quote_and_delete(&args))
@@ -84,14 +86,15 @@ int	ft_export(int fd, t_glob **t_envp, t_cmd *args)
 			curr = args;
 			while (curr)
 			{
-				tmp = ft_globsolo_creation(args->arg);
-				ft_lstadd_back_alpha_envp(t_envp, tmp);
+				tmp = ft_globsolo_creation(curr->arg);
+				// printf("name: %s, equal: %d, content: %s\n", tmp->name, tmp->equal, tmp->content);
+				ft_lstadd_back_alpha_envp(&t_envp, tmp);
 			curr = curr->next;
 			}
 		}
 		else
 		{
-			(*t_envp)->utils->return_code = 1;
+			t_envp->utils->return_code = 1;
 			return (1);
 		}
 		args = args->next;

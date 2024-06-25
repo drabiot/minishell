@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/20 20:29:24 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 18:56:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_cd(t_cmd *cmd, t_glob **t_envp)
 		}
 		return (0);
 	}
-	path_start = ft_pwd();
+	path_start = getcwd(NULL, 0);
 	path_join_half = ft_strjoin(path_start, "/");
 	path_join = ft_strjoin(path_join_half, path);
 	if (chdir(path_join) == -1)

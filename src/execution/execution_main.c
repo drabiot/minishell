@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/25 11:54:25 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:19:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 	pid_t	pid;
 	int		return_value;
 	
+	return_value = ft_find_builtins_part1(fd, t_envp, cmd);
+	if (return_value != -1)
+		return (return_value);
 	pid = fork();
 	if (pid < 0)
 		return (1);
@@ -52,11 +55,7 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 			else if (return_value == 3)
 				return_value = ft_input_redir(t_envp, cmd);
 			else
-			{	
-				return_value = ft_find_builtins_part1(fd, t_envp, cmd);
-				if (return_value == -1)
-					return_value = ft_execute_other_cmd(t_envp, cmd);
-			}
+				return_value = ft_execute_other_cmd(t_envp, cmd);
 		}
 		return (return_value);
 	}

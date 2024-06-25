@@ -3,32 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:54:39 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/28 18:44:25 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 18:58:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*ft_pwd(void)
+int	ft_pwd(t_glob *t_envp)
 {
-	char *pwd;
-	unsigned int len;
-	
-	len = 10;
-	pwd = malloc(len*sizeof(char));
-	if (!pwd)
-		return (NULL);
-	while (!getcwd(pwd, len))
-	{ 
-		len += 10;
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	printf("%s\n", pwd);
+	if (pwd)
 		free(pwd);
-		pwd = malloc(len*sizeof(char));
-		if (!pwd)
-			return (NULL);
-	}
-	//Caution errno is set to ERANGE in getcwd
-	return (pwd);
+	t_envp->utils->return_code = 0;
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/20 17:25:08 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:34:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 			end = i - 1;
 			i = -1;
 		}
+		if (i == start && list->arg[i] == '?')
+		{
+			end = i - 1;
+			break ;
+		}
 		i++;
 	}
 	name = ft_substr(list->arg, start, end - start + 2);
@@ -93,7 +98,9 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 		content = ft_itoa(t_envp->utils->return_code);
 	else
 		content = ft_getenv(name, t_envp, 0);
-	//printf("name: %s, content: %s\n", name, content);
+	if (!content)
+		content = "";
+	// printf("name: %s, content: %s\n", name, content);
 	free(name);
 	ft_expand_modif(list, ft_substr(content, 0, ft_strlen(content)), start, end);
 }

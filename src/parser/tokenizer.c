@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/20 20:58:31 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:20:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 
 	// printf("%i|\n", start->next->type);
 	// test = ft_cut_cmd(start);
-	// tmp = start;
+	// t_cmd *tmp = start;
 	// while (tmp)
 	// {
 	// 	printf("arg :%s, type :%i, index,%i\n", tmp->arg, tmp->type, tmp->index);

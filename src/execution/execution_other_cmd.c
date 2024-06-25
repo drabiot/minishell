@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_other_cmd.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 19:03:34 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:27:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static char	**ft_set_char_envp(t_glob **t_envp)
 	return (return_tab);
 }
 
-static	int ft_execute_cmd(char **paths, char **envp, char ***argvs)
+static	int ft_execute_cmd(char **paths, char **envp, char ***argvs, t_glob *t_envp)
 {
 	int	return_value;
 	int	i;
@@ -129,6 +129,12 @@ static	int ft_execute_cmd(char **paths, char **envp, char ***argvs)
 		return_value = access(argvs[i][0], X_OK);
 		if (return_value != 0)
 			i++;
+	}
+	if (return_value != 0)
+	{
+		t_envp->utils->return_code = 127;
+		ft_putstr_fd(" command not found\n", 2);
+		return (1);
 	}
 	if (!paths[i])
 		return (1);
@@ -178,7 +184,7 @@ int	ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd)
 	// 	}
 	// 	i++;
 	// }
-	ft_execute_cmd(paths, envp, argvs);
+	ft_execute_cmd(paths, envp, argvs, *t_envp);
 	ft_clear_tab(paths);
 	ft_clear_tab(envp);
 	ft_clear_argvs(argvs);

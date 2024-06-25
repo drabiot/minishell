@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/20 20:01:13 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 22:59:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,21 @@ void   ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
    }
    tmp = *list;
    last = NULL;
+   //printf("name: %s, equal: %d, content: %s\n", new->name, new->equal, new->content);
    while (tmp->next)
    {
-      if (ft_strcmp(tmp->name, new->name) > 0)
-      {
-         if (!last)
-         {
-            *list = new;
-            new->next = tmp;
-            return ;
-         }
-         last->next = new;
-         new->next = tmp;
-         return ;  
-      }
+      // if (ft_strcmp(tmp->name, new->name) != 0)
+      // {
+      //    if (!last)
+      //    {
+      //       *list = new;
+      //       new->next = tmp;
+      //       return ;
+      //    }
+      //    last->next = new;
+      //    new->next = tmp;
+      //    return ;  
+      // }
       if (ft_strcmp(tmp->name, new->name) == 0)
       {
          if (new->equal == 0)
@@ -66,7 +67,13 @@ void   ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
       last = tmp;
       tmp = tmp->next;
    }
-   ft_lstadd_back_glob(list, new);
+   if (new->equal == 1)
+      ft_lstadd_back_glob(list, new);
+   // while ((*list)->next)
+   // {
+   //    *list = (*list)->next;
+   // }
+   // printf("name: %s\n", (*list)->name);
 }
 
 t_glob  *ft_envp_creation(char **envp)

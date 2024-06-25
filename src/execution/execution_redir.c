@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execution_redir.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:11:06 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/25 11:47:55 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 18:42:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_create_file_redir(char *file_name)
+static int	ft_create_file_redir(char *file_name, t_glob *t_envp)
 {
 	int	fd;
 
 	fd = open(file_name, O_WRONLY | O_CREAT, 0777);
-	if (!fd)
+	if (fd < 1)
+	{
+		ft_errno();
+		t_envp->utils->return_code = 1;
 		return (1);
+	}
 	return (fd);
 }
 
@@ -91,7 +95,7 @@ int	ft_append_redir(t_glob **t_envp, t_cmd *cmd)
 		return (1);
 	name = ft_find_name(cmd);
 	file_content = ft_get_file_content(name->arg);
-	fd = ft_create_file_redir(name->arg);
+	fd = ft_create_file_redir(name->arg, *t_envp);
 	if (fd == -1)
 		return (1);
 	ft_clear_redir(&cmd);
@@ -112,7 +116,7 @@ int	ft_trunc_redir(t_glob **t_envp, t_cmd *cmd)
 		return (1);
 	name = ft_find_name(cmd);
 	unlink(name->arg);
-	fd = ft_create_file_redir(name->arg);
+	fd = ft_create_file_redir(name->arg, *t_envp);
 	if (fd == -1)
 		return (1);
 	ft_clear_redir(&cmd);
@@ -144,6 +148,7 @@ int ft_input_redir(t_glob **t_envp, t_cmd *cmd)
 	if(!cmd->next || !cmd->next->next)
 		return (1);
 	t_cmd	*tmp;
+	int		fd;
 
 	tmp = cmd;
 	// while (tmp)
@@ -151,11 +156,18 @@ int ft_input_redir(t_glob **t_envp, t_cmd *cmd)
 	// 	printf("%s\n", tmp->arg);
 	// 	tmp = tmp->next;
 	// }
+	fd = open(tmp->next->arg, O_RDONLY);
+	if (fd < 1)
+	{
+		ft_errno();
+		(*t_envp)->utils->return_code = 1;
+		return (1);
+	}
 	ft_clear_input_redir(&cmd);
 	tmp = cmd;
 	while (tmp)
 	{
-		printf("%s\n", tmp->arg);
+		//printf("%s\n", tmp->arg);
 		tmp = tmp->next;
 	}
 	ft_execute_other_cmd(t_envp, cmd);

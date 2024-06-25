@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/25 11:52:07 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:06:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ t_cmd	*expand_tokenizer(t_input *cmd);
 /*    Prototype for builtins's main fonction  */
 /* ****************************************** */
 int		ft_echo(int fd, t_cmd *cmd);
-char	*ft_pwd(void);
+int     ft_pwd(t_glob *t_envp);
 int		ft_env(int fd, t_glob **envp);
 int		ft_unset(t_glob **envp, t_cmd *args);
-int		ft_export(int fd, t_glob **t_envp, t_cmd *args);
+int		ft_export(int fd, t_glob *t_envp, t_cmd *args);
 int     ft_check_quote_and_delete(t_cmd **t_args);
 int		ft_cd(t_cmd *cmd, t_glob **t_envp);
 int		ft_exit(int fd, t_cmd *cmd, t_glob **t_envp);
