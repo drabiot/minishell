@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:11:06 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 20:37:15 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:47:55 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,45 @@ int	ft_trunc_redir(t_glob **t_envp, t_cmd *cmd)
 	// printf("%s,%s.\n", cmd->arg, cmd->next->arg);
 	ft_execution_cmd(fd, t_envp, cmd);
 	close(fd);
+	return (0);
+}
+
+static void ft_clear_input_redir(t_cmd **cmd)
+{
+	t_cmd	*tmp;
+	
+	tmp = *cmd;
+	while (tmp && tmp->next)
+	{
+		if (tmp->next->type == INPUT)
+		{
+				tmp->next = tmp->next->next;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+	return ;
+}
+
+int ft_input_redir(t_glob **t_envp, t_cmd *cmd)
+{
+	if(!cmd->next || !cmd->next->next)
+		return (1);
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	// while (tmp)
+	// {
+	// 	printf("%s\n", tmp->arg);
+	// 	tmp = tmp->next;
+	// }
+	ft_clear_input_redir(&cmd);
+	tmp = cmd;
+	while (tmp)
+	{
+		printf("%s\n", tmp->arg);
+		tmp = tmp->next;
+	}
+	ft_execute_other_cmd(t_envp, cmd);
 	return (0);
 }

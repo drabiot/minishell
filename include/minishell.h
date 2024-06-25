@@ -6,7 +6,7 @@
 /*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/20 20:47:10 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:52:07 by nberduck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>
 
 typedef struct s_cmd
 {
@@ -119,6 +120,7 @@ int     ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd);
 int     ft_here_doc(t_glob **t_list, t_cmd *cmd);
 int     ft_append_redir(t_glob **t_envp, t_cmd *cmd);
 int	    ft_trunc_redir(t_glob **t_envp, t_cmd *cmd);
+int     ft_input_redir(t_glob **t_envp, t_cmd *cmd);
 int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd);
 
 /* ****************************************** */
@@ -144,5 +146,7 @@ char	*create_file(int *tmp_fd);
 char	*ft_call_function_main(char *line, t_glob **t_envp);
 int	have_call_function(char *line);
 int	ft_get_end_call_function(char *line);
+
+void	ft_errno(void);
 
 #endif //MINISHELL_H
