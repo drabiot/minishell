@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/25 23:19:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:29:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 {
 	pid_t	pid;
 	int		return_value;
+	int		ret;
 	
 	return_value = ft_find_builtins_part1(fd, t_envp, cmd);
 	if (return_value != -1)
@@ -57,9 +58,12 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 			else
 				return_value = ft_execute_other_cmd(t_envp, cmd);
 		}
-		return (return_value);
+		exit(return_value);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &ret, 0);
+	ret = WEXITSTATUS(ret);
+	(*t_envp)->utils->return_code = ret;
+	printf("ret: %d, code: %d\n", ret, (*t_envp)->utils->return_code);
 	return (0);
 }
 

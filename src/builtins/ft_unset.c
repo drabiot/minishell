@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/28 18:44:28 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/26 07:13:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int	ft_unset(t_glob **t_envp, t_cmd *args)
 		ft_find_arg(t_envp, tmp);
 		tmp = tmp->next;
 	}
+	(*t_envp)->utils->return_code = 0;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/25 19:27:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:33:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,14 @@ static char	***ft_set_argv(t_cmd *cmd, char **paths)
 	int		i;
 	int		len;
 	
-	len = ft_tab_len(paths);
+	if (ft_strcmp(cmd->arg, "") == 0)
+		return (NULL);
+	len = ft_tab_len(paths) + 1;
 	return_tab = (char ***)malloc((len + 1) * sizeof(char **));
 	if (!return_tab)
 		return (NULL);
 	i = 0;
-	while (i != len)
+	while (i != len - 1)
 	{
 		path = paths[i];
 		return_tab[i] = ft_set_argument_argv(cmd, path);
@@ -85,7 +87,8 @@ static char	***ft_set_argv(t_cmd *cmd, char **paths)
 			return (NULL); // Have to clear tab here
 		i++;
 	}
-	return_tab[i] = NULL;
+	return_tab[i] = &cmd->arg;
+	return_tab[i + 1] = NULL;
 	return (return_tab);
 }
 
@@ -116,11 +119,41 @@ static char	**ft_set_char_envp(t_glob **t_envp)
 	return (return_tab);
 }
 
-static	int ft_execute_cmd(char **paths, char **envp, char ***argvs, t_glob *t_envp)
+static int	check_dir(char *arg, t_glob *t_envp, char **paths, int size)
 {
-	int	return_value;
 	int	i;
-	pid_t pid;
+
+	i = 0;
+	while (paths[i])
+		i++;
+	if (!arg || i != size)
+	{
+		t_envp->utils->return_code = 0;
+		return (0);
+	}
+	if (arg[0] == '/' || (arg[0] == '.' && arg[1] == '/'))
+	{
+		if (chdir(arg) == 0)
+		{
+			t_envp->utils->return_code = 126;
+			ft_putstr_fd(" Is a directory\n", 2);
+		}
+		else
+		{
+			t_envp->utils->return_code = 127;
+			ft_putstr_fd(" No such file or directory\n", 2);
+		}
+		return (1);
+	}
+	t_envp->utils->return_code = 0;
+	return (0);
+}
+
+static int	ft_execute_cmd(char **paths, char **envp, char ***argvs, t_glob *t_envp)
+{
+	int		return_value;
+	int		i;
+	//pid_t	pid;
 
 	return_value = -1;
 	i = 0;
@@ -130,38 +163,39 @@ static	int ft_execute_cmd(char **paths, char **envp, char ***argvs, t_glob *t_en
 		if (return_value != 0)
 			i++;
 	}
+	if (check_dir(argvs[i][0], t_envp, paths, i) == 1)
+		return (127);
 	if (return_value != 0)
 	{
 		t_envp->utils->return_code = 127;
 		ft_putstr_fd(" command not found\n", 2);
-		return (1);
+		return (127);
 	}
 	if (!paths[i])
 		return (1);
-	pid = fork();
-	if (pid < 0)
-		return (1);
-	if (pid == 0)
-	{
-		execve(argvs[i][0], argvs[i], envp);
-	}
-	waitpid(pid, NULL, 0);
-	// printf("\n");
-	// printf("fqffg%i\n", return_value);
-	return (return_value);
+	//pid = fork();
+	//if (pid < 0)
+	//	return (1);
+	//if (pid == 0)
+	//{
+	execve(argvs[i][0], argvs[i], envp);
+	//}
+	//waitpid(pid, NULL, 0);
+	return (127);
 }
 int	ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd)
 {
 	char	**paths;
 	char	**envp;
 	char	***argvs;
-	int	i;
+	int		ret;
+	//int	i;
 	// int	j;	
 	paths = ft_get_path(t_envp);
 	envp = ft_set_char_envp(t_envp);
 	argvs = ft_set_argv(cmd, paths);
 
-	i = 0;
+	//i = 0;
 	// while (paths[i])
 	// {
 	// 	printf("path[%i]:%s.\n", i, paths[i]);
@@ -184,9 +218,9 @@ int	ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd)
 	// 	}
 	// 	i++;
 	// }
-	ft_execute_cmd(paths, envp, argvs, *t_envp);
+	ret = ft_execute_cmd(paths, envp, argvs, *t_envp);
 	ft_clear_tab(paths);
 	ft_clear_tab(envp);
 	ft_clear_argvs(argvs);
-	return (0);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/25 23:06:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:22:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <unistd.h>
 # include <errno.h>
 
@@ -89,7 +90,7 @@ t_cmd	*expand_tokenizer(t_input *cmd);
 /*                Builtins                	  */
 /*    Prototype for builtins's main fonction  */
 /* ****************************************** */
-int		ft_echo(int fd, t_cmd *cmd);
+int		ft_echo(int fd, t_cmd *cmd, t_glob *t_envp);
 int     ft_pwd(t_glob *t_envp);
 int		ft_env(int fd, t_glob **envp);
 int		ft_unset(t_glob **envp, t_cmd *args);

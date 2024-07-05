@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/20 20:57:15 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/06/26 09:30:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_exit(int fd, t_cmd *cmd, t_glob **t_envp)
 		return (2);
 	}
 	exit = ft_atoi(cmd->next->arg);
-	if (exit > 256)
+	if (exit >= 256)
 		exit %= 256; 
 	if (exit < 0)
 		exit = 256 - (-exit) % 256;
