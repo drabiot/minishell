@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 20:36:39 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/17 11:46:25 by nberduck         ###   ########.fr       */
+/*   Created: 2024/04/16 20:36:39 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/08 16:26:59 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_find_quote(t_cmd *arg)
 	unsigned int	i;
 	int				double_quote;
 	unsigned int	first_quote;
-	
+
 	double_quote = 0;
 	i = 0;
 	while (arg->arg[i])
@@ -50,7 +50,7 @@ static int	ft_find_quote(t_cmd *arg)
 int	ft_check_quote_and_delete(t_cmd **args)
 {
 	t_cmd		*tmp;
-	
+
 	tmp = *args;
 	while (tmp)
 	{

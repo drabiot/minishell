@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 18:21:45 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/27 22:51:40 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:05:25 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 typedef struct s_input
 {
-	char    *str;
-    int     i;
+	char	*str;
+	int		i;
 }			t_input;
 
 typedef struct s_token
 {
-	int     start;
-    int     end;
+	int		start;
+	int		end;
 }			t_token;
 
 #endif //LEXER_H

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/26 08:08:49 by tchartie         ###   ########.fr       */
+/*   Created: 2024/03/28 22:12:56 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/08 16:32:50 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ static int	ft_have_expand(char *arg, t_cmd *tmp, t_glob *t_envp)
 			return (0);
 		}*/
 		if (arg[i] == '$' && arg[i + 1] && (arg[i + 1] != ' '
-			&& arg[i + 1] != '"' && arg[i + 1] != '\''))
+				&& arg[i + 1] != '"' && arg[i + 1] != '\''))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void ft_expand(t_cmd **list, t_glob *t_envp)
+void	ft_expand(t_cmd **list, t_glob *t_envp)
 {
 	t_cmd	*tmp;
 	t_cmd	*t_next;
@@ -45,12 +45,14 @@ void ft_expand(t_cmd **list, t_glob *t_envp)
 		return ;
 	while (tmp)
 	{
-		while (ft_have_expand(tmp->arg, tmp, t_envp) && !ft_verif_main(tmp->arg))
+		while (ft_have_expand(tmp->arg, tmp, t_envp)
+			&& !ft_verif_main(tmp->arg))
 		{
 			t_next->next = tmp->next;
 			ft_expand_modif_main(tmp, t_envp);
 		}
-		if (!(ft_have_expand(tmp->arg, tmp, t_envp) && !ft_verif_main(tmp->arg)))
+		if (!(ft_have_expand(tmp->arg, tmp, t_envp)
+				&& !ft_verif_main(tmp->arg)))
 			tmp = tmp->next;
 		else
 			tmp = t_next;

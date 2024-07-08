@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 17:27:33 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 17:47:48 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/20 17:27:33 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/08 16:28:56 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_cd(char *path)
 	char	*path_start;
 	char	*path_join_half;
 	char	*path_join;
-	
+
 	if (path[0] == '/')
 	{
 		if (chdir(path) == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 14:22:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/04/17 10:52:03 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 14:22:53 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/08 16:30:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_echo(int fd, char *str, int option)
 {
 	int	i;
-	
+
 	if (!str || (option != 1 && option != 0))
 		return (1);
 	i = 0;

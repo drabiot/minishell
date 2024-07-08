@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 15:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/21 15:09:34 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/08 16:12:42 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void ft_delete_arg(t_list **t_envp, unsigned int place)
+static void	ft_delete_arg(t_list **t_envp, unsigned int place)
 {
 	unsigned int	i;
 	t_list			*tmp;
 	t_list			*next_after_clear;
+	char			*tmp_content;
 
-	char *tmp_content;
 	i = 0;
 	tmp = *t_envp;
 	while (i < place - 1)
@@ -33,11 +33,11 @@ static void ft_delete_arg(t_list **t_envp, unsigned int place)
 	tmp->next = next_after_clear;
 }
 
-static void ft_find_arg(t_list **t_envp, t_list *arg)
+static void	ft_find_arg(t_list **t_envp, t_list *arg)
 {
-	t_list *tmp;
+	t_list			*tmp;
 	unsigned int	i;
-	int	place;
+	int				place;
 	char			*tmp_content;
 	char			*arg_content;
 
@@ -65,7 +65,7 @@ int	ft_unset(t_list **t_envp, char **args)
 {
 	t_list	*t_args;
 	t_list	*tmp;
-	
+
 	t_args = split_args(args);
 	if (!t_args)
 		return (1);
