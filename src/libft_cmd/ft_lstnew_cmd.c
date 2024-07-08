@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 14:41:40 by tchartie          #+#    #+#             */
-/*   Updated: 2024/03/28 21:11:53 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:00:52 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_cmd	*ft_lstnew_cmd(char *arg, int type, int index)
 		return (NULL);
 	array->next = NULL;
 	array->arg = arg;
-    array->type = type;
-    array->index = index;
+	array->type = type;
+	array->index = index;
 	return (array);
 }

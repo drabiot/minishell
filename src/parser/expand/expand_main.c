@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 22:12:56 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/29 00:05:53 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/28 22:12:56 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/05 12:02:16 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	ft_have_expand(char *arg)
 	return (0);
 }
 
-void ft_expand(t_cmd **list, t_list *t_envp)
+void	ft_expand(t_cmd **list, t_list *t_envp)
 {
 	t_cmd	*tmp;
 
@@ -36,7 +36,7 @@ void ft_expand(t_cmd **list, t_list *t_envp)
 		if (tmp->type == WORD)
 		{
 			if (ft_have_expand(tmp->arg) && !ft_verif_main(tmp->arg))
-					ft_expand_modif_main(tmp, t_envp);
+				ft_expand_modif_main(tmp, t_envp);
 		}
 		tmp = tmp->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/16 16:52:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:47:39 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		ft_env(char **envp);
 int		ft_unset(t_list **envp, char **args);
 int		ft_export(t_list **t_envp, char **args);
 int		ft_cd(char *path);
-int		ft_exit(int	exit);
+int		ft_exit(int exit);
 
 /* ****************************************** */
 /*                Builtins utils              */
@@ -41,11 +41,11 @@ t_list	*split_args(char **args);
 
 typedef struct s_cmd
 {
-	char            *arg;
-    int             type;
-    unsigned int    index;
-    struct s_cmd    *next;
-}			        t_cmd;
+	char			*arg;
+	int				type;
+	unsigned int	index;
+	struct s_cmd	*next;
+}					t_cmd;
 
 typedef struct s_cwd
 {
@@ -53,7 +53,7 @@ typedef struct s_cwd
 	char	*absolute_path;
 }			t_cwd;
 
-int prompt(t_list *t_envp);
+int		prompt(t_list *t_envp);
 char	**lexer(char *input, t_list *t_envp);
 void	tokenizer(t_input *cmd, t_list *t_envp);
 
@@ -65,10 +65,10 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
 
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
-int     ft_find_type(char *arg, t_cmd *prev);
+int		ft_find_type(char *arg, t_cmd *prev);
 
-void ft_expand(t_cmd **list, t_list *t_envp);
-int ft_verif_main(char *arg);
+void	ft_expand(t_cmd **list, t_list *t_envp);
+int		ft_verif_main(char *arg);
 void	ft_expand_modif_main(t_cmd *list, t_list *t_envp);
 
 #endif //MINISHELL_H

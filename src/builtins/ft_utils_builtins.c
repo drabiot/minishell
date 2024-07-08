@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_builtins.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 16:22:23 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 16:29:49 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/20 16:22:23 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/05 12:58:52 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void ft_tmp_free(char **tmp)
+static void	ft_tmp_free(char **tmp)
 {
 	unsigned int	i;
-	
+
 	i = 0;
 	while (tmp[i])
 	{
@@ -25,7 +25,7 @@ static void ft_tmp_free(char **tmp)
 	free(tmp);
 }
 
-t_list *split_args(char **args)
+t_list	*split_args(char **args)
 {
 	unsigned int	i;
 	unsigned int	j;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 16:19:50 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/20 17:20:35 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/05 12:54:44 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_verif_args(t_list *t_args)
 {
 	unsigned int	i;
 	char			*content;
-	
+
 	while (t_args)
 	{
 		content = (char *)t_args->content;
@@ -29,7 +29,7 @@ static int	ft_verif_args(t_list *t_args)
 		i = 0;
 		while (content[i])
 		{
-			if(!(content[i] >= 'a' && content[i] <= 'z') && !(content[i] >= 'A' && content[i] <= 'Z'))
+			if (!(content[i] >= 'a' && content[i] <= 'z') && !(content[i] >= 'A' && content[i] <= 'Z'))
 			{
 				printf("export: '%s': not a valid identifier\n", content);
 				return (1);
@@ -40,13 +40,13 @@ static int	ft_verif_args(t_list *t_args)
 	}
 	return (0);
 }
+
 static void	ft_env_print(t_list *t_envp)
 {
 	t_list			*tmp;
 	char			*content;
 	unsigned int	i;
 	int				name_end;
-	
 
 	tmp = t_envp;
 	while (tmp)
@@ -64,7 +64,7 @@ static void	ft_env_print(t_list *t_envp)
 		}
 		printf("\"%s\"\n", &content[i + 1]);
 		tmp = tmp->next;
-   }
+	}
 }
 
 int	ft_export(t_list **t_envp, char **args)
@@ -72,6 +72,7 @@ int	ft_export(t_list **t_envp, char **args)
 	t_list	*t_args;
 	t_list	*curr;
 	t_list	*tmp;
+
 	t_args = split_args(args);
 	if (!t_args)
 		ft_env_print(*t_envp);
@@ -82,7 +83,7 @@ int	ft_export(t_list **t_envp, char **args)
 		{
 			tmp = ft_lstnew(ft_strdup(curr->content));
 			ft_lstadd_back(t_envp, tmp);
-		curr = curr->next;
+			curr = curr->next;
 		}
 	}
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/16 16:34:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:48:28 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static void	grab_token(t_input *cmd, t_token *token)
 		return ;
 	while (cmd->str[cmd->i + 1] && (!(is_white_space(cmd->str, cmd->i + 1)
 				|| is_special_char(cmd->str, cmd->i + 1))
-				|| (quote == 0 && (cmd->str[cmd->i] != '\''
-				|| cmd->str[cmd->i] != '"'))))
+			|| (quote == 0 && (cmd->str[cmd->i] != '\''
+					|| cmd->str[cmd->i] != '"'))))
 	{
 		quote = cmd->str[cmd->i];
 		if (quote == '\'' || quote == '"')
@@ -81,20 +81,18 @@ void	tokenizer(t_input *cmd, t_list *t_envp)
 	while (cmd->str[cmd->i])
 	{
 		grab_token(cmd, &token);
-		char c = cmd->str[token.end + 1];
+		char	c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
 		printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
-		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
+		arg = ft_substr(cmd->str, token.start, token.end - token.start + 1);
 		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
 		index++;
 	}
-	
 	ft_expand(&start, t_envp);
 	//t_cmd test
-	t_cmd *tmp;
-
+	t_cmd	*tmp;
 	printf("\n\n");
 	tmp = start;
 	while (tmp)

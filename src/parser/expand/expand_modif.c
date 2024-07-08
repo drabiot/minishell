@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 22:50:01 by nberduck          #+#    #+#             */
-/*   Updated: 2024/03/29 00:16:35 by nberduck         ###   ########.fr       */
+/*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/05 12:07:12 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static void ft_expand_modif(t_cmd *list, char *content, int start, int end)
+static void	ft_expand_modif(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
 	char	*end_part;
 	char	*with_content;
 	char	*full;
-	
+
 	first_part = ft_substr(list->arg, 0, start - 1);
 	end_part = ft_substr(list->arg, end + 2, ft_strlen(list->arg) - end);
 	if (!content)
@@ -47,7 +47,7 @@ char	*ft_getenv(char *name, t_list *t_envp)
 	char	*name_tmp;
 	char	*content;
 	int		i;
-	
+
 	tmp = t_envp;
 	while (tmp)
 	{
@@ -67,6 +67,7 @@ char	*ft_getenv(char *name, t_list *t_envp)
 	}
 	return (NULL);
 }
+
 void	ft_expand_modif_main(t_cmd *list, t_list *t_envp)
 {
 	int		i;
