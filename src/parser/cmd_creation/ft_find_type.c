@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 14:33:58 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/10 00:04:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static int	is_start(t_cmd *prev)
 		return (1);
 	return (0);
 }
-
 static int	is_redir(t_cmd *prev)
 {
 	if (!prev)
@@ -104,8 +103,8 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (TRUNC_REDIR);
 	else if (is_redir(prev))
 		return (REDIR_FILE);
-	else if (prev && (prev->type == REDIR_FILE || prev->type == INFILE))
-		return (INFILE);
+	//else if (prev && (prev->type == REDIR_FILE || prev->type == INFILE))
+	//	return (INFILE);
 	else if (is_start(prev) || !prev)
 		return (COMMAND);
 	else

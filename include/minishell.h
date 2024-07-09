@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/08 16:10:27 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/09 23:26:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <errno.h>
+# include <stdbool.h>
 
-typedef struct s_cmd
+typedef struct 		s_cmd
 {
 	char			*arg;
 	int				type;
@@ -34,14 +35,27 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef struct s_cwd
+typedef struct	s_cwd
 {
-	char	*relative_path;
-	char	*absolute_path;
-	int		return_code;
-}			t_cwd;
+	char		*relative_path;
+	char		*absolute_path;
+	int			return_code;
+}				t_cwd;
 
-typedef struct s_glob
+typedef struct		s_exec
+{
+	int				nb_cmd;
+	int				pos_cmd;
+	char			*infile;
+	char			*outfile;
+	char			*cmd;
+	char			**flags;
+	bool			have_heredoc;
+	char			*limiter;
+	struct s_exec	*next;
+}					t_exec;
+
+typedef struct			s_glob
 {
 	char				*name;
 	int					equal;
