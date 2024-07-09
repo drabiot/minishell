@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/26 07:13:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:40:33 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void ft_delete_arg(t_glob **t_envp, unsigned int place)
+static void	ft_delete_arg(t_glob **t_envp, unsigned int place)
 {
 	unsigned int	i;
 	t_glob			*tmp;
@@ -30,9 +30,9 @@ static void ft_delete_arg(t_glob **t_envp, unsigned int place)
 	tmp->next = next_after_clear;
 }
 
-static void ft_find_arg(t_glob **t_envp, t_cmd *arg)
+static void	ft_find_arg(t_glob **t_envp, t_cmd *arg)
 {
-	t_glob *tmp;
+	t_glob			*tmp;
 	unsigned int	place;
 
 	place = 0;
@@ -53,7 +53,7 @@ static void ft_find_arg(t_glob **t_envp, t_cmd *arg)
 int	ft_unset(t_glob **t_envp, t_cmd *args)
 {
 	t_cmd	*tmp;
-	
+
 	if (!args)
 		return (1);
 	tmp = args;

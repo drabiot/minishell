@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/10 10:23:25 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:44:20 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	ft_env(int fd, t_glob **t_envp)
 {
 	t_glob			*tmp;
-	char	*first_part;
-	char	*last_part;
+	char			*first_part;
+	char			*last_part;
 
 	if (!*t_envp)
 		return (1);

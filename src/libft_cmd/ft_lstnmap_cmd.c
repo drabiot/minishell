@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnmap_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/30 01:06:41 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/09 01:09:37 by nberduck         ###   ########.fr       */
+/*   Created: 2024/05/30 01:06:41 by adorlac           #+#    #+#             */
+/*   Updated: 2024/07/09 14:48:52 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*ft_lstnmap_cmd(t_cmd *cmd, int npipe)
 	t_cmd	*tmp;
 	int		tmp_len;
 	int		npipe_tmp;
-	
+
 	npipe_tmp = 1;
 	while (npipe_tmp != npipe)
 	{

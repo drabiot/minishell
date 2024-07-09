@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/26 10:29:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:52:50 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_find_redir(t_cmd *cmd)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = cmd;
 	while (tmp)
@@ -35,7 +35,7 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 	pid_t	pid;
 	int		return_value;
 	int		ret;
-	
+
 	return_value = ft_find_builtins_part1(fd, t_envp, cmd);
 	if (return_value != -1)
 		return (return_value);

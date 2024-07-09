@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_other_cmd.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:43:53 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/26 10:33:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:57:17 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	**ft_get_path(t_glob **t_envp)
 {
 	char	**return_tab;
 	t_glob	*tmp;
-	
+
 	tmp = *t_envp;
 	while (ft_strcmp(tmp->name, "PATH") != 0)
 	{
@@ -35,7 +35,7 @@ static char	**ft_set_argument_argv(t_cmd *cmd, char *path)
 	t_cmd	*tmp;
 	int		tmp_index;
 	int		i;
-	
+
 	tmp = ft_lstlast_cmd(cmd);
 	tmp_index = (int)tmp->index;
 	// printf("%i.\n", tmp_index);
@@ -57,7 +57,7 @@ static char	**ft_set_argument_argv(t_cmd *cmd, char *path)
 		else
 		{
 			return_tab[i] = NULL;
-			return(return_tab);
+			return (return_tab);
 		}
 		i++;
 	}
@@ -71,7 +71,7 @@ static char	***ft_set_argv(t_cmd *cmd, char **paths)
 	char	*path;
 	int		i;
 	int		len;
-	
+
 	if (ft_strcmp(cmd->arg, "") == 0)
 		return (NULL);
 	len = ft_tab_len(paths) + 1;
@@ -98,7 +98,7 @@ static char	**ft_set_char_envp(t_glob **t_envp)
 	char	*first_part;
 	t_glob	*tmp;
 	int		i;
-	
+
 	return_tab = (char **)malloc((ft_glob_len(*t_envp) + 1) * sizeof(char *));
 	tmp = *t_envp;
 	i = 0;
@@ -110,7 +110,7 @@ static char	**ft_set_char_envp(t_glob **t_envp)
 			return_tab[i] = ft_strjoin(first_part, tmp->content);
 			free(first_part);
 			if (!return_tab[i])
-				return(NULL);// Have to clear here
+				return (NULL);// Have to clear here
 		}
 		tmp = tmp->next;
 		i++;
@@ -183,6 +183,7 @@ static int	ft_execute_cmd(char **paths, char **envp, char ***argvs, t_glob *t_en
 	//waitpid(pid, NULL, 0);
 	return (127);
 }
+
 int	ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd)
 {
 	char	**paths;

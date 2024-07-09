@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quote_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:55:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/18 22:32:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:38:25 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-
 
 static void	delete_char(char *arg, int pos)
 {
@@ -81,4 +79,4 @@ void	handle_quote(t_cmd *start)
 			remove_quote(start->arg);
 		start = start->next;
 	}
-};
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_here_doc_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 22:42:33 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/10 11:27:31 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:05:41 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	ft_have_expand(char *arg)
 	}
 	return (0);
 }
+
 static char	*ft_get_var_name(char *line)
 {
 	char	*tmp;
@@ -32,7 +33,7 @@ static char	*ft_get_var_name(char *line)
 	int		start;
 	int		end;
 	int		start_ok;
-	
+
 	i = 0;
 	start_ok = 0;
 	end = 0;
@@ -60,7 +61,7 @@ static char	*ft_expand_name(char *content, char *line)
 	char	*with_content;
 	char	*return_value;
 	int		i;
-	
+
 	i = 0;
 	while (line[i] && line[i] != '$')
 		i++;
@@ -73,18 +74,18 @@ static char	*ft_expand_name(char *content, char *line)
 	while (line[i] && line[i] != ' ' && line[i] != '\n')
 		i++;
 	if (!line[i])
-		return(with_content);
+		return (with_content);
 	return_value = ft_strjoin(with_content, &line[i]);
 	free(with_content);
 	return (return_value);
 }
 
-static char *ft_expand_name_null(char *line)
+static char	*ft_expand_name_null(char *line)
 {
 	char	*first_part;
 	char	*return_value;
 	int		i;
-	
+
 	i = 0;
 	while (line[i] && line[i] != '$')
 		i++;
@@ -95,7 +96,7 @@ static char *ft_expand_name_null(char *line)
 	while (line[i] && line[i] != ' ' && line[i] != '\n')
 		i++;
 	if (!line[i])
-		return(first_part);
+		return (first_part);
 	return_value = ft_strjoin(first_part, &line[i]);
 	free(first_part);
 	return (return_value);

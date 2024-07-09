@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/25 20:45:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:45:34 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_find_quote(t_cmd *arg)
 	unsigned int	i;
 	int				double_quote;
 	unsigned int	first_quote;
-	
+
 	double_quote = 0;
 	i = 0;
 	while (arg->arg[i])
@@ -50,7 +50,7 @@ static int	ft_find_quote(t_cmd *arg)
 int	ft_check_quote_and_delete(t_cmd **args)
 {
 	t_cmd		*tmp;
-	
+
 	tmp = *args;
 	while (tmp)
 	{
@@ -61,19 +61,19 @@ int	ft_check_quote_and_delete(t_cmd **args)
 	return (0);
 }
 
-t_glob  *ft_globsolo_creation(char *arg)
+t_glob	*ft_globsolo_creation(char *arg)
 {
-	t_glob			*tmp;
-	char           *name;
-	char           *content;
-	int            name_end;
+	t_glob	*tmp;
+	char	*name;
+	char	*content;
+	int		name_end;
 
 	name_end = ft_name_len(arg);
-    name = ft_substr(arg, 0, name_end);
-    content = ft_substr(arg, name_end + 1, ft_strlen(arg));
-    if (arg[name_end] && arg[name_end] == '=')
-       tmp = ft_lstnew_glob(name, 1, content);
-    else
-       tmp = ft_lstnew_glob(name, 0, content);
-   return (tmp);
+	name = ft_substr(arg, 0, name_end);
+	content = ft_substr(arg, name_end + 1, ft_strlen(arg));
+	if (arg[name_end] && arg[name_end] == '=')
+		tmp = ft_lstnew_glob(name, 1, content);
+	else
+		tmp = ft_lstnew_glob(name, 0, content);
+	return (tmp);
 }

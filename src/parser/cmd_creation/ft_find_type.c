@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 23:44:59 by nberduck          #+#    #+#             */
-/*   Updated: 2024/05/16 17:07:00 by tchartie         ###   ########.fr       */
+/*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/09 14:33:58 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ static int	is_redir(t_cmd *prev)
 
 int	ft_find_type(char *arg, t_cmd *prev)
 {
-	static int limiter = 0;
-	
+	static int	limiter = 0;
+
 	if (limiter == 1)
 	{
 		limiter = 0;

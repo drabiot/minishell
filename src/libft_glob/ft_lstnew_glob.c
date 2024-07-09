@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew_glob.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 14:41:40 by tchartie          #+#    #+#             */
-/*   Updated: 2024/05/23 10:05:38 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:39:53 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_glob	*ft_lstnew_glob(char *name, int equal, char *content)
 		return (NULL);
 	array->next = NULL;
 	array->name = name;
-    array->equal = equal;
-    array->content = content;
+	array->equal = equal;
+	array->content = content;
 	return (array);
 }

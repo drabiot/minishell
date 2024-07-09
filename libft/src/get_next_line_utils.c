@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:08:29 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/13 20:02:01 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:15:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	new_line(char *str)
 	}
 	return (0);
 }
-
 
 /*
  * If check_nl == 0 : Copy the source until he see a newline to destination

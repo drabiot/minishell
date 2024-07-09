@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/20 20:36:40 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:34:50 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	prompt(t_glob *t_envp)
 {
 	char		*input;
 	char		**arg;
-	
+
 	//create_path(&path, t_envp);
 	//printf("\x1b[0;95m%s ", path.absolute_path);
 	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");

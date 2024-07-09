@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/06/26 07:12:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:42:42 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static int	ft_verif_args(int fd, t_cmd *args, t_glob *t_envp)
 {
 	unsigned int	i;
-	(void)fd;
 
+	(void)fd;
 	if (!args)
 	{
 		t_envp->utils->return_code = 0;
@@ -31,7 +31,7 @@ static int	ft_verif_args(int fd, t_cmd *args, t_glob *t_envp)
 	i = 0;
 	while (args->arg[i] && args->arg[i] != '=' )
 	{
-		if(!ft_isalpha(args->arg[i]))
+		if (!ft_isalpha(args->arg[i]))
 		{
 			t_envp->utils->return_code = 1;
 			ft_putstr_fd(" not a valid identifier\n", 2);
@@ -41,12 +41,13 @@ static int	ft_verif_args(int fd, t_cmd *args, t_glob *t_envp)
 	}
 	return (0);
 }
+
 static void	ft_env_print(int fd, t_glob *t_envp)
 {
 	t_glob			*tmp;
 	unsigned int	i;
 	int				name_end;
-	
+
 	(void)fd;
 	tmp = t_envp;
 	while (tmp)
@@ -69,17 +70,18 @@ static void	ft_env_print(int fd, t_glob *t_envp)
 			ft_putstr_fd("\n", fd);
 		}
 		tmp = tmp->next;
-   }
+	}
 }
 
 int	ft_export(int fd, t_glob *t_envp, t_cmd *args)
 {
 	t_cmd	*curr;
 	t_glob	*tmp;
+
 	if (!args->next)
 	{
 		ft_env_print(fd, t_envp);
-		return(0);
+		return (0);
 	}
 	while (args)
 	{

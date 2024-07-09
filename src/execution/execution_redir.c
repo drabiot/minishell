@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_redir.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:11:06 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/25 18:42:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:01:42 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	ft_create_file_redir(char *file_name, t_glob *t_envp)
 	return (fd);
 }
 
-static void ft_clear_redir(t_cmd **cmd)
+static void	ft_clear_redir(t_cmd **cmd)
 {
 	t_cmd	*tmp;
-	
+
 	tmp = *cmd;
 	while (tmp && tmp->next)
 	{
@@ -43,9 +43,9 @@ static void ft_clear_redir(t_cmd **cmd)
 	return ;
 }
 
-static t_cmd *ft_find_name(t_cmd *cmd)
+static t_cmd	*ft_find_name(t_cmd *cmd)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = cmd;
 	while (tmp)
@@ -57,13 +57,13 @@ static t_cmd *ft_find_name(t_cmd *cmd)
 	return (NULL);
 }
 
-static char *ft_get_file_content(char *name)
+static char	*ft_get_file_content(char *name)
 {
 	int		fd;
 	char	*start;
 	char	*line;
 	char	*tmp;
-	
+
 	fd = open(name, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
@@ -85,13 +85,14 @@ static char *ft_get_file_content(char *name)
 	close(fd);
 	return (tmp);
 }
+
 int	ft_append_redir(t_glob **t_envp, t_cmd *cmd)
 {
 	int		fd;
 	t_cmd	*name;
 	char	*file_content;
-	
-	if(!cmd->next || !cmd->next->next)
+
+	if (!cmd->next || !cmd->next->next)
 		return (1);
 	name = ft_find_name(cmd);
 	file_content = ft_get_file_content(name->arg);
@@ -111,8 +112,8 @@ int	ft_trunc_redir(t_glob **t_envp, t_cmd *cmd)
 {
 	int		fd;
 	t_cmd	*name;
-	
-	if(!cmd->next || !cmd->next->next)
+
+	if (!cmd->next || !cmd->next->next)
 		return (1);
 	name = ft_find_name(cmd);
 	unlink(name->arg);
@@ -126,16 +127,16 @@ int	ft_trunc_redir(t_glob **t_envp, t_cmd *cmd)
 	return (0);
 }
 
-static void ft_clear_input_redir(t_cmd **cmd)
+static void	ft_clear_input_redir(t_cmd **cmd)
 {
 	t_cmd	*tmp;
-	
+
 	tmp = *cmd;
 	while (tmp && tmp->next)
 	{
 		if (tmp->next->type == INPUT)
 		{
-				tmp->next = tmp->next->next;
+			tmp->next = tmp->next->next;
 			return ;
 		}
 		tmp = tmp->next;
@@ -143,13 +144,13 @@ static void ft_clear_input_redir(t_cmd **cmd)
 	return ;
 }
 
-int ft_input_redir(t_glob **t_envp, t_cmd *cmd)
+int	ft_input_redir(t_glob **t_envp, t_cmd *cmd)
 {
-	if(!cmd->next || !cmd->next->next)
-		return (1);
 	t_cmd	*tmp;
 	int		fd;
 
+	if (!cmd->next || !cmd->next->next)
+		return (1);
 	tmp = cmd;
 	// while (tmp)
 	// {

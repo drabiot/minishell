@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_call_function.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 11:45:27 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 18:58:14 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:54:46 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,29 @@ int	ft_get_end_call_function(char *line)
 	return (-1);
 }
 
-static t_cmd *ft_tokenized(t_input *cmd, t_glob **t_envp)
+static t_cmd	*ft_tokenized(t_input *cmd, t_glob **t_envp)
 {
 	unsigned int		index = 0;
 	t_token				token;
 	t_cmd				*start;
 	char				*arg;
+	char				c;
 
 	start = NULL;
 	token = (t_token){0};
 	while (cmd->str[cmd->i])
 	{
 		grab_token(cmd, &token);
-		char c = cmd->str[token.end + 1];
+		c = cmd->str[token.end + 1];
 		cmd->str[token.end + 1] = 0;
 		// printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
-		arg = ft_substr(cmd->str, token.start, token.end-token.start+1);
+		arg = ft_substr(cmd->str, token.start, token.end - token.start + 1);
 		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
 		index++;
 	}
 	ft_expand(&start, *t_envp);
-	
 	return (start);
 }
 
@@ -105,6 +105,7 @@ static t_cmd	*execution_lexer(char *input, t_glob **t_envp)
 	return_value = ft_tokenized(&cmd, t_envp);
 	return (return_value);
 }
+
 static int	ft_get_len_string(char *line)
 {
 	int	i;
@@ -118,8 +119,9 @@ static int	ft_get_len_string(char *line)
 	}
 	return (0);
 }
+
 static int	ft_get_string(char **line_cut, char *line, int start)
-{	
+{
 	int		i;
 	int		len;
 

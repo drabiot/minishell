@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_here_doc.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 00:14:12 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/18 19:45:30 by nberduck         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:04:19 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	set_infile(t_glob **t_envp, int *tmp_fd, char *limiter, int have_quo
 	if (have_call_function(line) != -1)
 		line = ft_call_function_main(line, t_envp);
 	if (!have_quote)
-		line = ft_expand_line(t_envp , line);
+		line = ft_expand_line(t_envp, line);
 	while (line && ft_strncmp(line, limiter, len_limiter + 1))
 	{
 		ft_putstr_fd(line, *tmp_fd);
@@ -67,18 +67,19 @@ static void	set_infile(t_glob **t_envp, int *tmp_fd, char *limiter, int have_quo
 		if (have_call_function(line) != -1)
 			line = ft_call_function_main(line, t_envp);
 		if (!have_quote)
-			line = ft_expand_line(t_envp , line);
+			line = ft_expand_line(t_envp, line);
 	}
 	if (line)
 		free(line);
 	close(*tmp_fd);
 }
+
 static char	*ft_delete_quote(char *arg)
 {
 	char	*line;
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen(arg);
 	line = malloc((len - 2) * sizeof(char));
 	if (!line)
@@ -93,14 +94,15 @@ static char	*ft_delete_quote(char *arg)
 	return (line);
 }
 
-static void ft_modif_cmd(t_cmd **cmd)
+static void	ft_modif_cmd(t_cmd **cmd)
 {
-	t_cmd *next;
-	
+	t_cmd	*next;
+
 	next = (*cmd)->next->next;
 	ft_lstdelone_cmd((*cmd)->next);
 	(*cmd)->next = next;
 }
+
 int	ft_here_doc(t_glob **t_envp, t_cmd *cmd)
 {
 	int		tmp_fd;

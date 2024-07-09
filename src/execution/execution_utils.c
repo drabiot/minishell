@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 18:10:46 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/01 17:55:15 by nberduck         ###   ########.fr       */
+/*   Created: 2024/05/28 18:10:46 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/09 15:02:43 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_glob_len(t_glob *tmp)
 {
 	int	len;
-	
+
 	len = 0;
 	while (tmp)
 	{
@@ -57,7 +57,7 @@ int	ft_have_heredoc(t_cmd *cmd)
 	while (cmd)
 	{
 		if (cmd->type == HERE_DOC)
-			return(1);
+			return (1);
 		cmd = cmd->next;
 	}
 	return (0);

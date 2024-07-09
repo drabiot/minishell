@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_other_cmd_clear.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nberduck <nberduck@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/01 18:54:27 by nberduck          #+#    #+#             */
-/*   Updated: 2024/06/01 19:02:16 by nberduck         ###   ########.fr       */
+/*   Created: 2024/06/01 18:54:27 by tchartie          #+#    #+#             */
+/*   Updated: 2024/07/09 15:04:50 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_clear_tab(char **tmp)
 {
 	int	i;
-	
+
 	i = 0;
 	while (tmp[i])
 	{
