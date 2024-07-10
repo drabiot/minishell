@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 23:26:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/10 05:38:52 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ typedef struct		s_exec
 	int				nb_cmd;
 	int				pos_cmd;
 	char			*infile;
-	char			*outfile;
+	char			*outfile[2];
 	char			*cmd;
 	char			**flags;
 	bool			have_heredoc;
 	char			*limiter;
+	bool			is_piped;
+	pid_t			pid;
 	struct s_exec	*next;
 }					t_exec;
 

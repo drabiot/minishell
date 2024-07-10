@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/10 00:05:15 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/10 05:44:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,16 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->nb_cmd = nb_cmd;
 	current_node->pos_cmd = pos_cmd + 1;
 	current_node->infile = NULL;
-	current_node->outfile = NULL;
+	current_node->outfile[0] = NULL;
+	current_node->outfile[1] = NULL;
 	current_node->cmd = NULL;
 	current_node->flags = NULL;
-	current_node->have_heredoc = 0;
+	current_node->have_heredoc = TRUE;
 	current_node->limiter = NULL;
+	current_node->is_piped = FALSE;
+	if (pos_cmd >= 1)
+		current_node->is_piped = TRUE;
+	current_node->pid = 0;
 	current_node->next = NULL;
 }
 static char	*get_correct_path(char *cmd, char *content_path)
@@ -159,11 +164,26 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	return (flags);
 }
 
-static char	*grab_redir(t_cmd *cmd)
+static char	*grab_redir(t_cmd *cmd, int	type)
 {
-	if (!cmd && !cmd->next)
+	if (type == 0)
+	{
+		if (!cmd && !cmd->next)
+			return (NULL);
+		return (cmd->next->arg);
+	}
+	else if (type == 1)
+	{
+		if (cmd->type == APPEND_REDIR)
+			return ("append");
+		else if (cmd->type == TRUNC_REDIR)
+			return ("trunc");
+		else
+			return (NULL);
+	}
+	else
 		return (NULL);
-	return (cmd->next->arg);
+	//ouvrir fichier
 }
 
 static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
@@ -176,18 +196,20 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 	set_base_exec(current_node, nb_cmd, pos_cmd);
 	while (cmd && cmd->type != PIPE)
 	{
-		if (current_node->infile == NULL && cmd->type == INPUT)
-			current_node->infile = grab_redir(cmd);
-		else if (current_node->outfile == NULL && (cmd->type == TRUNC_REDIR
-				|| cmd->type == APPEND_REDIR))
-			current_node->outfile = grab_redir(cmd);
+		if (cmd->type == INPUT)
+			current_node->infile = grab_redir(cmd, 0);
+		else if (cmd->type == TRUNC_REDIR || cmd->type == APPEND_REDIR)
+		{
+			current_node->outfile[0] = grab_redir(cmd, 0);
+			current_node->outfile[1] = grab_redir(cmd, 1);
+		}
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
 			current_node->cmd = get_cmd(cmd->arg, glob);
 			current_node->flags = get_flags(cmd, current_node->cmd);
 		}
 		else if (cmd->type == HERE_DOC)
-			current_node->have_heredoc = 1;
+			current_node->have_heredoc = TRUE;
 		else if (current_node->limiter == NULL && cmd->type == LIMITER)
 			current_node->limiter = cmd->arg;
 		cmd = cmd->next;
@@ -252,8 +274,8 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 {
 	int		pipe_len;
-	//int		return_value;
 	t_exec	*exec;
+	int		ret;
 
 	if (!cmd)
 		return (0);
@@ -261,7 +283,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	//while (exec)
 	//{
-	//printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\n", exec->nb_cmd, exec->pos_cmd, exec->infile, exec->outfile, exec->cmd, exec->flags[0], exec->flags[1], exec->have_heredoc, exec->limiter);
+		printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\n", exec->nb_cmd, exec->pos_cmd, exec->infile, exec->outfile[0], exec->outfile[1], exec->cmd, exec->flags[0], exec->flags[1], exec->have_heredoc, exec->limiter);
 	//	exec = exec->next;
 	//}
 	/*if (pipe_len != 1)
@@ -270,8 +292,8 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 		// return_value = ft_execution_pipe_main(t_envp, cmd, pipe_len);
 		// return (return_value);
 	}*/
-
-
+	start_exec(exec, t_envp);
 	//clean t_exec
-	return (1);
+	ret = wait_all_pid(exec);
+	return (ret);
 }
