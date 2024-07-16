@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/08 16:32:50 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/16 21:12:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ void	ft_expand(t_cmd **list, t_glob *t_envp)
 		else
 			tmp = t_next;
 	}
-	ft_lstclear_cmd(&t_next);
+	//ft_lstclear_cmd(&t_next);
 }

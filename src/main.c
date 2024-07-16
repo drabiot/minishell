@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 15:15:19 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/16 19:55:44 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,23 @@ t_glob	*ft_envp_creation(char **envp)
 	char			*name;
 	char			*content;
 	int				name_end;
+	char			**env;
 	unsigned int	i;
 
 	i = 0 ;
 	list = NULL;
+	env = NULL;
+	if (envp)
+		env = envp;
 	while (envp[i])
 	{
 		name_end = ft_name_len(envp[i]);
 		name = ft_substr(envp[i], 0, name_end);
 		content = ft_substr(envp[i], name_end + 1, ft_strlen(envp[i]));
 		if (envp[i][name_end] && envp[i][name_end] == '=')
-			tmp = ft_lstnew_glob(name, 1, content);
+			tmp = ft_lstnew_glob(name, 1, content, env);
 		else
-			tmp = ft_lstnew_glob(name, 0, content);
+			tmp = ft_lstnew_glob(name, 0, content, env);
 		ft_lstadd_back_alpha_envp(&list, tmp);
 		i++;
 	}

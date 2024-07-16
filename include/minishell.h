@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/10 05:38:52 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/16 22:44:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct		s_exec
 	int				pos_cmd;
 	char			*infile;
 	char			*outfile[2];
+	int				fd_in;
+	int				fd_out;
 	char			*cmd;
 	char			**flags;
 	bool			have_heredoc;
@@ -62,6 +64,7 @@ typedef struct			s_glob
 	char				*name;
 	int					equal;
 	char				*content;
+	char				**env;
 	struct s_glob		*next;
 	struct s_cwd		*utils;
 }						t_glob;
@@ -88,7 +91,7 @@ void	ft_lstadd_front_glob(t_glob **lst, t_glob *new);
 void	ft_lstclear_glob(t_glob **lst);
 void	ft_lstdelone_glob(t_glob *lst);
 t_glob	*ft_lstlast_glob(t_glob *lst);
-t_glob	*ft_lstnew_glob(char *name, int equal, char *content);
+t_glob	*ft_lstnew_glob(char *name, int equal, char *content, char **env);
 t_glob	*ft_globsolo_creation(char *arg);
 void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new);
 int		ft_name_len(char *tmp);
@@ -132,7 +135,7 @@ void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 // int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
 int		ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd);
-int		ft_find_builtins_part1(int fd, t_glob **t_envp, t_cmd *cmd);
+int		ft_find_builtins(int fd, t_glob **t_envp, t_cmd *cmd);
 // int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
 int		ft_here_doc(t_glob **t_list, t_cmd *cmd);
 int		ft_append_redir(t_glob **t_envp, t_cmd *cmd);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/10 00:05:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/16 21:13:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 
 	start = NULL;
 	token = (t_token){0};
-	while (cmd->str[cmd->i])
+	while (cmd->str && cmd->str[cmd->i])
 	{
 		grab_token(cmd, &token);
 		c = cmd->str[token.end + 1];

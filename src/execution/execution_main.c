@@ -6,11 +6,43 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/10 05:44:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:10:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	close_fds(t_exec *list)
+{
+	while (list)
+	{
+		if (list->fd_in != -1)
+			close(list->fd_in);
+		if (list->fd_out != -1)
+			close(list->fd_out);
+		list = list->next;
+	}
+}
+
+static void	close_err()
+{
+	return ;
+}
+
+static int	wait_all_pid(t_exec *list)
+{
+	int	ret;
+
+	ret = 0;
+	while (list->next)
+	{
+		waitpid(list->pid, NULL, 0);
+		list = list->next;
+	}
+	waitpid(list->pid, &ret, 0);
+	ret = WEXITSTATUS(ret);
+	return (ret);
+}
 
 static int	ft_find_redir(t_cmd *cmd)
 {
@@ -36,7 +68,7 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 	int		return_value;
 	int		ret;
 
-	return_value = ft_find_builtins_part1(fd, t_envp, cmd);
+	return_value = ft_find_builtins(fd, t_envp, cmd);
 	if (return_value != -1)
 		return (return_value);
 	pid = fork();
@@ -74,6 +106,8 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->infile = NULL;
 	current_node->outfile[0] = NULL;
 	current_node->outfile[1] = NULL;
+	current_node->fd_in = -1;
+	current_node->fd_out = -1;
 	current_node->cmd = NULL;
 	current_node->flags = NULL;
 	current_node->have_heredoc = TRUE;
@@ -84,6 +118,7 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->pid = 0;
 	current_node->next = NULL;
 }
+
 static char	*get_correct_path(char *cmd, char *content_path)
 {
 	char	**all_path;
@@ -183,7 +218,7 @@ static char	*grab_redir(t_cmd *cmd, int	type)
 	}
 	else
 		return (NULL);
-	//ouvrir fichier
+	//open files
 }
 
 static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
@@ -261,7 +296,7 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 			cmd = cmd->next;
 		if (!current_node)
 		{
-			//error
+			close_err();
 		}
 		ft_add_back(&last_node, current_node);
 		if (i == 0)
@@ -269,6 +304,100 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 		i++;
 	}
 	return(first_node);
+}
+
+static void	create_pipe(t_exec *exec)
+{
+	int		i;
+	int		pipe_ret;
+	int		fd_pipe[2];
+	t_exec	*list;
+
+	i = 0;
+	list = NULL;
+	if (exec)
+		list = exec;
+	while (exec->next)
+	{
+		pipe_ret = pipe(fd_pipe);
+		if (pipe_ret == -1)
+			close_err();
+		if (exec->outfile[0])
+		{
+			if (ft_strcmp(exec->outfile[1], "append") == 0)
+				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+					| O_APPEND, 0644);
+			else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
+				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+					| O_TRUNC, 0644);
+			close(fd_pipe[1]);
+		}
+		else
+			exec->fd_out = fd_pipe[1];
+		if (exec->infile)
+		{
+			exec->fd_in = open(exec->infile, O_RDONLY);
+			close(fd_pipe[0]);
+		}
+		else
+			exec->next->fd_in = fd_pipe[0];
+		exec = exec->next;
+	}
+	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
+		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+			| O_APPEND, 0644);
+	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
+		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+			| O_TRUNC, 0644);
+}
+
+static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
+{
+	int	ret_execve;
+	int	dup_in;
+	int	dup_out;
+
+	dup_in = dup2(exec->fd_in, STDIN_FILENO);
+	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
+	ret_execve = 0;
+	if (dup_in == -1 || dup_out == -1)
+		close_err();
+	close_fds(list);
+	if (exec->flags)
+		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
+	else
+		exit(1);
+	if (ret_execve == -1)
+		exit(1);
+}
+
+static void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp)
+{
+	exec->pid = fork();
+	if (exec->pid == -1)
+		close_err();
+	else if (exec->pid == 0)
+		process(exec, list, t_envp);
+}
+
+static int	start_exec(t_exec *exec, t_glob **t_envp)
+{
+	int		ret;
+	t_exec	*list;
+
+	ret = 0;
+	list = NULL;
+	create_pipe(exec);
+	if (exec)
+		list = exec;
+	while (exec)
+	{
+		init_process(list, exec, t_envp);
+		exec = exec->next;
+	}
+	close_fds(list);
+	ret = wait_all_pid(list);
+	return (ret);
 }
 
 int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
@@ -281,9 +410,10 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 		return (0);
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
+	ret = 0;
 	//while (exec)
 	//{
-		printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\n", exec->nb_cmd, exec->pos_cmd, exec->infile, exec->outfile[0], exec->outfile[1], exec->cmd, exec->flags[0], exec->flags[1], exec->have_heredoc, exec->limiter);
+	//	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\n", exec->nb_cmd, exec->pos_cmd, exec->infile, exec->outfile[0], exec->outfile[1], exec->cmd, exec->flags[0], exec->flags[1], exec->have_heredoc, exec->limiter);
 	//	exec = exec->next;
 	//}
 	/*if (pipe_len != 1)
@@ -292,8 +422,8 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 		// return_value = ft_execution_pipe_main(t_envp, cmd, pipe_len);
 		// return (return_value);
 	}*/
-	start_exec(exec, t_envp);
+
+	ret = start_exec(exec, t_envp);
 	//clean t_exec
-	ret = wait_all_pid(exec);
 	return (ret);
 }
