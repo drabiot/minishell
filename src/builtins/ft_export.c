@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 14:42:42 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/17 22:44:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	ft_verif_args(int fd, t_cmd *args, t_glob *t_envp)
 	if (!args)
 	{
 		t_envp->utils->return_code = 0;
-		return (1);
+		return (0);
 	}
 	if (args->arg[0] && args->arg[0] == '=')
 	{
@@ -89,7 +89,7 @@ int	ft_export(int fd, t_glob *t_envp, t_cmd *args)
 		if (!ft_verif_args(fd, args->next, t_envp))
 		{
 			if (ft_check_quote_and_delete(&args))
-				return (1);
+				return (0);
 			curr = args;
 			while (curr)
 			{
@@ -101,9 +101,7 @@ int	ft_export(int fd, t_glob *t_envp, t_cmd *args)
 			}
 		}
 		else
-		{
 			return (1);
-		}
 		args = args->next;
 	}
 	return (0);

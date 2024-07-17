@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/16 21:13:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:16:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 		cmd->i++;
 		index++;
 	}
-	ft_expand(&start, t_envp);
+	ft_expand(&start, t_envp);//split when expand & redo type finding after expand
 	handle_quote(start);
 	// t_cmd *test;
 	// tmp = t_envp;
@@ -109,7 +109,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	// 	tmp = tmp->next;
 	// }
 	// ft_lstclear_cmd(&test);
-	ft_execution_main(&t_envp, start);
+	t_envp->utils->return_code = ft_execution_main(&t_envp, start);
 	// if (t_envp->utils->return_code)
 	// 	exit (t_envp->utils->return_code);
 	// ft_export(&t_envp, start);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/16 22:44:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:32:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 // int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
 int		ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_cmd *cmd);
+int		is_builtins(char *arg);
 // int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
 int		ft_here_doc(t_glob **t_list, t_cmd *cmd);
 int		ft_append_redir(t_glob **t_envp, t_cmd *cmd);

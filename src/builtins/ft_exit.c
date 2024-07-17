@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 14:43:51 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/17 21:50:18 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,21 @@ int	ft_exit(int fd, t_cmd *cmd, t_glob **t_envp)
 {
 	int	exit;
 
+	exit = 0; //redo need to exit the last exit code.
 	if ((cmd->next && cmd->next->next))
 	{
 		(*t_envp)->utils->return_code = 1;
 		ft_putstr_fd(" too many arguments", 2);
 		return (1);
 	}
-	if (ft_get_alpha(cmd->next->arg))
+	if (cmd->next && ft_get_alpha(cmd->next->arg))
 	{
 		(*t_envp)->utils->return_code = 2;
 		ft_putstr_fd(" numeric argument required", 2);
 		return (2);
 	}
-	exit = ft_atoi(cmd->next->arg);
+	if (cmd->next)
+		exit = ft_atoi(cmd->next->arg);
 	if (exit >= 256)
 		exit %= 256;
 	if (exit < 0)

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/16 21:13:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/17 21:56:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	prompt(t_glob *t_envp)
 	//create_path(&path, t_envp);
 	//printf("\x1b[0;95m%s ", path.absolute_path);
 	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
+	if (!input)
+		exit (0);
 	//free(path.absolute_path);
 	// if (!(ft_strncmp(input, "exit", 4)))
 	// 	return (0);

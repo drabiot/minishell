@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/16 23:10:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:44:21 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static int	wait_all_pid(t_exec *list)
 		list = list->next;
 	}
 	waitpid(list->pid, &ret, 0);
-	ret = WEXITSTATUS(ret);
+	if (WIFEXITED(ret))
+		ret = WEXITSTATUS(ret);
 	return (ret);
 }
 
@@ -68,6 +69,7 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 	int		return_value;
 	int		ret;
 
+	ret = 0;
 	return_value = ft_find_builtins(fd, t_envp, cmd);
 	if (return_value != -1)
 		return (return_value);
@@ -93,10 +95,11 @@ int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
 		exit(return_value);
 	}
 	waitpid(pid, &ret, 0);
-	ret = WEXITSTATUS(ret);
+	if (WIFEXITED(ret))
+		ret = WEXITSTATUS(ret);
 	(*t_envp)->utils->return_code = ret;
-	printf("ret: %d, code: %d\n", ret, (*t_envp)->utils->return_code);
-	return (0);
+	//printf("ret: %d, code: %d\n", ret, (*t_envp)->utils->return_code);
+	return (ret);
 }
 
 static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
@@ -161,7 +164,7 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	while (ft_strcmp(path->name, "PATH") != 0)
 		path = path->next;
 	content_path = path->content;
-	if (arg && access(arg, X_OK) == 0)
+	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)))
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
 		tmp_cmd = ft_strjoin(ft_strdup("/"), ft_strdup(arg));
@@ -363,12 +366,17 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (dup_in == -1 || dup_out == -1)
 		close_err();
 	close_fds(list);
-	if (exec->flags)
+	if (is_builtins(exec->cmd))
+		ret_execve = ft_find_builtins(exec->fd_out, t_envp,)//modif ft_find_builtins t_cmd to t_exec
+	else if (exec->flags)
 		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
 	else
-		exit(1);
+		exit(0);
 	if (ret_execve == -1)
-		exit(1);
+	{
+		ft_putstr_fd(" command not found\n", 2);
+		exit(127);
+	}
 }
 
 static void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp)
@@ -411,19 +419,36 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;
-	//while (exec)
-	//{
-	//	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\n", exec->nb_cmd, exec->pos_cmd, exec->infile, exec->outfile[0], exec->outfile[1], exec->cmd, exec->flags[0], exec->flags[1], exec->have_heredoc, exec->limiter);
-	//	exec = exec->next;
-	//}
-	/*if (pipe_len != 1)
+	if (pipe_len == 1 && is_builtins(cmd->arg))
 	{
-		// return_value =
-		// return_value = ft_execution_pipe_main(t_envp, cmd, pipe_len);
-		// return (return_value);
-	}*/
-
+		while (cmd)
+		{
+			if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
+				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+					| O_APPEND, 0644);
+			else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
+				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+				| O_TRUNC, 0644);
+			else
+				exec->fd_out = 1;
+			ret = ft_find_builtins(exec->fd_out, t_envp, cmd);
+			if (ret != -1)
+			{
+				if (exec->fd_out == 1)
+					exec->fd_out = -1;
+				close_fds(exec);
+				return (ret);
+			}
+			cmd = cmd->next;
+		}
+	}
+	// t_exec *tmp = exec;
 	ret = start_exec(exec, t_envp);
+	// while (tmp)
+	// {
+	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->limiter, tmp->fd_in, tmp->fd_out);
+	// 	tmp = tmp->next;
+	// }
 	//clean t_exec
 	return (ret);
 }
