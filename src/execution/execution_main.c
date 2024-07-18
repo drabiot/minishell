@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/17 23:44:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:46:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,63 +45,6 @@ static int	wait_all_pid(t_exec *list)
 	return (ret);
 }
 
-static int	ft_find_redir(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	tmp = cmd;
-	while (tmp)
-	{
-		if (tmp->type == APPEND_REDIR)
-			return (1);
-		if (tmp->type == TRUNC_REDIR)
-			return (2);
-		if (tmp->type == INPUT)
-			return (3);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd)
-{
-	pid_t	pid;
-	int		return_value;
-	int		ret;
-
-	ret = 0;
-	return_value = ft_find_builtins(fd, t_envp, cmd);
-	if (return_value != -1)
-		return (return_value);
-	pid = fork();
-	if (pid < 0)
-		return (1);
-	if (pid == 0)
-	{
-		if (ft_have_heredoc(cmd))
-			return_value = ft_here_doc(t_envp, cmd);
-		else
-		{
-			return_value = ft_find_redir(cmd);
-			if (return_value == 1)
-				return_value = ft_append_redir(t_envp, cmd);
-			else if (return_value == 2)
-				return_value = ft_trunc_redir(t_envp, cmd);
-			else if (return_value == 3)
-				return_value = ft_input_redir(t_envp, cmd);
-			else
-				return_value = ft_execute_other_cmd(t_envp, cmd);
-		}
-		exit(return_value);
-	}
-	waitpid(pid, &ret, 0);
-	if (WIFEXITED(ret))
-		ret = WEXITSTATUS(ret);
-	(*t_envp)->utils->return_code = ret;
-	//printf("ret: %d, code: %d\n", ret, (*t_envp)->utils->return_code);
-	return (ret);
-}
-
 static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 {
 	current_node->nb_cmd = nb_cmd;
@@ -132,7 +75,7 @@ static char	*get_correct_path(char *cmd, char *content_path)
 	all_path = ft_split((char const *)content_path, ':');
 	i = 0;
 	access_state = 1;
-	if (access(cmd, X_OK) == 0)
+	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd)))
 	{
 		correct_path = ft_strdup(cmd);
 		return (correct_path);
@@ -158,12 +101,14 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	char	*tmp_cmd;
 
 	path = NULL;
+	content_path = NULL;
 	tmp_cmd = NULL;
 	if (glob)
 		path = glob;
-	while (ft_strcmp(path->name, "PATH") != 0)
+	while (path && ft_strcmp(path->name, "PATH") != 0)
 		path = path->next;
-	content_path = path->content;
+	if (path)
+		content_path = path->content;
 	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)))
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
@@ -188,13 +133,13 @@ static char	**get_flags(t_cmd *cmd, char *path)
 			line = cmd->arg;
 		else
 		{
-			line = ft_strjoin(ft_strdup(line), ft_strdup(" "));
+			line = ft_strjoin(ft_strdup(line), ft_strdup("\b"));
 			line = ft_strjoin(ft_strdup(line), ft_strdup(cmd->arg));
 		}
 		i++;
 		cmd = cmd->next;
 	}
-	flags = ft_split(line, ' ');
+	flags = ft_split(line, '\b');
 	if (!flags || !*flags)
 		return (NULL);
 	free(flags[0]);
@@ -367,7 +312,11 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		close_err();
 	close_fds(list);
 	if (is_builtins(exec->cmd))
-		ret_execve = ft_find_builtins(exec->fd_out, t_envp,)//modif ft_find_builtins t_cmd to t_exec
+	{
+		ret_execve = ft_find_builtins(STDOUT_FILENO, t_envp, exec);
+		//free all memory allocated to child process
+		exit(ret_execve);
+	}
 	else if (exec->flags)
 		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
 	else
@@ -419,27 +368,23 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;
-	if (pipe_len == 1 && is_builtins(cmd->arg))
+	if (pipe_len == 1 && is_builtins(exec->cmd))
 	{
-		while (cmd)
+		if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
+			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+				| O_APPEND, 0644);
+		else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
+			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+			| O_TRUNC, 0644);
+		else
+			exec->fd_out = 1;
+		ret = ft_find_builtins(exec->fd_out, t_envp, exec);
+		if (ret != -1)
 		{
-			if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
-				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_APPEND, 0644);
-			else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
-				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_TRUNC, 0644);
-			else
-				exec->fd_out = 1;
-			ret = ft_find_builtins(exec->fd_out, t_envp, cmd);
-			if (ret != -1)
-			{
-				if (exec->fd_out == 1)
-					exec->fd_out = -1;
-				close_fds(exec);
-				return (ret);
-			}
-			cmd = cmd->next;
+			if (exec->fd_out == 1)
+				exec->fd_out = -1;
+			close_fds(exec);
+			return (ret);
 		}
 	}
 	// t_exec *tmp = exec;

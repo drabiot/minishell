@@ -12,32 +12,42 @@
 
 #include "../../include/minishell.h"
 
-int	ft_echo(int fd, t_cmd *cmd, t_glob *t_envp)
+static int	null_echo(t_exec *exec, int fd)
 {
-	int		option;
-	t_cmd	*tmp;
-
-	option = 0;
-	t_envp->utils->return_code = 0;
-	if (!cmd->next)
+	if (!exec->flags[1])
 	{
 		ft_putstr_fd("\n", fd);
 		return (1);
 	}
-	if (ft_strcmp(cmd->next->arg, "-n") == 0)
-		option = 1;
-	if (option == 1)
-		tmp = cmd->next->next;
-	else
-		tmp = cmd->next;
-	while (tmp)
+	return (0);
+}
+
+static void	exec_echo(t_exec *exec, int pos_flag, int fd)
+{
+	int	i;
+
+	i = pos_flag;
+	while (exec->flags[i])
 	{
-		ft_putstr_fd(tmp->arg, fd);
-		if (tmp->next)
+		ft_putstr_fd(exec->flags[i], fd);
+		if (exec->flags[i + 1])
 			ft_putstr_fd(" ", fd);
-		tmp = tmp->next;
+		i++;
 	}
-	if (option == 0)
+	if (pos_flag == 1)
 		ft_putstr_fd("\n", fd);
+}
+
+int	ft_echo(int fd, t_exec *exec, t_glob *t_envp)
+{
+	int		option;
+
+	t_envp->utils->return_code = 0;
+	option = 1;
+	if (null_echo(exec, fd))
+		return (0);
+	if (ft_strcmp(exec->flags[1], "-n") == 0)
+		option = 2;
+	exec_echo(exec, option, fd);
 	return (0);
 }

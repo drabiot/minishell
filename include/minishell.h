@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/17 23:32:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:03:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ t_cmd	*expand_tokenizer(t_input *cmd);
 /*                Builtins                	  */
 /*    Prototype for builtins's main fonction  */
 /* ****************************************** */
-int		ft_echo(int fd, t_cmd *cmd, t_glob *t_envp);
+int		ft_echo(int fd, t_exec *exec, t_glob *t_envp);
 int		ft_pwd(t_glob *t_envp);
 int		ft_env(int fd, t_glob **envp);
-int		ft_unset(t_glob **envp, t_cmd *args);
-int		ft_export(int fd, t_glob *t_envp, t_cmd *args);
-int		ft_check_quote_and_delete(t_cmd **t_args);
-int		ft_cd(t_cmd *cmd, t_glob **t_envp);
-int		ft_exit(int fd, t_cmd *cmd, t_glob **t_envp);
+int		ft_unset(t_glob **envp, t_exec *exec);
+int		ft_export(int fd, t_glob *t_envp, t_exec *exec);
+int		ft_check_quote_and_delete(t_exec **exec);
+int		ft_cd(t_exec *exec, t_glob **t_envp);
+int		ft_exit(int fd, t_exec *exec, t_glob **t_envp);
 
 /* ****************************************** */
 /*                  Parser                    */
@@ -133,16 +133,8 @@ void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 /*      Prototype for execution fonction      */
 /* ****************************************** */
 int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
-// int     ft_start_execution(int fd, t_glob **t_envp, t_cmd *cmd, int npipe);
-int		ft_execute_other_cmd(t_glob **t_envp, t_cmd *cmd);
-int		ft_find_builtins(int fd, t_glob **t_envp, t_cmd *cmd);
+int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
-// int     ft_execution_pipe_main(t_glob **t_envp, t_cmd *cmd, int len_pipe);
-int		ft_here_doc(t_glob **t_list, t_cmd *cmd);
-int		ft_append_redir(t_glob **t_envp, t_cmd *cmd);
-int		ft_trunc_redir(t_glob **t_envp, t_cmd *cmd);
-int		ft_input_redir(t_glob **t_envp, t_cmd *cmd);
-int		ft_execution_cmd(int fd, t_glob **t_envp, t_cmd *cmd);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -152,8 +144,6 @@ int		ft_pipe_len(t_cmd *cmd);
 int		ft_have_heredoc(t_cmd *cmd);
 int		ft_tab_len(char	**tab);
 int		ft_glob_len(t_glob *tmp);
-void	ft_clear_tab(char	**tmp);
-void	ft_clear_argvs(char ***argvs);
 
 char	*ft_expand_line(t_glob **t_list, char *line);
 
@@ -164,9 +154,6 @@ void	grab_token(t_input *cmd, t_token *token);
 
 int		have_call_function(char *line);
 char	*create_file(int *tmp_fd);
-char	*ft_call_function_main(char *line, t_glob **t_envp);
-int		have_call_function(char *line);
-int		ft_get_end_call_function(char *line);
 
 void	ft_errno(void);
 

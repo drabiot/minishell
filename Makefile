@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
+#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/07/09 15:16:22 by adorlac          ###   ########.fr        #
+#    Updated: 2024/07/18 22:50:32 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ SRCS		=		main.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \
 					builtins/ft_export.c \
-					builtins/ft_utils_export.c \
+					builtins/ft_export_utils.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
 					builtins/ft_env.c \
@@ -79,13 +79,6 @@ SRCS		=		main.c \
 					libft_glob/ft_lstnew_glob.c \
 					execution/execution_main.c \
 					execution/execution_builtins.c \
-					execution/execution_other_cmd.c \
-					execution/execution_other_cmd_clear.c \
-					execution/execution_pipe.c \
-					execution/execution_here_doc.c \
-					execution/execution_here_doc_utils.c \
-					execution/execution_call_function.c \
-					execution/execution_redir.c \
 					execution/execution_utils.c \
 					execution/execution_error.c
 

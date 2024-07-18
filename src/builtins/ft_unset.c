@@ -6,61 +6,45 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/17 22:47:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:21:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	ft_delete_arg(t_glob **t_envp, unsigned int place)
+static void	delete_glob(t_glob **t_envp, char *del_arg)
 {
-	unsigned int	i;
-	t_glob			*tmp;
-	t_glob			*next_after_clear;
+	t_glob	*tmp;
+	t_glob	*next_node;
+
+	tmp = NULL;
+	next_node = NULL;
+	if (*t_envp)
+		tmp = *t_envp;
+	if (!del_arg)
+		return ;
+	while (tmp->next && ft_strcmp(tmp->next->name, del_arg) != 0)
+		tmp = tmp->next;
+	if (!tmp->next)
+		return ;
+	next_node = tmp->next->next;
+	if (ft_strcmp(tmp->next->name, del_arg) == 0)
+		ft_lstdelone_glob(tmp->next);
+	tmp->next = next_node;
+}
+
+int	ft_unset(t_glob **t_envp, t_exec *exec)
+{
+	int		i;
+	char	*last_word;
 
 	i = 0;
-	tmp = *t_envp;
-	while (i < place - 1)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	next_after_clear = tmp->next->next;
-	ft_lstdelone_glob(tmp->next);
-	tmp->next = next_after_clear;
-}
-
-static void	ft_find_arg(t_glob **t_envp, t_cmd *arg)
-{
-	t_glob			*tmp;
-	unsigned int	place;
-
-	place = 0;
-	tmp = *t_envp;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->name, arg->arg) == 0)
-		{
-			ft_delete_arg(t_envp, place);
-			tmp = NULL;
-		}
-		else
-			tmp = tmp->next;
-		place++;
-	}
-}
-
-int	ft_unset(t_glob **t_envp, t_cmd *args)
-{
-	t_cmd	*tmp;
-
-	if (!args)
+	if (!exec->flags)
 		return (1);
-	tmp = args;
-	while (tmp)
-	{
-		ft_find_arg(t_envp, tmp);
-		tmp = tmp->next;
-	}
+	while (exec->flags[i + 1])
+		i++;
+	last_word = exec->flags[i];
+	if (i != 0)
+		delete_glob(t_envp, last_word);
 	return (0);
 }

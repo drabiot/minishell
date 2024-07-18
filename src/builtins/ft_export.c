@@ -6,32 +6,31 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/17 22:44:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:15:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_verif_args(int fd, t_cmd *args, t_glob *t_envp)
+static int	ft_verif_args(t_exec *exec, t_glob *t_envp)
 {
 	unsigned int	i;
 
-	(void)fd;
-	if (!args)
+	if (!exec->flags[1])
 	{
 		t_envp->utils->return_code = 0;
 		return (0);
 	}
-	if (args->arg[0] && args->arg[0] == '=')
+	if (exec->flags[1][0] == '=')
 	{
 		t_envp->utils->return_code = 1;
 		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
 	}
 	i = 0;
-	while (args->arg[i] && args->arg[i] != '=' )
+	while (exec->flags[1][i] && exec->flags[1][i] != '=' )
 	{
-		if (!ft_isalpha(args->arg[i]))
+		if (!ft_isalpha(exec->flags[1][i]))
 		{
 			t_envp->utils->return_code = 1;
 			ft_putstr_fd(" not a valid identifier\n", 2);
@@ -73,36 +72,25 @@ static void	ft_env_print(int fd, t_glob *t_envp)
 	}
 }
 
-int	ft_export(int fd, t_glob *t_envp, t_cmd *args)
+int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 {
-	t_cmd	*curr;
 	t_glob	*tmp;
 
-	if (!args->next)
+	if (!exec->flags[1])
 	{
 		ft_env_print(fd, t_envp);
 		return (0);
 	}
-	while (args)
+	//ft_expand(&args, t_envp);
+	if (!ft_verif_args(exec, t_envp))
 	{
-		ft_expand(&args, t_envp);
-		if (!ft_verif_args(fd, args->next, t_envp))
-		{
-			if (ft_check_quote_and_delete(&args))
-				return (0);
-			curr = args;
-			while (curr)
-			{
-				tmp = ft_globsolo_creation(curr->arg);
-				// printf("name: %s, equal: %d, content: %s\n", tmp->name, tmp->equal, tmp->content);
-				ft_lstadd_back_alpha_envp(&t_envp, tmp);
-				t_envp->utils->return_code = 0;
-				curr = curr->next;
-			}
-		}
-		else
-			return (1);
-		args = args->next;
+		if (ft_check_quote_and_delete(&exec))
+			return (0);
+		tmp = ft_globsolo_creation(exec->flags[1]);
+		ft_lstadd_back_alpha_envp(&t_envp, tmp);
+		t_envp->utils->return_code = 0;
 	}
+	else
+		return (1);
 	return (0);
 }

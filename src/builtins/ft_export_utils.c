@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_export.c                                  :+:      :+:    :+:   */
+/*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/16 20:06:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:09:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*ft_delete_quote(char *str)
 	return (tmp);
 }
 
-static int	ft_find_quote(t_cmd *arg)
+int	ft_check_quote_and_delete(t_exec **exec)
 {
 	unsigned int	i;
 	int				double_quote;
@@ -31,11 +31,11 @@ static int	ft_find_quote(t_cmd *arg)
 
 	double_quote = 0;
 	i = 0;
-	while (arg->arg[i])
+	while ((*exec)->flags[1][i])
 	{
-		if (double_quote == 1 && arg->arg[i] == '"' && arg->arg[i + 1])
+		if (double_quote == 1 && (*exec)->flags[1][i] == '"' && (*exec)->flags[1][i + 1])
 			return (1);
-		if (arg->arg[i] == '"')
+		if ((*exec)->flags[1][i] == '"')
 		{
 			first_quote = i;
 			double_quote = 1;
@@ -43,21 +43,7 @@ static int	ft_find_quote(t_cmd *arg)
 		i++;
 	}
 	if (double_quote == 1)
-		arg->arg = ft_delete_quote(arg->arg);
-	return (0);
-}
-
-int	ft_check_quote_and_delete(t_cmd **args)
-{
-	t_cmd		*tmp;
-
-	tmp = *args;
-	while (tmp)
-	{
-		if (ft_find_quote(tmp))
-			return (1);
-		tmp = tmp->next;
-	}
+		(*exec)->flags[1] = ft_delete_quote((*exec)->flags[1]);
 	return (0);
 }
 
