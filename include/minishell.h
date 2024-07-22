@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/18 23:03:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:00:20 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <errno.h>
 # include <stdbool.h>
 
-typedef struct 		s_cmd
+typedef struct s_cmd
 {
 	char			*arg;
 	int				type;
@@ -35,14 +35,14 @@ typedef struct 		s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef struct	s_cwd
+typedef struct s_cwd
 {
 	char		*relative_path;
 	char		*absolute_path;
 	int			return_code;
 }				t_cwd;
 
-typedef struct		s_exec
+typedef struct s_exec
 {
 	int				nb_cmd;
 	int				pos_cmd;
@@ -59,7 +59,7 @@ typedef struct		s_exec
 	struct s_exec	*next;
 }					t_exec;
 
-typedef struct			s_glob
+typedef struct s_glob
 {
 	char				*name;
 	int					equal;

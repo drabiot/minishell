@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/18 22:40:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:01:53 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	grab_token(t_input *cmd, t_token *token)
 		return ;
 	while (cmd->str[cmd->i + 1] && (!(is_white_space(cmd->str, cmd->i + 1)
 				|| is_special_char(cmd->str, cmd->i + 1))
-				|| (quote == 0 && (cmd->str[cmd->i] != '\''
-				|| cmd->str[cmd->i] != '"'))))
+			|| (quote == 0 && (cmd->str[cmd->i] != '\''
+					|| cmd->str[cmd->i] != '"'))))
 	{
 		quote = cmd->str[cmd->i];
 		if (quote == '\'' || quote == '"')
@@ -70,12 +70,13 @@ void	grab_token(t_input *cmd, t_token *token)
 
 void	tokenizer(t_input *cmd, t_glob *t_envp)
 {
-	unsigned int		index = 0;
+	unsigned int		index;
 	t_token				token;
 	t_cmd				*start;
 	char				*arg;
 	char				c;
 
+	index = 0;
 	start = NULL;
 	token = (t_token){0};
 	while (cmd->str && cmd->str[cmd->i])

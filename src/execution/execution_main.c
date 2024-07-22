@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/18 22:46:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:17:58 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	close_fds(t_exec *list)
 	}
 }
 
-static void	close_err()
+static void	close_err(void)
 {
 	return ;
 }
@@ -45,7 +45,7 @@ static int	wait_all_pid(t_exec *list)
 	return (ret);
 }
 
-static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
+static void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 {
 	current_node->nb_cmd = nb_cmd;
 	current_node->pos_cmd = pos_cmd + 1;
@@ -147,7 +147,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	return (flags);
 }
 
-static char	*grab_redir(t_cmd *cmd, int	type)
+static char	*grab_redir(t_cmd *cmd, int type)
 {
 	if (type == 0)
 	{
@@ -211,7 +211,7 @@ static t_exec	*ft_last_node(t_exec *lst)
 
 static void	ft_add_back(t_exec **lst, t_exec *new)
 {
-	t_exec *buffer;
+	t_exec	*buffer;
 
 	if (!lst)
 		return ;
@@ -251,7 +251,7 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 			first_node = last_node;
 		i++;
 	}
-	return(first_node);
+	return (first_node);
 }
 
 static void	create_pipe(t_exec *exec)
@@ -274,10 +274,10 @@ static void	create_pipe(t_exec *exec)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_APPEND, 0644);
+						| O_APPEND, 0644);
 			else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_TRUNC, 0644);
+						| O_TRUNC, 0644);
 			close(fd_pipe[1]);
 		}
 		else
@@ -293,10 +293,10 @@ static void	create_pipe(t_exec *exec)
 	}
 	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-			| O_APPEND, 0644);
+				| O_APPEND, 0644);
 	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-			| O_TRUNC, 0644);
+				| O_TRUNC, 0644);
 }
 
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
@@ -372,10 +372,10 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	{
 		if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
 			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_APPEND, 0644);
+					| O_APPEND, 0644);
 		else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
 			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-			| O_TRUNC, 0644);
+					| O_TRUNC, 0644);
 		else
 			exec->fd_out = 1;
 		ret = ft_find_builtins(exec->fd_out, t_envp, exec);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/17 23:03:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:21:35 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ static void	ft_envp_print(t_glob *t_envp)
 	tmp = t_envp;
 	while (tmp)
 	{
-		printf("name: %s, equal:%i, content: %s.\n", (char *)tmp->name, (int)tmp->equal, (char *)tmp->content);
+		printf("name: %s, equal:%i, content: %s.\n",
+		(char *)tmp->name, (int)tmp->equal, (char *)tmp->content);
 		printf("%i\n", i);
 		tmp = tmp->next;
 		i++;
@@ -124,7 +125,7 @@ static void	ft_envp_print(t_glob *t_envp)
 
 static void	ft_signal(int sign)
 {
- 	static int t;
+	static int	t;
 
 	t = 0;
 	if (sign == SIGINT)
