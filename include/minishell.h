@@ -54,6 +54,7 @@ typedef struct s_exec
 	char			**flags;
 	bool			have_heredoc;
 	char			*limiter;
+	bool			file_error;
 	bool			is_piped;
 	pid_t			pid;
 	struct s_exec	*next;

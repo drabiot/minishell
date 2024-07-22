@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/22 14:17:58 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/22 22:49:43 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	close_fds(t_exec *list)
 	}
 }
 
-static void	close_err(void)
+static void	close_err()
 {
 	return ;
 }
@@ -45,7 +45,7 @@ static int	wait_all_pid(t_exec *list)
 	return (ret);
 }
 
-static void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
+static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 {
 	current_node->nb_cmd = nb_cmd;
 	current_node->pos_cmd = pos_cmd + 1;
@@ -56,8 +56,9 @@ static void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->fd_out = -1;
 	current_node->cmd = NULL;
 	current_node->flags = NULL;
-	current_node->have_heredoc = TRUE;
+	current_node->have_heredoc = FALSE;
 	current_node->limiter = NULL;
+	current_node->file_error = FALSE;
 	current_node->is_piped = FALSE;
 	if (pos_cmd >= 1)
 		current_node->is_piped = TRUE;
@@ -127,11 +128,11 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	char	**flags;
 
 	i = 0;
-	while (cmd && (cmd->type == COMMAND || cmd->type == WORD))
+	while (cmd && cmd->type != PIPE)
 	{
 		if (i == 0)
 			line = cmd->arg;
-		else
+		else if (cmd->type == COMMAND || cmd->type == WORD)
 		{
 			line = ft_strjoin(ft_strdup(line), ft_strdup("\b"));
 			line = ft_strjoin(ft_strdup(line), ft_strdup(cmd->arg));
@@ -147,13 +148,56 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	return (flags);
 }
 
-static char	*grab_redir(t_cmd *cmd, int type)
+static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file)
 {
+	int	fd;
+
+	fd = -1;
+	if (file == 0 && type == 0 && node->file_error == FALSE)
+	{
+		if (cmd->next)
+			fd = open(cmd->next->arg, O_RDONLY);
+		else
+		{
+			node->file_error = TRUE;
+			ft_putstr_fd(" unexpected token\n", 2);
+		}
+		if (fd == -1 && node->file_error == FALSE)
+		{
+			ft_putstr_fd(" No such file or directory\n", 2);
+			node->file_error = TRUE;
+		}
+		if (fd != -1)
+			close(fd);
+	}
+	else if (file == 1 && type == 0 && node->file_error == FALSE)
+	{
+		if (cmd->next)
+		{
+			if (cmd->next->type == APPEND_REDIR)
+				fd = open(cmd->next->arg, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			else if (cmd->next->type == TRUNC_REDIR)
+				fd = open(cmd->next->arg, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
+		else
+		{
+			node->file_error = TRUE;
+			ft_putstr_fd(" unexpected token\n", 2);
+		}
+		if (fd == -1 && node->file_error == FALSE)
+		{
+			ft_putstr_fd(" Permission denied\n", 2);
+			node->file_error = TRUE;
+		}
+		if (fd != -1)
+			close(fd);
+	}
 	if (type == 0)
 	{
-		if (!cmd && !cmd->next)
+		if (!cmd || !cmd->next)
 			return (NULL);
-		return (cmd->next->arg);
+		if (cmd->next)
+			return (cmd->next->arg);
 	}
 	else if (type == 1)
 	{
@@ -161,12 +205,8 @@ static char	*grab_redir(t_cmd *cmd, int type)
 			return ("append");
 		else if (cmd->type == TRUNC_REDIR)
 			return ("trunc");
-		else
-			return (NULL);
 	}
-	else
-		return (NULL);
-	//open files
+	return (NULL);
 }
 
 static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
@@ -180,11 +220,11 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 	while (cmd && cmd->type != PIPE)
 	{
 		if (cmd->type == INPUT)
-			current_node->infile = grab_redir(cmd, 0);
+			current_node->infile = grab_redir(cmd, current_node, 0, 0);
 		else if (cmd->type == TRUNC_REDIR || cmd->type == APPEND_REDIR)
 		{
-			current_node->outfile[0] = grab_redir(cmd, 0);
-			current_node->outfile[1] = grab_redir(cmd, 1);
+			current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1);
+			current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1);
 		}
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
@@ -211,7 +251,7 @@ static t_exec	*ft_last_node(t_exec *lst)
 
 static void	ft_add_back(t_exec **lst, t_exec *new)
 {
-	t_exec	*buffer;
+	t_exec *buffer;
 
 	if (!lst)
 		return ;
@@ -251,7 +291,7 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 			first_node = last_node;
 		i++;
 	}
-	return (first_node);
+	return(first_node);
 }
 
 static void	create_pipe(t_exec *exec)
@@ -265,6 +305,14 @@ static void	create_pipe(t_exec *exec)
 	list = NULL;
 	if (exec)
 		list = exec;
+	if (!exec->next)
+	{
+		if (exec->infile)
+		{
+			exec->fd_in = open(exec->infile, O_RDONLY);
+			close(fd_pipe[0]);
+		}
+	}
 	while (exec->next)
 	{
 		pipe_ret = pipe(fd_pipe);
@@ -274,10 +322,10 @@ static void	create_pipe(t_exec *exec)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-						| O_APPEND, 0644);
+					| O_APPEND, 0644);
 			else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-						| O_TRUNC, 0644);
+					| O_TRUNC, 0644);
 			close(fd_pipe[1]);
 		}
 		else
@@ -293,10 +341,10 @@ static void	create_pipe(t_exec *exec)
 	}
 	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_APPEND, 0644);
+			| O_APPEND, 0644);
 	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_TRUNC, 0644);
+			| O_TRUNC, 0644);
 }
 
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
@@ -311,6 +359,12 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (dup_in == -1 || dup_out == -1)
 		close_err();
 	close_fds(list);
+	if (exec->file_error == TRUE)
+	{
+		ret_execve = 1;
+		//free all memory allocated to child process
+		exit(1);
+	}
 	if (is_builtins(exec->cmd))
 	{
 		ret_execve = ft_find_builtins(STDOUT_FILENO, t_envp, exec);
@@ -368,14 +422,16 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;
+	if (pipe_len == 1 && exec->file_error == TRUE)
+		return (1);
 	if (pipe_len == 1 && is_builtins(exec->cmd))
 	{
 		if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
 			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_APPEND, 0644);
+				| O_APPEND, 0644);
 		else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
 			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_TRUNC, 0644);
+			| O_TRUNC, 0644);
 		else
 			exec->fd_out = 1;
 		ret = ft_find_builtins(exec->fd_out, t_envp, exec);
@@ -388,12 +444,13 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 		}
 	}
 	// t_exec *tmp = exec;
-	ret = start_exec(exec, t_envp);
 	// while (tmp)
 	// {
 	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->limiter, tmp->fd_in, tmp->fd_out);
 	// 	tmp = tmp->next;
 	// }
+	ret = start_exec(exec, t_envp);
 	//clean t_exec
 	return (ret);
 }
+
