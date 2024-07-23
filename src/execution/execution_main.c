@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/22 22:49:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/23 20:55:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,10 @@ static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file)
 	{
 		if (cmd->next)
 		{
-			if (cmd->next->type == APPEND_REDIR)
-				fd = open(cmd->next->arg, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			else if (cmd->next->type == TRUNC_REDIR)
-				fd = open(cmd->next->arg, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (cmd->type == APPEND_REDIR)
+				fd = open(cmd->next->arg, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			else if (cmd->type == TRUNC_REDIR)
+				fd = open(cmd->next->arg, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
 		else
 		{
@@ -296,23 +296,13 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 
 static void	create_pipe(t_exec *exec)
 {
-	int		i;
 	int		pipe_ret;
 	int		fd_pipe[2];
 	t_exec	*list;
 
-	i = 0;
 	list = NULL;
 	if (exec)
 		list = exec;
-	if (!exec->next)
-	{
-		if (exec->infile)
-		{
-			exec->fd_in = open(exec->infile, O_RDONLY);
-			close(fd_pipe[0]);
-		}
-	}
 	while (exec->next)
 	{
 		pipe_ret = pipe(fd_pipe);
@@ -326,18 +316,15 @@ static void	create_pipe(t_exec *exec)
 			else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 					| O_TRUNC, 0644);
-			close(fd_pipe[1]);
+			if (exec->fd_out != -1) 
+				close(fd_pipe[1]);
 		}
 		else
 			exec->fd_out = fd_pipe[1];
 		if (exec->infile)
-		{
 			exec->fd_in = open(exec->infile, O_RDONLY);
-			close(fd_pipe[0]);
-		}
-		else
-			exec->next->fd_in = fd_pipe[0];
-		exec = exec->next;
+		exec->next->fd_in = fd_pipe[0];
+		exec = exec->next; 
 	}
 	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
@@ -345,6 +332,9 @@ static void	create_pipe(t_exec *exec)
 	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 			| O_TRUNC, 0644);
+	if (exec->infile)
+		exec->fd_in = open(exec->infile, O_RDONLY);
+
 }
 
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
@@ -422,6 +412,12 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;
+	// t_exec *tmp = exec;
+	// while (tmp)
+	// {
+	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->limiter, tmp->fd_in, tmp->fd_out);
+	// 	tmp = tmp->next;
+	// }
 	if (pipe_len == 1 && exec->file_error == TRUE)
 		return (1);
 	if (pipe_len == 1 && is_builtins(exec->cmd))

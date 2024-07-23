@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:55:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 14:38:25 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/23 19:01:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	handle_quote(t_cmd *start)
 {
 	while (start)
 	{
-		if (start->type == WORD)
+		if (start->type != LIMITER)
 			remove_quote(start->arg);
 		start = start->next;
 	}
