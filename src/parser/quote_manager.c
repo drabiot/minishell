@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:55:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/23 19:01:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:44:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ static void	delete_char(char *arg, int pos)
 static void	apply_del_quote(char *arg, int *i)
 {
 	delete_char(arg, *i);
-	while (arg[*i] != '\"')
+	while (arg[*i] && arg[*i] != '\"')
 	{
 		/*if (arg[*i] == BACKSLASH_QUOTE)
 			delete_char(arg, *i);*/
 		(*i)++;
 	}
-	delete_char(arg, *i);
+	if (arg[*i] == '\"')
+		delete_char(arg, *i);
 	(*i)--;
 }
 
@@ -62,9 +63,10 @@ static void	remove_quote(char *arg)
 		else if (arg[i] == '\'')
 		{
 			delete_char(arg, i);
-			while (arg[i] != '\'')
+			while (arg[i] && arg[i] != '\'')
 				i++;
-			delete_char(arg, i);
+			if (arg[i] == '\'')
+				delete_char(arg, i);
 			i--;
 		}
 		i++;
