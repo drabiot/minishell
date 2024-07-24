@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/23 18:58:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:16:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,31 @@ t_bool	is_redirection(t_input *cmd, t_token *token)
 
 void	grab_token(t_input *cmd, t_token *token)
 {
-	char	quote;
+	int	quote;
 
-	quote = 0;
+	quote = -1;
 	while (cmd->str[cmd->i + 1] && is_white_space(cmd->str, cmd->i))
 		cmd->i++;
 	token->start = cmd->i;
 	if (is_redirection(cmd, token))
 		return ;
-	while (cmd->str[cmd->i + 1] && (!(is_white_space(cmd->str, cmd->i + 1)
-				|| is_special_char(cmd->str, cmd->i + 1))
-			|| (quote == 0 && (cmd->str[cmd->i] != '\''
-					|| cmd->str[cmd->i] != '"'))))
+	if (quote == -1 && (cmd->str[cmd->i] == '\'' || cmd->str[cmd->i] == '"'))
+		quote = cmd->i;
+	else if (quote != -1 && cmd->str[cmd->i] == cmd->str[quote])
+		quote = -1;
+	while (cmd->str[cmd->i + 1] && (quote != -1 || !(is_white_space(cmd->str, cmd->i + 1)
+				|| is_special_char(cmd->str, cmd->i + 1))))
 	{
-		quote = cmd->str[cmd->i];
-		if (quote == '\'' || quote == '"')
-		{
-			while (cmd->str[cmd->i + 1] && quote != cmd->str[cmd->i + 1])
-				cmd->i++;
-			cmd->i++;
-		}
-		if (!(is_white_space(cmd->str, cmd->i + 1)
-				|| is_special_char(cmd->str, cmd->i + 1)))
-			cmd->i++;
+		//if (cmd->str[cmd->i + 1] && quote != -1)
+		//	cmd->i++;
+		//if (!(is_white_space(cmd->str, cmd->i + 1)
+		//		|| is_special_char(cmd->str, cmd->i + 1)))
+		//	cmd->i++;
+		cmd->i++;
+		if (quote == -1 && (cmd->str[cmd->i] == '\'' || cmd->str[cmd->i] == '"'))
+			quote = cmd->i;
+		else if (quote != -1 && cmd->str[cmd->i] == cmd->str[quote])
+			quote = -1;
 	}
 	token->end = cmd->i;
 }

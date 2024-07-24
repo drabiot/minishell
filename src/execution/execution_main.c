@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/23 20:55:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:02:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,7 @@ static void	create_pipe(t_exec *exec)
 			if (exec->fd_out != -1) 
 				close(fd_pipe[1]);
 		}
-		else
+		if (exec->fd_out == -1)
 			exec->fd_out = fd_pipe[1];
 		if (exec->infile)
 			exec->fd_in = open(exec->infile, O_RDONLY);

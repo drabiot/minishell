@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/09 14:30:51 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/24 11:17:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_expand_modif(t_cmd *list, char *content, int start, int end)
 
 	with_content = NULL;
 	first_part = ft_substr(list->arg, 0, start - 1);
-	end_part = ft_substr(list->arg, end + 2, ft_strlen(list->arg) - end);
+	end_part = ft_substr(list->arg, end + 1, ft_strlen(list->arg) - end);
 	if (!content)
 		full = ft_strjoin(first_part, end_part);
 	else
@@ -78,30 +78,34 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 	while (list->arg[i] && list->arg[i] != '$')
 		i++;
 	start = ++i;
+	end = start;
 	while (list->arg[i] && i != 0)
 	{
-		if (!(list->arg[i + 1] >= 'a' && list->arg[i + 1] <= 'z') &&
-			!(list->arg[i + 1] >= 'A' && list->arg[i + 1] <= 'Z') &&
-			list->arg[i + 1] != '_' && !(list->arg[i + 1] >= '0' && list->arg[i + 1] <= '9'))
-		{
-			end = i - 1;
-			i = -1;
-		}
 		if (i == start && list->arg[i] == '?')
 		{
-			end = i - 1;
+			end = i + 1;
+			break ;
+		}
+		if (!(list->arg[i] >= 'a' && list->arg[i] <= 'z') &&
+			!(list->arg[i] >= 'A' && list->arg[i] <= 'Z') &&
+			list->arg[i] != '_' && !(list->arg[i] >= '0' && list->arg[i] <= '9'))
+		{
+			end = i;
 			break ;
 		}
 		i++;
 	}
-	name = ft_substr(list->arg, start, end - start + 2);
+	if (!list->arg[i])
+		end = i;
+	name = ft_substr(list->arg, start, end - start);
 	if (!ft_strncmp(name, "?", 1))
 		content = ft_itoa(t_envp->utils->return_code);
 	else
 		content = ft_getenv(name, t_envp, 0);
 	if (!content)
 		content = "";
+	// printf("start: %d, end: %d, i: %d\n", start, end, i);
 	// printf("name: %s, content: %s\n", name, content);
 	free(name);
-	ft_expand_modif(list, ft_substr(content, 0, ft_strlen(content)), start, end);
+	ft_expand_modif(list, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
 }
