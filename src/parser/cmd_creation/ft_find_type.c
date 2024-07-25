@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/25 10:34:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:53:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	is_path(t_cmd *current, t_cmd *prev)
 	if (prev && (prev->type == HERE_DOC || prev->type == INPUT
 			|| prev->type == APPEND_REDIR || prev->type == TRUNC_REDIR))
 		return (2);
-	if (access(current->arg, X_OK) == 0)
-		return (10);
+	/*if (access(current->arg, F_OK) == 0)
+		return (10);*/
 	else if (current->arg && (current->arg[0] == '/'
 			|| (current->arg[0] == '.' && current->arg[1] == '/')))
 		return (1);
@@ -87,20 +87,27 @@ void expandable_type(t_cmd *exec)
 		if (ft_strcmp(exec->arg, "") == 0)
 			exec->type = NONE;
 		ret_path = is_path(exec, prev);
-		if (prev && have_cmd == FALSE && (ret_path == 10
-			|| (prev->type != WORD && prev->type != COMMAND)))
+		if (exec->arg[0] == '<')
+			exec->type = INPUT;
+		else if (exec->arg[0] == '>' && exec->arg[1] == '>')
+			exec->type = APPEND_REDIR;
+		else if (exec->arg[0] == '>')
+			exec->type = TRUNC_REDIR;
+		else if (ret_path == 2)
+			exec->type = REDIR_FILE;
+		else if (exec->type == COMMAND || (prev && have_cmd == FALSE && (ret_path == 10
+			|| (prev->type != WORD && prev->type != COMMAND))))
 		{
 			exec->type = COMMAND;
 			have_cmd = TRUE;
 		}
-		if (ret_path == 1)
+		else if (ret_path == 1)
 			exec->type = PATH;
-		if (ret_path == 2)
-			exec->type = REDIR_FILE;
-		if (prev && prev->type == PIPE)
-			have_cmd = FALSE;
 		if (exec->arg[0] == '|')
+		{
 			exec->type = PIPE;
+			have_cmd = FALSE;
+		}
 		prev = exec;
 		exec = exec->next;
 	}

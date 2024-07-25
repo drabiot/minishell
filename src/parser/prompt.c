@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/25 10:31:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:22:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int	prompt(t_glob *t_envp)
 	char		*input;
 	char		**arg;
 
-	//rl_outstream = stdin;
+	// rl_outstream = stdin;
 	//create_path(&path, t_envp);
 	//printf("\x1b[0;95m%s ", path.absolute_path);
 	input = readline("\x1b[0;95muwushell>\x1b[39;49m ");
 	if (!input)
-		exit (0);
+		exit (t_envp->utils->return_code);
 	//free(path.absolute_path);
 	// if (!(ft_strncmp(input, "exit", 4)))
 	// 	return (0);

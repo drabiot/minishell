@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/25 09:55:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:36:15 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static int	wait_all_pid(t_exec *list)
 	waitpid(list->pid, &ret, 0);
 	if (WIFEXITED(ret))
 		ret = WEXITSTATUS(ret);
+	else if (WIFSIGNALED(ret))
+		ft_putstr_fd(" Broken pipe\n", 2);
 	return (ret);
 }
 
@@ -308,7 +310,7 @@ static void	create_pipe(t_exec *exec)
 		pipe_ret = pipe(fd_pipe);
 		if (pipe_ret == -1)
 			close_err();
-		if (exec->outfile[0])
+		if (exec->outfile[0] && exec->file_error == FALSE)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
 				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
@@ -321,7 +323,7 @@ static void	create_pipe(t_exec *exec)
 		}
 		if (exec->fd_out == -1)
 			exec->fd_out = fd_pipe[1];
-		if (exec->infile)
+		if (exec->infile && exec->file_error == FALSE)
 			exec->fd_in = open(exec->infile, O_RDONLY);
 		exec->next->fd_in = fd_pipe[0];
 		exec = exec->next; 
@@ -367,7 +369,11 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		exit(0);
 	if (ret_execve == -1)
 	{
-		ft_putstr_fd(" command not found\n", 2);
+		if (exec->cmd[0] != '/' && (exec->cmd[0] != '.' && exec->cmd[1] != '/'))
+			ft_putstr_fd(" command not found\n", 2);
+		else
+			ft_putstr_fd(" No such file or directory\n", 2);
+			
 		exit(127);
 	}
 }
