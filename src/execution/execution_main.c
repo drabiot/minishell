@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/24 11:02:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 09:55:43 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	{
 		if (i == 0)
 			line = cmd->arg;
-		else if (cmd->type == COMMAND || cmd->type == WORD)
+		else if (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH)
 		{
 			line = ft_strjoin(ft_strdup(line), ft_strdup("\b"));
 			line = ft_strjoin(ft_strdup(line), ft_strdup(cmd->arg));

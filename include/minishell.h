@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/24 08:27:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 09:50:02 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
 t_cmd	*ft_lstnmap_cmd(t_cmd *cmd, int npipe);
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
 int		ft_find_type(char *arg, t_cmd *prev);
+void	expandable_type(t_cmd *exec);
 
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
 int		ft_find_type(char *arg, t_cmd *prev);

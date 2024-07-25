@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/24 11:16:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:27:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 		index++;
 	}
 	ft_expand(&start, t_envp);//split when expand & redo type finding after expand
+	expandable_type(start);
 	handle_quote(start);
 	// t_cmd *test;
 	// tmp = t_envp;

@@ -6,59 +6,11 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/10 00:04:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:34:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-/*static int ft_is_cmd(char *arg)
-{
-	if (!ft_strcmp(arg, "echo"))
-		return (1);
-	if (!ft_strcmp(arg, "cd"))
-		return (1);
-	if (!ft_strcmp(arg, "pwd"))
-		return (1);
-	if (!ft_strcmp(arg, "export"))
-		return (1);
-	if (!ft_strcmp(arg, "unset"))
-		return (1);
-	if (!ft_strcmp(arg, "env"))
-		return (1);
-	if (!ft_strcmp(arg, "exit"))
-		return (1);
-	return (0);
-}
-
-int	ft_find_type(char *arg)
-{
-	static int limiter = 0;
-	
-	if (limiter == 1)
-	{
-		limiter = 0;
-		return (LIMITER);
-	}
-	if (arg[0] == '|')
-		return (PIPE);
-	if (arg[0] == '<' && arg[1] == '<')
-	{
-		limiter = 1;
-		return (HERE_DOC);
-	}
-	if (arg[0] == '<')
-		return (INPUT);
-	if (arg[0] == '>' && arg[1] == '>')
-		return (APPEND_REDIR);
-	if (arg[0] == '>')
-		return (TRUNC_REDIR);
-
-
-	if (ft_is_cmd(arg))
-		return (COMMAND);
-	return (WORD);
-}*/
 
 static int	is_start(t_cmd *prev)
 {
@@ -75,6 +27,19 @@ static int	is_redir(t_cmd *prev)
 		return (0);
 	if (prev->type == INPUT || prev->type == TRUNC_REDIR
 		|| prev->type == APPEND_REDIR)
+		return (1);
+	return (0);
+}
+
+static int	is_path(t_cmd *current, t_cmd *prev)
+{
+	if (prev && (prev->type == HERE_DOC || prev->type == INPUT
+			|| prev->type == APPEND_REDIR || prev->type == TRUNC_REDIR))
+		return (2);
+	if (access(current->arg, X_OK) == 0)
+		return (10);
+	else if (current->arg && (current->arg[0] == '/'
+			|| (current->arg[0] == '.' && current->arg[1] == '/')))
 		return (1);
 	return (0);
 }
@@ -103,10 +68,40 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (TRUNC_REDIR);
 	else if (is_redir(prev))
 		return (REDIR_FILE);
-	//else if (prev && (prev->type == REDIR_FILE || prev->type == INFILE))
-	//	return (INFILE);
 	else if (is_start(prev) || !prev)
 		return (COMMAND);
 	else
 		return (WORD);
+}
+
+void expandable_type(t_cmd *exec)
+{
+	bool	have_cmd;
+	t_cmd	*prev;
+	int		ret_path;
+
+	have_cmd = FALSE;
+	prev = NULL;
+	while (exec && exec->next)
+	{
+		if (ft_strcmp(exec->arg, "") == 0)
+			exec->type = NONE;
+		ret_path = is_path(exec, prev);
+		if (prev && have_cmd == FALSE && (ret_path == 10
+			|| (prev->type != WORD && prev->type != COMMAND)))
+		{
+			exec->type = COMMAND;
+			have_cmd = TRUE;
+		}
+		if (ret_path == 1)
+			exec->type = PATH;
+		if (ret_path == 2)
+			exec->type = REDIR_FILE;
+		if (prev && prev->type == PIPE)
+			have_cmd = FALSE;
+		if (exec->arg[0] == '|')
+			exec->type = PIPE;
+		prev = exec;
+		exec = exec->next;
+	}
 }

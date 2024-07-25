@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:51:10 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/08 16:26:11 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/07/25 09:32:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@
 # define TRUNC_REDIR 8
 # define REDIR_FILE 9
 # define INFILE 10
+# define PATH 11
+# define NONE 12
 
 #endif
