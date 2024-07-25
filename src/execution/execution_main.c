@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/25 16:36:15 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:57:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,13 +328,13 @@ static void	create_pipe(t_exec *exec)
 		exec->next->fd_in = fd_pipe[0];
 		exec = exec->next; 
 	}
-	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
+	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0 && exec->file_error == FALSE)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 			| O_APPEND, 0644);
-	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
+	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0 && exec->file_error == FALSE)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 			| O_TRUNC, 0644);
-	if (exec->infile)
+	if (exec->infile && exec->file_error == FALSE)
 		exec->fd_in = open(exec->infile, O_RDONLY);
 
 }
