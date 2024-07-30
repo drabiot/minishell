@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/25 16:57:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/30 01:29:34 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->outfile[1] = NULL;
 	current_node->fd_in = -1;
 	current_node->fd_out = -1;
+	current_node->base_cmd = NULL;
 	current_node->cmd = NULL;
 	current_node->flags = NULL;
 	current_node->have_heredoc = FALSE;
@@ -231,6 +232,7 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
 			current_node->cmd = get_cmd(cmd->arg, glob);
+			current_node->base_cmd = cmd->arg;
 			current_node->flags = get_flags(cmd, current_node->cmd);
 		}
 		else if (cmd->type == HERE_DOC)
@@ -369,11 +371,15 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		exit(0);
 	if (ret_execve == -1)
 	{
-		if (exec->cmd[0] != '/' && (exec->cmd[0] != '.' && exec->cmd[1] != '/'))
-			ft_putstr_fd(" command not found\n", 2);
+		if (ft_strchr(exec->base_cmd, '/')) {
+			ft_errno();
+			if(errno == EACCES) exit(126);
+			exit(127);
+		}
+		//	ft_putstr_fd(" No such file or directory\n", 2);
 		else
-			ft_putstr_fd(" No such file or directory\n", 2);
-			
+			ft_putstr_fd(" command not found\n", 2);
+		
 		exit(127);
 	}
 }

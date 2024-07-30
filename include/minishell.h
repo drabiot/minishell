@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/25 09:50:02 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/30 02:35:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_exec
 	char			*outfile[2];
 	int				fd_in;
 	int				fd_out;
+	char			*base_cmd;
 	char			*cmd;
 	char			**flags;
 	bool			have_heredoc;
@@ -118,7 +119,7 @@ int		ft_unset(t_glob **envp, t_exec *exec);
 int		ft_export(int fd, t_glob *t_envp, t_exec *exec);
 int		ft_check_quote_and_delete(t_exec **exec);
 int		ft_cd(t_exec *exec, t_glob **t_envp);
-int		ft_exit(int fd, t_exec *exec, t_glob **t_envp);
+void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value);
 
 /* ****************************************** */
 /*                  Parser                    */
@@ -129,6 +130,7 @@ char	**lexer(char *input, t_glob *t_envp);
 void	tokenizer(t_input *cmd, t_glob *t_envp);
 void	handle_quote(t_cmd *start);
 void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
+t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line);
 
 /* ****************************************** */
 /*                 Execution                  */

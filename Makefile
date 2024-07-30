@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/07/18 22:50:32 by tchartie         ###   ########.fr        #
+#    Updated: 2024/07/29 21:54:55 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS		=		main.c \
 					parser/lexer.c \
 					parser/tokenizer.c \
 					parser/quote_manager.c \
+					parser/error_syntax.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \

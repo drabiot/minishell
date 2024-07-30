@@ -38,6 +38,30 @@ static void	exec_echo(t_exec *exec, int pos_flag, int fd)
 		ft_putstr_fd("\n", fd);
 }
 
+static int	is_echo_option(t_exec *exec)
+{
+	int	i;
+	int	j;
+	int	pos;
+
+	i = 1;
+	j = 1;
+	pos = 1;
+	while (exec->flags[i])
+	{
+		j = 1;
+		if (exec->flags[i][0] == '-')
+		{
+			while (exec->flags[i][j] == 'n')
+				j++;
+			if (!exec->flags[i][j])
+				pos = i + 1;
+		}
+		i++;
+	}
+	return (pos);
+}
+
 int	ft_echo(int fd, t_exec *exec, t_glob *t_envp)
 {
 	int		option;
@@ -46,8 +70,7 @@ int	ft_echo(int fd, t_exec *exec, t_glob *t_envp)
 	option = 1;
 	if (null_echo(exec, fd))
 		return (0);
-	if (ft_strcmp(exec->flags[1], "-n") == 0)
-		option = 2;
+	option = is_echo_option(exec);
 	exec_echo(exec, option, fd);
 	return (0);
 }
