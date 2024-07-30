@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/25 15:56:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/30 13:07:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,16 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 
 	i = 0;
 	while (list->arg[i] && list->arg[i] != '$')
-		i++;
+	{
+		if (list->arg[i] != '\'')
+		{
+			i++;
+			while (list->arg && list->arg[i] == '\'')
+				i++;
+		}
+		else
+			i++;
+	}
 	start = ++i;
 	end = start;
 	while (list->arg[i] && i != 0)
@@ -85,6 +94,12 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 		{
 			end = i + 1;
 			break ;
+		}
+		if (list->arg[i] == '\'')
+		{
+			i++;
+			while (list->arg[i] != '\'')
+				i++;
 		}
 		if (!(list->arg[i] >= 'a' && list->arg[i] <= 'z') &&
 			!(list->arg[i] >= 'A' && list->arg[i] <= 'Z') &&
@@ -95,12 +110,21 @@ void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
 		}
 		i++;
 	}
+	printf("start: %d, end: %d\n", start, end);
 	if (!list->arg[i])
 		end = i;
-	name = ft_substr(list->arg, start, end - start);
-	if (!ft_strncmp(name, "?", 1))
-		content = ft_itoa(t_envp->utils->return_code);
+	if (start == end && (list->arg[start] != '?' || (list->arg[end] != '\0' && list->arg[end - 1] != '"' && list->arg[end + 1] != '"')))
+	{
+		if (start > 1)
+			start--;
+		name = NULL;
+		content = NULL;
+	}
 	else
+		name = ft_substr(list->arg, start, end - start);
+	if (name && !ft_strncmp(name, "?", 1))
+		content = ft_itoa(t_envp->utils->return_code);
+	else if (name)
 		content = ft_getenv(name, t_envp, 0);
 	if (!content)
 		content = "";

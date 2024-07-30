@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/30 01:29:34 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/30 11:31:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->next = NULL;
 }
 
-static char	*get_correct_path(char *cmd, char *content_path)
+static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)
 {
 	char	**all_path;
 	int		i;
@@ -79,7 +79,7 @@ static char	*get_correct_path(char *cmd, char *content_path)
 	all_path = ft_split((char const *)content_path, ':');
 	i = 0;
 	access_state = 1;
-	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd)))
+	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd) || is_path))
 	{
 		correct_path = ft_strdup(cmd);
 		return (correct_path);
@@ -103,21 +103,23 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	char	*content_path;
 	char	*full_path;
 	char	*tmp_cmd;
+	t_bool	is_path;
 
 	path = NULL;
 	content_path = NULL;
 	tmp_cmd = NULL;
 	if (glob)
 		path = glob;
+	is_path = ft_strchr(arg, '/') != NULL;
 	while (path && ft_strcmp(path->name, "PATH") != 0)
 		path = path->next;
 	if (path)
 		content_path = path->content;
-	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)))
+	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)) || is_path)
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
 		tmp_cmd = ft_strjoin(ft_strdup("/"), ft_strdup(arg));
-	full_path = get_correct_path(tmp_cmd, content_path);
+	full_path = get_correct_path(tmp_cmd, content_path, is_path);
 	free(tmp_cmd);
 	if (!full_path)
 		return (NULL);
@@ -151,7 +153,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	return (flags);
 }
 
-static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file)
+static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file, t_glob *glob)
 {
 	int	fd;
 
@@ -167,7 +169,16 @@ static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file)
 		}
 		if (fd == -1 && node->file_error == FALSE)
 		{
-			ft_putstr_fd(" No such file or directory\n", 2);
+			if (access(cmd->next->arg, F_OK) >= 0 && access(cmd->next->arg, X_OK) < 0)
+			{
+				ft_errno();
+				glob->utils->return_code = 126;
+			}
+			else if (access(cmd->next->arg, F_OK) < 0)
+			{
+				ft_errno();
+				glob->utils->return_code = 127;
+			}
 			node->file_error = TRUE;
 		}
 		if (fd != -1)
@@ -189,7 +200,16 @@ static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file)
 		}
 		if (fd == -1 && node->file_error == FALSE)
 		{
-			ft_putstr_fd(" Permission denied\n", 2);
+			if (access(cmd->next->arg, F_OK) != 0)
+			{
+				ft_putstr_fd(" No such file or directory\n", 2);
+				glob->utils->return_code = 127;
+			}
+			else
+			{
+				ft_putstr_fd(" Permission denied\n", 2);
+				glob->utils->return_code = 126;
+			}
 			node->file_error = TRUE;
 		}
 		if (fd != -1)
@@ -222,12 +242,12 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 	set_base_exec(current_node, nb_cmd, pos_cmd);
 	while (cmd && cmd->type != PIPE)
 	{
-		if (cmd->type == INPUT)
-			current_node->infile = grab_redir(cmd, current_node, 0, 0);
+		if (cmd->type == INPUT || (cmd->next && cmd->next->type == PATH))
+			current_node->infile = grab_redir(cmd, current_node, 0, 0, glob);
 		else if (cmd->type == TRUNC_REDIR || cmd->type == APPEND_REDIR)
 		{
-			current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1);
-			current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1);
+			current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1, glob);
+			current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1, glob);
 		}
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
@@ -355,9 +375,12 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	close_fds(list);
 	if (exec->file_error == TRUE)
 	{
-		ret_execve = 1;
+		ret_execve = (*t_envp)->utils->return_code;
 		//free all memory allocated to child process
-		exit(1);
+		if (exec->nb_cmd >= 2)
+			exit (1);
+		else
+			exit(ret_execve);
 	}
 	if (is_builtins(exec->cmd))
 	{
@@ -379,7 +402,6 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		//	ft_putstr_fd(" No such file or directory\n", 2);
 		else
 			ft_putstr_fd(" command not found\n", 2);
-		
 		exit(127);
 	}
 }

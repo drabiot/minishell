@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/30 01:07:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/30 10:13:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,12 @@ void expandable_type(t_cmd *exec)
 			exec->type = APPEND_REDIR;
 		else if (exec->arg[0] == '>')
 			exec->type = TRUNC_REDIR;
-		else if (ret_path != 2 && (exec->type == COMMAND || (prev && have_cmd == FALSE && (ret_path == 10
-			|| (prev->type != WORD && prev->type != COMMAND)))))
+		else if (ret_path != 2 && (exec->type == COMMAND || (prev && have_cmd == FALSE 
+			&& (prev->type != WORD && prev->type != COMMAND))))
 		{
 			exec->type = COMMAND;
 			have_cmd = TRUE;
 		}
-		else if (ret_path == 1)
-			exec->type = PATH;
 		if (exec->arg[0] == '|')
 		{
 			exec->type = PIPE;
