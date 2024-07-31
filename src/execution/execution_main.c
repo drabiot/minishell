@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/31 21:48:10 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 22:10:12 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	wait_all_pid(t_exec *list)
 	waitpid(list->pid, &ret, 0);
 	if (WIFEXITED(ret))
 		ret = WEXITSTATUS(ret);
-	else if (WIFSIGNALED(ret))
+	else if (WIFSIGNALED(ret) & SIGPIPE)
 		ft_putstr_fd(" Broken pipe\n", 2);
 	return (ret);
 }

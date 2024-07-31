@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/30 04:13:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 22:14:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 
 	exit_code = (*t_envp)->utils->return_code;
 	error_arg = FALSE;
-	if (!exec->flags[1])
+	if (!exec->flags[1] && !exec->is_piped)
+	{
+		ft_putstr_fd("exit\n", 0);
 		exit(exit_code);
-
+	}
 	if (!ft_get_alpha(exec->flags[1]) && is_limit(exec->flags[1]))
 		error_arg = TRUE;
 	if (exec->flags[2] && !error_arg && !ft_get_alpha(exec->flags[1]))
