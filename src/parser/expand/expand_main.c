@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:12:56 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/30 16:06:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:05:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,29 +107,47 @@ static t_bool	other_expand(char *arg, int **type, int i)
 
 static t_bool	is_expandable(char *arg, int *type)
 {
-	int	i;
+	int		i;
+	t_bool	d_quote;
+	t_bool	s_quote;
 
 	i = 0;
+	d_quote = FALSE;
+	s_quote = FALSE;
 	while (arg[i])
 	{
-		if (arg[i] == '\'')
+		if (arg[i] == '"' && !s_quote && arg[i + 1] != '"')
 		{
+			d_quote = !d_quote;
 			i++;
-			while (arg[i] && arg[i] != '\'')
-				i++;
 		}
-		else if (arg[i] == '$')
+		else if (arg[i] == '"' && !s_quote)
+			i++;
+		if (arg[i] == '\'' && !d_quote && arg[i + 1] != '\'')
+		{
+			s_quote = !s_quote;
+			i++;
+		}
+		else if (arg[i] == '\'' && !s_quote)
+			i++;
+		if (arg[i] == '$' && !s_quote)
 		{
 			if (arg[i + 1] == '?')
 			{
 				*type = 1;
 				return (TRUE);
 			}
+			else if ((arg[i + 1] == '\'' || arg[i + 1] == '"') && d_quote)
+				return (FALSE);
 			else if (other_expand(arg, &type, i))
 				return (TRUE);
 			else
 				return (FALSE);
 		}
+		/*else if (arg[i] == '"' && d_quote)
+			;
+		else if (arg[i] == '\'' && s_quote)
+			;*/
 		else
 			i++;
 	}
@@ -192,12 +210,14 @@ static void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 	int		end;
 	char	*content;
 	char	*name;
+	t_bool	d_quote;
 
 	i = 0;
 	start = 0;
 	end = 0;
 	name = NULL;
 	content = NULL;
+	d_quote = FALSE;
 	if (type == 1)
 	{
 		while (cmd->arg[i] != '$' && cmd->arg[i + 1] != '?')
@@ -210,11 +230,21 @@ static void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 	{
 		while (cmd->arg[i])
 		{
-			if (cmd->arg[i] == '\'')
+			if (cmd->arg[i] == '"')
+			{
+				d_quote = TRUE;
+				i++;
+			}
+			if (cmd->arg[i] == '\'' && d_quote == FALSE)
 			{
 				i++;
 				while (cmd->arg[i] != '\'')
 					i++;
+			}
+			else if (cmd->arg[i] == '"')
+			{
+				d_quote = FALSE;
+				i++;
 			}
 			if (cmd->arg[i] == '$')
 			{
