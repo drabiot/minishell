@@ -6,21 +6,30 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/30 13:07:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:15:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char	*ft_last_return(void)
+static char	*ft_getenv(char *name, t_glob *t_envp, int i)
 {
-	char	*tmp;
+	t_glob	*tmp;
+	char	*name_tmp;
 
-	tmp = NULL;
-	return (tmp);
+	tmp = t_envp;
+	while (tmp)
+	{
+		i = 0;
+		name_tmp = (char *)tmp->name;
+		if (!ft_strcmp(name_tmp, name))
+			return (tmp->content);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }
 
-static void	ft_expand_modif(t_cmd *list, char *content, int start, int end)
+static void	ft_expand_do(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
 	char	*end_part;
@@ -28,7 +37,10 @@ static void	ft_expand_modif(t_cmd *list, char *content, int start, int end)
 	char	*full;
 
 	with_content = NULL;
-	first_part = ft_substr(list->arg, 0, start - 1);
+	if (start >= 1)
+		first_part = ft_substr(list->arg, 0, start - 1);
+	else
+		first_part = NULL;
 	end_part = ft_substr(list->arg, end + 1, ft_strlen(list->arg) - end);
 	if (!content)
 		full = ft_strjoin(first_part, end_part);
@@ -49,87 +61,78 @@ static void	ft_expand_modif(t_cmd *list, char *content, int start, int end)
 		free(with_content);
 }
 
-char	*ft_getenv(char *name, t_glob *t_envp, int i)
-{
-	t_glob	*tmp;
-	char	*name_tmp;
-
-	tmp = t_envp;
-	while (tmp)
-	{
-		i = 0;
-		name_tmp = (char *)tmp->name;
-		if (!ft_strcmp(name_tmp, name))
-			return (tmp->content);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp)
+void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 {
 	int		i;
 	int		start;
 	int		end;
-	char	*name;
 	char	*content;
+	char	*name;
+	t_bool	d_quote;
 
 	i = 0;
-	while (list->arg[i] && list->arg[i] != '$')
+	start = 0;
+	end = 0;
+	name = NULL;
+	content = NULL;
+	d_quote = FALSE;
+	if (type == 1)
 	{
-		if (list->arg[i] != '\'')
-		{
+		while (cmd->arg[i] != '$' && cmd->arg[i + 1] != '?')
 			i++;
-			while (list->arg && list->arg[i] == '\'')
-				i++;
-		}
-		else
-			i++;
+		start = i + 1;
+		end = start + 1;
+		content = ft_itoa(t_envp->utils->return_code);
 	}
-	start = ++i;
-	end = start;
-	while (list->arg[i] && i != 0)
+	else if (type == 2)
 	{
-		if (i == start && list->arg[i] == '?')
+		while (cmd->arg[i])
 		{
-			end = i + 1;
-			break ;
-		}
-		if (list->arg[i] == '\'')
-		{
-			i++;
-			while (list->arg[i] != '\'')
+			if (cmd->arg[i] == '"')
+			{
+				d_quote = TRUE;
 				i++;
+			}
+			if (cmd->arg[i] == '\'' && d_quote == FALSE)
+			{
+				i++;
+				while (cmd->arg[i] != '\'')
+					i++;
+			}
+			else if (cmd->arg[i] == '"')
+			{
+				d_quote = FALSE;
+				i++;
+			}
+			if (cmd->arg[i] == '$')
+			{
+				start = i;
+				i++;
+				while ((cmd->arg[i] >= 'a' && cmd->arg[i] <= 'z') || (cmd->arg[i] >= 'A' && cmd->arg[i] <= 'Z')
+						|| (cmd->arg[i] >= '0' && cmd->arg[i] <= '9'))
+					i++;
+				end = i;
+				name = ft_substr(cmd->arg, start + 1, end - start - 1);
+				content = ft_getenv(name, t_envp, 0);
+				start++;
+				break ;
+			}
+			i++;
 		}
-		if (!(list->arg[i] >= 'a' && list->arg[i] <= 'z') &&
-			!(list->arg[i] >= 'A' && list->arg[i] <= 'Z') &&
-			list->arg[i] != '_' && !(list->arg[i] >= '0' && list->arg[i] <= '9'))
-		{
-			end = i;
-			break ;
-		}
-		i++;
 	}
-	printf("start: %d, end: %d\n", start, end);
-	if (!list->arg[i])
-		end = i;
-	if (start == end && (list->arg[start] != '?' || (list->arg[end] != '\0' && list->arg[end - 1] != '"' && list->arg[end + 1] != '"')))
+	else if (type == 3)
 	{
-		if (start > 1)
-			start--;
-		name = NULL;
-		content = NULL;
+		content = "";
+		start = 0;
+		end = 0;
 	}
 	else
-		name = ft_substr(list->arg, start, end - start);
-	if (name && !ft_strncmp(name, "?", 1))
-		content = ft_itoa(t_envp->utils->return_code);
-	else if (name)
-		content = ft_getenv(name, t_envp, 0);
+	{
+		content = "";
+		start = 0;
+		end = 0;
+	}
 	if (!content)
 		content = "";
-	// printf("start: %d, end: %d, i: %d\n", start, end, i);
-	// printf("name: %s, content: %s\n", name, content);
-	free(name);
-	ft_expand_modif(list, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
+	ft_expand_do(cmd, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
 }

@@ -6,11 +6,12 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/30 11:31:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:48:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <sys/stat.h>
 
 static void	close_fds(t_exec *list)
 {
@@ -363,13 +364,20 @@ static void	create_pipe(t_exec *exec)
 
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 {
-	int	ret_execve;
-	int	dup_in;
-	int	dup_out;
+	int		ret_execve;
+	int		dup_in;
+	int		dup_out;
+	struct stat	s_stat;
 
 	dup_in = dup2(exec->fd_in, STDIN_FILENO);
 	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
 	ret_execve = 0;
+	if (list->base_cmd[0] == '.' && list->base_cmd[1] == '\0')
+	{
+		ft_putstr_fd(" filename argument required", 2);
+		exit(2);
+	}
+	stat(list->cmd, &s_stat);
 	if (dup_in == -1 || dup_out == -1)
 		close_err();
 	close_fds(list);
@@ -395,8 +403,15 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (ret_execve == -1)
 	{
 		if (ft_strchr(exec->base_cmd, '/')) {
+			//ft_errno();
+			if (errno == EACCES && (s_stat.st_mode & __S_IFMT) == __S_IFDIR)
+			{
+				ft_putstr_fd(" Is a directory\n", 2);
+				exit (126);
+			}
 			ft_errno();
-			if(errno == EACCES) exit(126);
+			if(errno == EACCES)
+				exit(126);
 			exit(127);
 		}
 		//	ft_putstr_fd(" No such file or directory\n", 2);

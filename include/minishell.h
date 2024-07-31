@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/30 02:35:45 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/07/31 21:15:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		ft_name_len(char *tmp);
 /* ****************************************** */
 void	ft_expand(t_cmd **list, t_glob *t_envp);
 int		ft_verif_main(char *arg);
-void	ft_expand_modif_main(t_cmd *list, t_glob *t_envp);
+void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type);
 t_cmd	*expand_tokenizer(t_input *cmd);
 
 /* ****************************************** */
