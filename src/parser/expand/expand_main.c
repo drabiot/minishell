@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_main.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 22:12:56 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/31 21:15:35 by tchartie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../include/minishell.h"
 
 static t_bool	other_expand(char *arg, int **type, int i)
@@ -50,7 +38,7 @@ static t_bool	is_expandable(char *arg, int *type)
 	i = 0;
 	d_quote = FALSE;
 	s_quote = FALSE;
-	while (arg[i])
+	while (arg && arg[i])
 	{
 		if (arg[i] == '"' && !s_quote && arg[i + 1] != '"')
 		{

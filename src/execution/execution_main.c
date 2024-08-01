@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/07/31 22:10:12 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:59:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	tmp_cmd = NULL;
 	if (glob)
 		path = glob;
+	if (!arg)
+		return (NULL);
 	is_path = ft_strchr(arg, '/') != NULL;
 	while (path && ft_strcmp(path->name, "PATH") != 0)
 		path = path->next;
@@ -372,9 +374,21 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	dup_in = dup2(exec->fd_in, STDIN_FILENO);
 	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
 	ret_execve = 0;
+	if (!list->base_cmd)
+	{
+		//free all memory allocated to child process
+		exit(0);
+	}
+	if (list->base_cmd[0] == '\0')
+	{
+		//free all memory allocated to child process
+		ft_putstr_fd(" command not found\n", 2);
+		exit (127);
+	}
 	if (list->base_cmd[0] == '.' && list->base_cmd[1] == '\0')
 	{
-		ft_putstr_fd(" filename argument required", 2);
+		//free all memory allocated to child process
+		ft_putstr_fd(" filename argument required\n", 2);
 		exit(2);
 	}
 	stat(list->cmd, &s_stat);

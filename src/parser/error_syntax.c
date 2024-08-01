@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 21:53:31 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/30 00:42:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:08:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	write_syntax_error(t_cmd *cmd, t_input *line, t_glob *t_envp)
 	{
 		ft_putstr_fd(" syntax error near unexpected token `", 2);
 		ft_putstr_fd(token, 2);
-		ft_putstr_fd("' `", 2);
+		ft_putstr_fd("'\n `", 2);
 		ft_putstr_fd(line->str, 2);
 		ft_putstr_fd("'\n", 2);
 		t_envp->utils->return_code = 2;

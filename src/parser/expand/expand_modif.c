@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/07/31 21:15:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:37:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,82 @@ static char	*ft_getenv(char *name, t_glob *t_envp, int i)
 	return (NULL);
 }
 
+static void	add_new_node(t_cmd **list, char *argument, char *next_arg)
+{
+	t_cmd	*new_node;
+
+	new_node = malloc(sizeof(t_cmd));
+	if (!new_node)
+		;
+		//exit
+	new_node->arg = next_arg;
+	new_node->type = WORD;
+	if (list)
+		new_node->index = (*list)->index + 1;
+	else
+		new_node->index = 0;
+	if ((*list)->next)
+		new_node->next = (*list)->next;
+	else
+		new_node->next = NULL;
+	if (!list)
+		return ;
+	(*list)->arg = argument;
+	if (next_arg)
+		(*list)->next = new_node;
+}
+
+static char	**ft_define_split(char *full)
+{
+	int		i;
+	int		quote;
+	char	**split_args;
+
+	i = 0;
+	quote = -1;
+	while (full[i])
+	{
+		if (full[i] == '"' || full[i] == '\'')
+			quote = i;
+		if (full[i] == full[quote] && i != quote)
+			quote = -1;
+		if (quote == -1 && full[i] == ' ')
+			full[i] = '\b';
+		i++;
+	}
+	split_args = ft_split(full, '\b');
+	return(split_args);
+}
+
+static void	split_full(char *full, t_cmd *list)
+{
+	char	**args;
+	int		i;
+
+	args = NULL;
+	i = 0;
+	if (list)
+	{
+		free(list->arg);
+		list->arg = NULL;
+	}
+	args = ft_define_split(full);
+	if (!args)
+	{
+		list->arg = "";
+		list->type = NONE;
+	}
+	else
+	{
+		while (args[i])
+		{
+			add_new_node(&list, args[i], args[i + 1]);
+			list = list->next;
+			i++;
+		}
+	}
+}
+
 static void	ft_expand_do(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
@@ -49,8 +125,9 @@ static void	ft_expand_do(t_cmd *list, char *content, int start, int end)
 		with_content = ft_strjoin(first_part, content);
 		full = ft_strjoin(with_content, end_part);
 	}
-	free(list->arg);
-	list->arg = full;
+	//free(list->arg);
+	split_full(full, list);
+	//list->arg = full;
 	if (first_part)
 		free(first_part);
 	if (end_part)

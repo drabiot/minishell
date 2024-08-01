@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:55:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/24 11:44:05 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:37:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	handle_quote(t_cmd *start)
 {
 	while (start)
 	{
-		if (start->type != LIMITER)
+		if (start->arg && start->type != LIMITER)
 			remove_quote(start->arg);
 		start = start->next;
 	}

@@ -50,7 +50,7 @@ static int	is_echo_option(t_exec *exec)
 	while (exec->flags[i])
 	{
 		j = 1;
-		if (exec->flags[i][0] == '-')
+		if (exec->flags[i][0] == '-' && exec->flags[i][1] == 'n')
 		{
 			while (exec->flags[i][j] == 'n')
 				j++;

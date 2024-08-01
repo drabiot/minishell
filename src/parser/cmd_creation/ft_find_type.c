@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/30 10:13:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:47:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	is_redir(t_cmd *prev)
 
 static int	is_path(t_cmd *current, t_cmd *prev)
 {
+	if (!current->arg)
+		return (0);
 	if (prev && (prev->type == HERE_DOC || prev->type == INPUT
 			|| prev->type == APPEND_REDIR || prev->type == TRUNC_REDIR))
 		return (2);
@@ -88,24 +90,24 @@ void expandable_type(t_cmd *exec)
 	prev = NULL;
 	while (exec && exec->next)
 	{
-		if (ft_strcmp(exec->arg, "") == 0)
+		if (!exec->arg && exec->next)
 			exec->type = NONE;
 		ret_path = is_path(exec, prev);
 		if (ret_path == 2)
 			exec->type = REDIR_FILE;
-		if (exec->arg[0] == '<')
+		if (exec->arg && exec->arg[0] == '<')
 			exec->type = INPUT;
-		else if (exec->arg[0] == '>' && exec->arg[1] == '>')
+		else if (exec->arg && exec->arg[0] == '>' && exec->arg[1] == '>')
 			exec->type = APPEND_REDIR;
-		else if (exec->arg[0] == '>')
+		else if (exec->arg && exec->arg[0] == '>')
 			exec->type = TRUNC_REDIR;
-		else if (ret_path != 2 && (exec->type == COMMAND || (prev && have_cmd == FALSE 
+		else if ((ret_path != 2) && (exec->type == COMMAND || (prev && have_cmd == FALSE 
 			&& (prev->type != WORD && prev->type != COMMAND))))
 		{
 			exec->type = COMMAND;
 			have_cmd = TRUE;
 		}
-		if (exec->arg[0] == '|')
+		if (exec->arg && exec->arg[0] == '|')
 		{
 			exec->type = PIPE;
 			have_cmd = FALSE;
