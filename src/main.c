@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/25 16:29:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:31:39 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,18 +123,22 @@ static void	ft_envp_print(t_glob *t_envp)
 	}
 }
 
-static void	ft_signal(int sign)
+void	ft_signal(int sign)
 {
-	static int	t;
-
-	t = 0;
 	if (sign == SIGINT)
-		printf("\rctrl + c detected\n");
-	else if (sign == SIGQUIT)
-		printf("\rctrl + \\ detected\n");
-	t++;
-	if (t == 3)
-		exit(0);
+	{
+		write (1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		(void)sign;
+	}
+	if (sign == SIGQUIT)
+	{
+		ft_putstr_fd("Quit", 2);
+		write (1, "\n", 1);
+		(void)sign;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
