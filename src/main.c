@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/01 17:31:39 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/05 23:44:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ t_glob	*ft_envp_creation(char **envp)
 	env = NULL;
 	if (envp)
 		env = envp;
+	tmp = ft_lstnew_glob("", 10, "", env);
+	ft_lstadd_back_alpha_envp(&list, tmp);
 	while (envp[i])
 	{
 		name_end = ft_name_len(envp[i]);
@@ -106,7 +108,7 @@ t_glob	*ft_envp_creation(char **envp)
 	return (list);
 }
 
-static void	ft_envp_print(t_glob *t_envp)
+/*static void	ft_envp_print(t_glob *t_envp)
 {
 	int	i;
 
@@ -115,13 +117,16 @@ static void	ft_envp_print(t_glob *t_envp)
 	tmp = t_envp;
 	while (tmp)
 	{
-		printf("name: %s, equal:%i, content: %s.\n",
-		(char *)tmp->name, (int)tmp->equal, (char *)tmp->content);
-		printf("%i\n", i);
+		if (tmp->equal != 10)
+		{
+			printf("name: %s, equal:%i, content: %s.\n",
+				(char *)tmp->name, (int)tmp->equal, (char *)tmp->content);
+			printf("%i\n", i);
+		}
 		tmp = tmp->next;
 		i++;
 	}
-}
+}*/
 
 void	ft_signal(int sign)
 {
@@ -144,7 +149,6 @@ void	ft_signal(int sign)
 int	main(int argc, char **argv, char **envp)
 {
 	t_glob	*t_envp;
-	int		exit;
 	t_cwd	path;
 
 	path = (t_cwd){0};
@@ -197,11 +201,9 @@ int	main(int argc, char **argv, char **envp)
 	// while (1)
 	//		pause();
 
-
-	exit = -1;
-	while (exit != 0)
+	while (TRUE)
 	{
-		exit = prompt(t_envp);
+		prompt(t_envp);
 	}
 	// t_list *tmp;
 
@@ -211,7 +213,7 @@ int	main(int argc, char **argv, char **envp)
 	//    printf("%s\n", (char *)tmp->content);
 	//    tmp = tmp->next;
 	// }
-	ft_envp_print(NULL);
-	ft_lstclear_glob(&t_envp);
+	//ft_envp_print(NULL);
+	//ft_lstclear_glob(&t_envp);
 	return (0);
 }
