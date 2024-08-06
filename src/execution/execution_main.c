@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/05 23:22:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/06 21:23:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,8 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		else if (cmd->type == HERE_DOC)
 			current_node->have_heredoc = TRUE;
 		else if (current_node->limiter == NULL && cmd->type == LIMITER)
-			current_node->limiter = cmd->arg;
+			//current_node->limiter = cmd->arg;
+			open_heredoc(cmd->arg, current_node);
 		cmd = cmd->next;
 	}
 	return (current_node);
@@ -360,7 +361,10 @@ static void	create_pipe(t_exec *exec)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 			| O_TRUNC, 0644);
 	if (exec->infile && exec->file_error == FALSE)
+	{
+		close(exec->fd_in);
 		exec->fd_in = open(exec->infile, O_RDONLY);
+	}
 
 }
 

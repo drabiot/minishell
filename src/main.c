@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/05 23:44:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/06 22:08:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
 		last = tmp;
 		tmp = tmp->next;
 	}
-	if (new->equal == 1)
+	if (new->equal != 10)
 		ft_lstadd_back_glob(list, new);
    // while ((*list)->next)
    // {
@@ -194,13 +194,14 @@ int	main(int argc, char **argv, char **envp)
 
 	//Part for signal
 	//Need static function ft_signal
-
+	// ft_envp_print(t_envp);
 	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
 	// signal(,ft_signal);
 	// while (1)
 	//		pause();
 
+	generate_key_random();
 	while (TRUE)
 	{
 		prompt(t_envp);

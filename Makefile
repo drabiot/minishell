@@ -1,3 +1,4 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -81,7 +82,8 @@ SRCS		=		main.c \
 					execution/execution_main.c \
 					execution/execution_builtins.c \
 					execution/execution_utils.c \
-					execution/execution_error.c
+					execution/execution_error.c \
+					execution/execution_heredoc.c
 
 
 OBJS		=		$(SRCS:.c=.o)

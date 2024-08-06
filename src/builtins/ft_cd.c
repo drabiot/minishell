@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/05 23:49:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:57:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ void	refresh_pwd(t_glob ***t_envp)
 
 	start = NULL;
 	old_pwd = NULL;
-	content_pwd = NULL;
 	end = NULL;
 	path = getcwd(NULL, 0);
+	(**t_envp)->content = path;
+	content_pwd = (**t_envp)->content;
 	if (!path)
 		return ;
 	if (**t_envp)

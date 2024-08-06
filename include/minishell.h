@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/05 23:21:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/06 20:43:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line);
 int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
+void	generate_key_random(void);
+void    open_heredoc(char *limiter, t_exec *exec);
 
 /* ****************************************** */
 /*             Execution utils                */
