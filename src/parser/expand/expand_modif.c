@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/01 11:37:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:27:02 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ static char	**ft_define_split(char *full)
 
 	i = 0;
 	quote = -1;
-	while (full[i])
+	while (i < (int)ft_strlen(full))
 	{
 		if (full[i] == '"' || full[i] == '\'')
 			quote = i;
-		if (full[i] == full[quote] && i != quote)
+		if (quote != -1 && full[i] == full[quote] && i != quote)
 			quote = -1;
 		if (quote == -1 && full[i] == ' ')
 			full[i] = '\b';
@@ -213,3 +213,4 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 		content = "";
 	ft_expand_do(cmd, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
 }
+

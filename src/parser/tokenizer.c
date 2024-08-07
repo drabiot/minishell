@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 21:17:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:22:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,3 +124,4 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	//if (start)
 	//ft_lstclear_cmd(&start);
 }
+

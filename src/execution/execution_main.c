@@ -469,6 +469,19 @@ static int	start_exec(t_exec *exec, t_glob **t_envp)
 	return (ret);
 }
 
+static void	free_t_cmd(t_cmd *cmd)
+{
+	t_cmd	*next;
+
+	next = NULL;
+	while (cmd)
+	{
+		next = cmd->next;
+		free(cmd);
+		cmd = next;
+	}
+}
+
 int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 {
 	int		pipe_len;
@@ -480,6 +493,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;
+	free_t_cmd(cmd);
 	// t_exec *tmp = exec;
 	// while (tmp)
 	// {

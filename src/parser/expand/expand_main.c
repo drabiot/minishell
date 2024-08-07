@@ -5,9 +5,9 @@ static t_bool	other_expand(char *arg, int **type, int i)
 	int	quote;
 
 	quote = -1;
-	if (arg[i - 1] == '"' || arg[i - 1] == '\'')
+	if (i > 0 && (arg[i - 1] == '"' || arg[i - 1] == '\''))
 		quote = i - 1;
-	if (arg[i + 1] == '\0' || arg[i + 1] == ' ' || (arg[i + 1] == arg[quote] && quote != -1) || arg[i + 1] == '=' || arg[i + 1] == '.')
+	if (arg[i + 1] == '\0' || arg[i + 1] == ' ' || (quote != -1 && arg[i + 1] == arg[quote]) || arg[i + 1] == '=' || arg[i + 1] == '.')
 	{
 		**type = 3;
 		return (FALSE);
@@ -38,7 +38,7 @@ static t_bool	is_expandable(char *arg, int *type)
 	i = 0;
 	d_quote = FALSE;
 	s_quote = FALSE;
-	while (arg && arg[i])
+	while (arg && i < (int)ft_strlen(arg))
 	{
 		if (arg[i] == '"' && !s_quote && arg[i + 1] != '"')
 		{

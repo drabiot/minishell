@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 22:24:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:52:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	change_glob(t_glob **t_envp, char *glob, int type)
 	if (glob[start_content == '='])
 		start_content++;
 	i = start_content;
-	while (glob[i])
+	while (glob && glob[i])
 		i++;
 	content = ft_substr(glob, start_content, i - start_content);
 	if (type == 0)
@@ -192,3 +192,4 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 	}
 	return (error);
 }
+
