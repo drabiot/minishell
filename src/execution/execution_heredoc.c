@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 21:38:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:08:37 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	generate_key_random(void)
 
 static char *generate_rd_file(char *tmp_file)
 {
-    int		c_rand;
+	int		c_rand;
 	char	*suff;
 	char	*final_file;
 
@@ -41,26 +41,26 @@ static char *generate_rd_file(char *tmp_file)
 
 static char *create_rd_file(int *file_fd)
 {
-    char    *tmp_file;
+	char	*tmp_file;
 
-    tmp_file = ft_strdup("tmp_");
-    *file_fd = -1;
-    if (!tmp_file)
-    {
-        ft_putstr_fd(" Failled Malloc\n", 2);
-        //error malloc
-    }
-    while (*file_fd == -1)
-    {
-        tmp_file = generate_rd_file(tmp_file);
-        *file_fd = open(tmp_file, O_EXCL | O_WRONLY | O_CREAT, 0644);
-    }
-    return (tmp_file);
+	tmp_file = ft_strdup("tmp_");
+	*file_fd = -1;
+	if (!tmp_file)
+	{
+		ft_putstr_fd(" Failled Malloc\n", 2);
+		//error malloc
+	}
+	while (*file_fd == -1)
+	{
+		tmp_file = generate_rd_file(tmp_file);
+		*file_fd = open(tmp_file, O_EXCL | O_WRONLY | O_CREAT, 0644);
+	}
+	return (tmp_file);
 }
 
 static void set_infile(int fd, char *limiter)
 {
-    char	*line;
+	char	*line;
 
 	line = NULL;
 	line = readline("> ");
@@ -76,37 +76,37 @@ static void set_infile(int fd, char *limiter)
 		free(line);
 }
 
-void    open_heredoc(char *limiter, t_exec *exec)
+void	open_heredoc(char *limiter, t_exec *exec)
 {
-    char    *file_limit;
-    char    *path;
-    char    *file;
-    int     file_fd;
+	char	*file_limit;
+	char	*path;
+	char	*file;
+	int		file_fd;
 
-    file_limit = NULL;
-    path = NULL;
-    file = NULL;
-    file_limit = ft_strjoin(limiter, "\n");
-    if (!file_limit)
-    {
-        ft_putstr_fd(" Failled Malloc\n", 2);
-        //error malloc
-    }
-    path = getcwd(NULL, 0);
-    if (!path)
-    {
-        ft_putstr_fd(" Failled to create Here_doc\n", 2);
-        return ;
-    }
-    file = create_rd_file(&file_fd);
-    if (!exec->file_error)
+	file_limit = NULL;
+	path = NULL;
+	file = NULL;
+	file_limit = ft_strjoin(limiter, "\n");
+	if (!file_limit)
+	{
+		ft_putstr_fd(" Failled Malloc\n", 2);
+		//error malloc
+	}
+	path = getcwd(NULL, 0);
+	if (!path)
+	{
+		ft_putstr_fd(" Failled to create Here_doc\n", 2);
+		return ;
+	}
+	file = create_rd_file(&file_fd);
+	if (!exec->file_error)
 	{
 		//exec->fd_in = file_fd;
-        exec->infile = file;
+		exec->infile = file;
 	}
-    set_infile(file_fd, file_limit);
+	set_infile(file_fd, file_limit);
 	//if (!unlink(file))
 	//	 ft_putstr_fd(" Failled to destroy tmp file\n", 2);
-    if (file_limit)
-        free (file_limit);
+	if (file_limit)
+		free (file_limit);
 }

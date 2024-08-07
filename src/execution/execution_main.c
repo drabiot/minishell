@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/06 21:23:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:08:42 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int	wait_all_pid(t_exec *list)
 	waitpid(list->pid, &ret, 0);
 	if (WIFEXITED(ret))
 		ret = WEXITSTATUS(ret);
-	else if (WIFSIGNALED(ret) & SIGPIPE)
-		ft_putstr_fd(" Broken pipe\n", 2);
+	else if (WIFSIGNALED(ret))
+		ret = WTERMSIG(ret) + 128;
 	return (ret);
 }
 
@@ -442,6 +442,7 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 static void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp)
 {
 	exec->pid = fork();
+	ft_signal(2);
 	if (exec->pid == -1)
 		close_err();
 	else if (exec->pid == 0)

@@ -47,6 +47,7 @@ SRCS_DIR	=		src/
 OBJS_DIR	=		obj/
 
 SRCS		=		main.c \
+					signals.c \
 					parser/prompt.c \
 					parser/lexer.c \
 					parser/tokenizer.c \

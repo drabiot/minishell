@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 20:43:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:51:13 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,5 +162,8 @@ int		have_call_function(char *line);
 char	*create_file(int *tmp_fd);
 
 void	ft_errno(void);
+
+
+void	ft_signal(int sign);
 
 #endif //MINISHELL_H

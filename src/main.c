@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:54:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 22:08:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:14:49 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,24 +128,6 @@ t_glob	*ft_envp_creation(char **envp)
 	}
 }*/
 
-void	ft_signal(int sign)
-{
-	if (sign == SIGINT)
-	{
-		write (1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		(void)sign;
-	}
-	if (sign == SIGQUIT)
-	{
-		ft_putstr_fd("Quit", 2);
-		write (1, "\n", 1);
-		(void)sign;
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_glob	*t_envp;
@@ -195,8 +177,6 @@ int	main(int argc, char **argv, char **envp)
 	//Part for signal
 	//Need static function ft_signal
 	// ft_envp_print(t_envp);
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
 	// signal(,ft_signal);
 	// while (1)
 	//		pause();
