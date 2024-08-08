@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/08 17:27:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:36:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
 			current_node->cmd = get_cmd(cmd->arg, glob);
-			current_node->base_cmd = cmd->arg;
+			current_node->base_cmd = ft_strdup(cmd->arg);
 			current_node->flags = get_flags(cmd, current_node->cmd);
 		}
 		else if (cmd->type == HERE_DOC)
@@ -493,8 +493,38 @@ static void	free_t_cmd(t_cmd *cmd)
 	{
 		next = cmd->next;
 		free(cmd->arg);
+		cmd->arg = NULL;
 		free(cmd);
 		cmd = next;
+	}
+}
+
+static void	free_exec(t_exec *exec)
+{
+	int		i;
+	t_exec	*tmp_exec;
+
+	tmp_exec = NULL;
+	while (exec)
+	{
+		i = 0;
+		tmp_exec = exec;
+		exec = exec->next;
+		while (tmp_exec->flags[i])
+		{
+			free(tmp_exec->flags[i]);
+			tmp_exec->flags[i] = NULL;
+			i++;
+		}
+		if (tmp_exec->flags)
+			free(tmp_exec->flags);
+		tmp_exec->flags = NULL;
+		tmp_exec->cmd = NULL;
+		if (tmp_exec->base_cmd)
+			free(tmp_exec->base_cmd);
+		tmp_exec->base_cmd = NULL;
+		free(tmp_exec);
+		tmp_exec = NULL;
 	}
 }
 
@@ -544,6 +574,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	// 	tmp = tmp->next;
 	// }
 	ret = start_exec(exec, t_envp);
+	free_exec(exec);
 	//clean t_exec
 	return (ret);
 }

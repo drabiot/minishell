@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/08 17:37:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:40:34 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,37 +82,45 @@ static t_bool	is_limit(char *number)
 static void	free_exit(t_exec *exec, t_glob *t_envp)
 {
 	int		i;
-	t_glob	*next_glob;
-	t_exec	*next_exec;
+	t_glob	*tmp_glob;
+	t_exec	*tmp_exec;
 
-	next_glob = NULL;
-	next_exec = NULL;
+	tmp_glob = NULL;
+	tmp_exec = NULL;
 	while (exec)
 	{
-		i = 1;
-		next_exec = exec->next;
-		if (exec->cmd)
-			free(exec->cmd);
-		while (exec->flags[i])
+		i = 0;
+		tmp_exec = exec;
+		exec = exec->next;
+		while (tmp_exec->flags[i])
 		{
-			free(exec->flags[i]);
+			free(tmp_exec->flags[i]);
+			tmp_exec->flags[i] = NULL;
 			i++;
 		}
-		if (exec->flags)
-			free(exec->flags);
-		free(exec);
-		exec = next_exec;
+		if (tmp_exec->flags)
+			free(tmp_exec->flags);
+		tmp_exec->flags = NULL;
+		tmp_exec->cmd = NULL;
+		if (tmp_exec->base_cmd)
+			free(tmp_exec->base_cmd);
+		tmp_exec->base_cmd = NULL;
+		free(tmp_exec);
+		tmp_exec = NULL;
 	}
+	tmp_glob = t_envp;
 	t_envp = t_envp->next;
+	free(tmp_glob);
 	while (t_envp)
 	{
-		next_glob = t_envp->next;
-		if (t_envp->name)
-			free(t_envp->name);
-		if (t_envp->name)
-			free(t_envp->content);
-		free(t_envp);
-		t_envp = next_glob;
+		tmp_glob = t_envp;
+		t_envp = t_envp->next;
+		if (tmp_glob->name)
+			free(tmp_glob->name);
+		if (tmp_glob->content)
+			free(tmp_glob->content);
+		free(tmp_glob);
+		tmp_glob = NULL;
 	}
 	rl_clear_history();
 }
