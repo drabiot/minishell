@@ -22,7 +22,7 @@ CC			=		clang
 #=========== FLAGS ============#
 
 CFLAGS		=		-Wall -Wextra -Werror	#Usual flags
-GFLAGS		=		$(CFLAGS) -g			#Flag for gdb or valgrind
+GFLAGS		=		$(CFLAGS) -gdwarf-4		#Flag for gdb or valgrind
 
 #=========== COLOR ============#
 

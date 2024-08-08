@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/07 17:08:42 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/08 17:27:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,19 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->next = NULL;
 }
 
+static void	free_paths(char **path)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+	{
+		free(path[i]);
+		i++;
+	}
+	free(path);
+}
+
 static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)
 {
 	char	**all_path;
@@ -83,11 +96,12 @@ static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)
 	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd) || is_path))
 	{
 		correct_path = ft_strdup(cmd);
+		free_paths(all_path);
 		return (correct_path);
 	}
 	while (all_path[i] && access_state != 0)
 	{
-		correct_path = ft_strjoin(ft_strdup(all_path[i]), ft_strdup(cmd));
+		correct_path = ft_strjoin(all_path[i], cmd);
 		if (!correct_path)
 			return (NULL);
 		access_state = access(correct_path, X_OK);
@@ -95,6 +109,7 @@ static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)
 		if (all_path[i] && access_state != 0)
 			free(correct_path);
 	}
+	free_paths(all_path);
 	return (correct_path);
 }
 
@@ -121,7 +136,7 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)) || is_path)
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
-		tmp_cmd = ft_strjoin(ft_strdup("/"), ft_strdup(arg));
+		tmp_cmd = ft_strjoin("/", arg); //strdup arg et "/"
 	full_path = get_correct_path(tmp_cmd, content_path, is_path);
 	free(tmp_cmd);
 	if (!full_path)
@@ -477,6 +492,7 @@ static void	free_t_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		next = cmd->next;
+		free(cmd->arg);
 		free(cmd);
 		cmd = next;
 	}

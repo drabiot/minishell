@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/31 22:14:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:37:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,44 @@ static t_bool	is_limit(char *number)
 	return (FALSE);
 }
 
+static void	free_exit(t_exec *exec, t_glob *t_envp)
+{
+	int		i;
+	t_glob	*next_glob;
+	t_exec	*next_exec;
+
+	next_glob = NULL;
+	next_exec = NULL;
+	while (exec)
+	{
+		i = 1;
+		next_exec = exec->next;
+		if (exec->cmd)
+			free(exec->cmd);
+		while (exec->flags[i])
+		{
+			free(exec->flags[i]);
+			i++;
+		}
+		if (exec->flags)
+			free(exec->flags);
+		free(exec);
+		exec = next_exec;
+	}
+	t_envp = t_envp->next;
+	while (t_envp)
+	{
+		next_glob = t_envp->next;
+		if (t_envp->name)
+			free(t_envp->name);
+		if (t_envp->name)
+			free(t_envp->content);
+		free(t_envp);
+		t_envp = next_glob;
+	}
+	rl_clear_history();
+}
+
 void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 {
 	int		exit_code;
@@ -89,6 +127,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	if (!exec->flags[1] && !exec->is_piped)
 	{
 		ft_putstr_fd("exit\n", 0);
+		free_exit(exec, *t_envp);
 		exit(exit_code);
 	}
 	if (!ft_get_alpha(exec->flags[1]) && is_limit(exec->flags[1]))
@@ -116,8 +155,9 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	if (exit_code < 0)
 		exit_code = 256 - (-exit_code) % 256;
 	(*t_envp)->utils->return_code = exit_code;
-	if (!exec->next)
+	if (!exec->is_piped) // change here
 	{
+		free_exit(exec, *t_envp);
 		ft_putstr_fd("exit\n", fd);
 		exit (exit_code);
 	}
