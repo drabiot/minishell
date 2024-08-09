@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/08 19:40:34 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:16:17 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static t_bool	is_limit(char *number)
 	return (FALSE);
 }
 
-static void	free_exit(t_exec *exec, t_glob *t_envp)
+void	free_exit(t_exec *exec, t_glob *t_envp)
 {
 	int		i;
 	t_glob	*tmp_glob;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/08 19:36:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:18:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,18 +395,18 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	ret_execve = 0;
 	if (!list->base_cmd)
 	{
-		//free all memory allocated to child process
+		free_exit(list, *t_envp);
 		exit(0);
 	}
 	if (list->base_cmd[0] == '\0')
 	{
-		//free all memory allocated to child process
+		free_exit(list, *t_envp);
 		ft_putstr_fd(" command not found\n", 2);
 		exit (127);
 	}
 	if (list->base_cmd[0] == '.' && list->base_cmd[1] == '\0')
 	{
-		//free all memory allocated to child process
+		free_exit(list, *t_envp);
 		ft_putstr_fd(" filename argument required\n", 2);
 		exit(2);
 	}
@@ -417,7 +417,7 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (exec->file_error == TRUE)
 	{
 		ret_execve = (*t_envp)->utils->return_code;
-		//free all memory allocated to child process
+		free_exit(list, *t_envp);
 		if (exec->nb_cmd >= 2)
 			exit (1);
 		else
@@ -426,7 +426,7 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (is_builtins(exec->cmd))
 	{
 		ret_execve = ft_find_builtins(STDOUT_FILENO, t_envp, exec);
-		//free all memory allocated to child process
+		free_exit(list, *t_envp);
 		exit(ret_execve);
 	}
 	else if (exec->flags)

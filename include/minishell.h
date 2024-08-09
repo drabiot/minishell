@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/07 14:51:13 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/09 16:15:49 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,6 @@ void	ft_errno(void);
 
 
 void	ft_signal(int sign);
+void	free_exit(t_exec *exec, t_glob *t_envp);
 
 #endif //MINISHELL_H
