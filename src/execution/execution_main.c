@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/09 16:18:45 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/09 17:15:23 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ static char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file, t_glob *gl
 		if (!cmd || !cmd->next)
 			return (NULL);
 		if (cmd->next)
-			return (cmd->next->arg);
+			return (ft_strdup(cmd->next->arg));
 	}
 	else if (type == 1)
 	{

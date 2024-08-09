@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/09 16:16:17 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/09 16:50:49 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,26 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 		ft_putstr_fd("exit\n", fd);
 		exit (exit_code);
 	}
+}
+
+void	free_envp(t_glob *t_envp)
+{
+	t_glob	*tmp_glob;
+
+	tmp_glob = NULL;
+	tmp_glob = t_envp;
+	t_envp = t_envp->next;
+	free(tmp_glob);
+	while (t_envp)
+	{
+		tmp_glob = t_envp;
+		t_envp = t_envp->next;
+		if (tmp_glob->name)
+			free(tmp_glob->name);
+		if (tmp_glob->content)
+			free(tmp_glob->content);
+		free(tmp_glob);
+		tmp_glob = NULL;
+	}
+	rl_clear_history();
 }

@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/07 14:32:34 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/09 17:18:34 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,21 @@ int	prompt(t_glob *t_envp)
 {
 	char		*input;
 	char		**arg;
+	int			ret;
 
 	// rl_outstream = stdin;
 	//create_path(&path, t_envp);
 	//printf("\x1b[0;95m%s ", path.absolute_path);
 	//input = readline("uwushell> ");
 	ft_signal(1);
+	ret = 0;
 	input = readline("\001\033[0;95m\002uwushell> \001\033[0m\002");
 	if (!input)
 	{
+		ret = t_envp->utils->return_code;
+		free_envp(t_envp);
 		printf("exit\n");
-		exit (t_envp->utils->return_code);
+		exit (ret);
 	}
 	//free(path.absolute_path);
 	// if (!(ft_strncmp(input, "exit", 4)))
