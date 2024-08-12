@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/09 17:15:23 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/12 23:20:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)
 	all_path = ft_split((char const *)content_path, ':');
 	i = 0;
 	access_state = 1;
-	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd) || is_path))
+	if (!all_path || (access(cmd, X_OK) == 0 || is_builtins(cmd) || cmd[0] == '\0' || is_path))
 	{
 		correct_path = ft_strdup(cmd);
 		free_paths(all_path);
@@ -133,7 +133,7 @@ static char	*get_cmd(char *arg, t_glob *glob)
 		path = path->next;
 	if (path)
 		content_path = path->content;
-	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)) || is_path)
+	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)) || (arg[0] == '\0') || is_path)
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
 		tmp_cmd = ft_strjoin("/", arg); //strdup arg et "/"
@@ -164,7 +164,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 		cmd = cmd->next;
 	}
 	flags = ft_split(line, '\b');
-	if (!flags || !*flags)
+	if (!path && (!flags || !*flags))
 		return (NULL);
 	free(flags[0]);
 	flags[0] = path;
@@ -270,7 +270,8 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
 		{
 			current_node->cmd = get_cmd(cmd->arg, glob);
-			current_node->base_cmd = ft_strdup(cmd->arg);
+			if (cmd->arg)
+				current_node->base_cmd = ft_strdup(cmd->arg);
 			current_node->flags = get_flags(cmd, current_node->cmd);
 		}
 		else if (cmd->type == HERE_DOC)
@@ -393,18 +394,18 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	dup_in = dup2(exec->fd_in, STDIN_FILENO);
 	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
 	ret_execve = 0;
-	if (!list->base_cmd)
+	if (!exec->base_cmd)
 	{
-		free_exit(list, *t_envp);
+		//free_exit(list, *t_envp);
 		exit(0);
 	}
-	if (list->base_cmd[0] == '\0')
+	if (exec->base_cmd[0] == '\0')
 	{
 		free_exit(list, *t_envp);
 		ft_putstr_fd(" command not found\n", 2);
 		exit (127);
 	}
-	if (list->base_cmd[0] == '.' && list->base_cmd[1] == '\0')
+	if (exec->base_cmd[0] == '.' && list->base_cmd[1] == '\0')
 	{
 		free_exit(list, *t_envp);
 		ft_putstr_fd(" filename argument required\n", 2);
@@ -510,7 +511,7 @@ static void	free_exec(t_exec *exec)
 		i = 0;
 		tmp_exec = exec;
 		exec = exec->next;
-		while (tmp_exec->flags[i])
+		while (tmp_exec->flags && tmp_exec->flags[i])
 		{
 			free(tmp_exec->flags[i]);
 			tmp_exec->flags[i] = NULL;
@@ -534,7 +535,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	t_exec	*exec;
 	int		ret;
 
-	if (!cmd)
+	if (!cmd || (!cmd->arg && !cmd->next))
 		return (0);
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
@@ -567,13 +568,13 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 			return (ret);
 		}
 	}
+	ret = start_exec(exec, t_envp);
 	// t_exec *tmp = exec;
 	// while (tmp)
 	// {
 	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->limiter, tmp->fd_in, tmp->fd_out);
 	// 	tmp = tmp->next;
 	// }
-	ret = start_exec(exec, t_envp);
 	free_exec(exec);
 	//clean t_exec
 	return (ret);

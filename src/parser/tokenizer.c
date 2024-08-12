@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/07 16:22:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:25:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ void	grab_token(t_input *cmd, t_token *token)
 	token->end = cmd->i;
 }
 
+static char	*check_arg(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg && arg[i])
+	{
+		if (arg[i] != ' ')
+			return (arg);
+		i++;
+	}
+	return (NULL);
+}
+
 void	tokenizer(t_input *cmd, t_glob *t_envp)
 {
 	unsigned int		index;
@@ -83,7 +97,9 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 		cmd->str[token.end + 1] = 0;
 		// printf("start: %d, end: %d (%s)\n", token.start, token.end, &cmd->str[token.start]);
 		arg = ft_substr(cmd->str, token.start, token.end - token.start + 1);
-		ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
+		arg = check_arg(arg);
+		if (arg)
+			ft_lstadd_back_cmd(&start, ft_cmd_creation(arg, index, start));
 		cmd->str[token.end + 1] = c;
 		cmd->i++;
 		index++;

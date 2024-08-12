@@ -1,4 +1,3 @@
-
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -7,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/07/29 21:54:55 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/12 21:51:41 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +21,7 @@ CC			=		clang
 #=========== FLAGS ============#
 
 CFLAGS		=		-Wall -Wextra -Werror	#Usual flags
-GFLAGS		=		$(CFLAGS) -gdwarf-4		#Flag for gdb or valgrind
+GFLAGS		=		$(CFLAGS) -g		#Flag for gdb or valgrind
 
 #=========== COLOR ============#
 

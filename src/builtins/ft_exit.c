@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/09 16:50:49 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/12 23:12:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 		exit_code %= 256;
 	if (exit_code < 0)
 		exit_code = 256 - (-exit_code) % 256;
+	*return_value = exit_code;
 	(*t_envp)->utils->return_code = exit_code;
 	if (!exec->is_piped) // change here
 	{
