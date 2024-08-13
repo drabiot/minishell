@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/12 23:20:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/13 06:55:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,32 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	return (full_path);
 }
 
+static char *ft_strjoin_free(char *s1, char *s2)
+{
+	char	*buffer;
+	size_t	len_s1;
+	size_t	len_s2;
+
+	len_s2 = ft_strlen(s2);
+	if (!s1)
+		buffer = (char *)malloc(sizeof(char) * (len_s2 + 1));
+	else
+	{
+		len_s1 = ft_strlen(s1);
+		buffer = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1));
+	}
+	if (!buffer)
+		return (NULL);
+	buffer = ft_strcat(s1, s2, buffer);
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
+	s1 = NULL;
+	s2 = NULL;
+	return (buffer);
+}
+
 static char	**get_flags(t_cmd *cmd, char *path)
 {
 	int		i;
@@ -157,13 +183,18 @@ static char	**get_flags(t_cmd *cmd, char *path)
 			line = cmd->arg;
 		else if (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH)
 		{
-			line = ft_strjoin(ft_strdup(line), ft_strdup("\b"));
-			line = ft_strjoin(ft_strdup(line), ft_strdup(cmd->arg));
+			line = ft_strjoin_free(line, ft_strdup("\b"));
+			line = ft_strjoin_free(line, ft_strdup(cmd->arg));
 		}
 		i++;
 		cmd = cmd->next;
 	}
 	flags = ft_split(line, '\b');
+	if (line)
+	{
+		free(line);
+		line = NULL;
+	}
 	if (!path && (!flags || !*flags))
 		return (NULL);
 	free(flags[0]);
@@ -396,7 +427,7 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	ret_execve = 0;
 	if (!exec->base_cmd)
 	{
-		//free_exit(list, *t_envp);
+		free_exit(list, *t_envp);
 		exit(0);
 	}
 	if (exec->base_cmd[0] == '\0')
@@ -535,7 +566,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	t_exec	*exec;
 	int		ret;
 
-	if (!cmd || (!cmd->arg && !cmd->next))
+	if (!cmd)
 		return (0);
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);

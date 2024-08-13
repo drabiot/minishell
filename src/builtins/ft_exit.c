@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/12 23:12:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/13 06:00:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	free_exit(t_exec *exec, t_glob *t_envp)
 		i = 0;
 		tmp_exec = exec;
 		exec = exec->next;
-		while (tmp_exec->flags[i])
+		while (tmp_exec->flags && tmp_exec->flags[i])
 		{
 			free(tmp_exec->flags[i]);
 			tmp_exec->flags[i] = NULL;
