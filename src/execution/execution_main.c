@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/13 06:55:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/13 08:29:46 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,9 +179,9 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	i = 0;
 	while (cmd && cmd->type != PIPE)
 	{
-		if (i == 0)
-			line = cmd->arg;
-		else if (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH)
+		if (i == 0 && cmd->arg)
+			line = ft_strdup(cmd->arg);
+		else if (cmd->arg && (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH))
 		{
 			line = ft_strjoin_free(line, ft_strdup("\b"));
 			line = ft_strjoin_free(line, ft_strdup(cmd->arg));
