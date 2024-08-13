@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 22:20:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:57:30 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	is_start(t_cmd *prev)
 		return (1);
 	return (0);
 }
+
 static int	is_redir(t_cmd *prev)
 {
 	if (!prev)
@@ -74,7 +75,7 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (WORD);
 }
 
-void expandable_type(t_cmd *exec)
+void	expandable_type(t_cmd *exec)
 {
 	bool	have_cmd;
 	t_cmd	*prev;
@@ -97,8 +98,9 @@ void expandable_type(t_cmd *exec)
 			exec->type = TRUNC_REDIR;
 		else if (ret_path == 3)
 			exec->type = LIMITER;
-		else if ((ret_path != 2) && (exec->type == COMMAND || (prev && have_cmd == FALSE 
-			&& (prev->type != WORD && prev->type != COMMAND))))
+		else if ((ret_path != 2) && (exec->type == COMMAND
+				|| (prev && have_cmd == FALSE
+					&& (prev->type != WORD && prev->type != COMMAND))))
 		{
 			exec->type = COMMAND;
 			have_cmd = TRUE;

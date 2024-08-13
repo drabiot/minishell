@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/13 08:22:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:59:54 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	grab_token(t_input *cmd, t_token *token)
 		quote = cmd->i;
 	else if (quote != -1 && cmd->str[cmd->i] == cmd->str[quote])
 		quote = -1;
-	while (cmd->str[cmd->i + 1] && (quote != -1 || !(is_white_space(cmd->str, cmd->i + 1)
+	while (cmd->str[cmd->i + 1] && (quote != -1
+			|| !(is_white_space(cmd->str, cmd->i + 1)
 				|| is_special_char(cmd->str, cmd->i + 1))))
 	{
 		cmd->i++;
