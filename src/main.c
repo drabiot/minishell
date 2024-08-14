@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/13 14:49:33 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 05:10:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int	main(int argc, char **argv, char **envp)
 	// (void)envp;
 	(void)argv;
 
+	generate_key_random();
 	t_envp = ft_envp_creation(envp);
 	add_glob_utils(t_envp, &path);
 	// ft_envp_print(t_envp);
@@ -192,7 +193,6 @@ int	main(int argc, char **argv, char **envp)
 	// while (1)
 	//		pause();
 
-	generate_key_random();
 	while (TRUE)
 	{
 		prompt(t_envp);
