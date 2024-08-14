@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/05 23:43:47 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 05:27:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_env(int fd, t_glob **t_envp)
 	tmp = *t_envp;
 	while (tmp)
 	{
-		if (tmp->equal != 10)
+		if (tmp->equal == 1)
 		{
 			first_part = ft_strjoin(tmp->name, "=");
 			last_part = ft_strjoin(first_part, tmp->content);

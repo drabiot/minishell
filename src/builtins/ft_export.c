@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/07 16:52:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 05:26:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static void	ft_env_print(int fd, t_glob *t_envp)
 		{
 			ft_putstr_fd("declare -x ", fd);
 			ft_putstr_fd(tmp->name, fd);
-			ft_putstr_fd("=\"", fd);
 			ft_putstr_fd("\n", fd);
 		}
 		tmp = tmp->next;
