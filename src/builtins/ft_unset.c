@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 06:15:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:27:30 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	delete_glob(t_glob **t_envp, char *del_arg)
 	tmp->next = next_node;
 }
 
-static void	delete_path(int	type, t_glob **t_envp)
+static void	delete_path(int type, t_glob **t_envp)
 {
 	t_glob	*tmp;
 

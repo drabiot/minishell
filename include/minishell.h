@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 05:47:25 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:39:58 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		ft_name_len(char *tmp);
 /* ****************************************** */
 void	ft_expand(t_cmd **list, t_glob *t_envp);
 int		ft_verif_main(char *arg);
-void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type);
+void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i);
 t_cmd	*expand_tokenizer(t_input *cmd);
 
 /* ****************************************** */
@@ -141,7 +141,7 @@ int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
 void	generate_key_random(void);
-void    open_heredoc(char *limiter, t_exec *exec);
+void    open_heredoc(char *limiter, t_exec *exec, char *file, char *path);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -168,5 +168,7 @@ void	ft_errno(void);
 void	ft_signal(int sign);
 void	free_exit(t_exec *exec, t_glob *t_envp);
 void	free_envp(t_glob *t_envp);
+void	ft_env_print_one(int fd, t_glob *tmp);
+int		ft_export_state(t_exec *exec, t_glob *t_envp, t_glob *tmp, int state);
 
 #endif //MINISHELL_H

@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/13 15:36:41 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 15:29:44 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,31 @@ static void	split_full(char *full, t_cmd *list)
 	}
 }
 
-static void	ft_expand_do(t_cmd *list, char *content, int start, int end)
+void	free_expand_do(char *a, char *b, char *c, char *d)
+{
+	if (a)
+	{
+		free(a);
+		a = NULL;
+	}
+	if (b)
+	{
+		free(b);
+		b = NULL;
+	}
+	if (c)
+	{
+		free(c);
+		c = NULL;
+	}
+	if (d)
+	{
+		free(d);
+		d = NULL;
+	}
+}
+
+static void	ft_expd_do(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
 	char	*end_part;
@@ -128,26 +152,65 @@ static void	ft_expand_do(t_cmd *list, char *content, int start, int end)
 	//free(list->arg);
 	split_full(full, list);
 	//list->arg = full;
-	if (first_part)
-		free(first_part);
-	if (end_part)
-		free(end_part);
-	if (content)
-		free(content);
-	if (with_content)
-		free(with_content);
+	free_expand_do(first_part, end_part, content, with_content);
 }
 
-void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
+void	ft_expand_modif_three(char **content, int *start, int *end)
 {
-	int		i;
+	*content = "";
+	*start = 0;
+	*end = 0;
+}
+
+int	ft_expand_modif_two_early(char *arg, int i, t_bool *d_quote)
+{
+	if (arg[i] == '"')
+	{
+		*d_quote = TRUE;
+		i++;
+	}
+	if (arg[i] == '\'' && *d_quote == FALSE)
+	{
+		i++;
+		while (arg[i] != '\'')
+			i++;
+	}
+	else if (arg[i] == '"')
+	{
+		*d_quote = FALSE;
+		i++;
+	}
+	return (i);
+}
+
+int	ft_expand_modif_two_mid(int *start, int i, int *end, char *arg)
+{
+	*start = i;
+	i++;
+	while ((arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= 'A' && arg[i] <= 'Z')
+		|| (arg[i] >= '0' && arg[i] <= '9'))
+		i++;
+	*end = i;
+	return (i);
+}
+
+int	ft_expand_modif_one(char *arg, int i, int *start, int *end)
+{
+	while (arg[i] != '$' && arg[i + 1] != '?')
+		i++;
+	*start = i + 1;
+	*end = *start + 1;
+	return (i);
+}
+
+void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
+{
 	int		start;
 	int		end;
 	char	*content;
 	char	*name;
 	t_bool	d_quote;
 
-	i = 0;
 	start = 0;
 	end = 0;
 	name = NULL;
@@ -155,40 +218,17 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 	d_quote = FALSE;
 	if (type == 1)
 	{
-		while (cmd->arg[i] != '$' && cmd->arg[i + 1] != '?')
-			i++;
-		start = i + 1;
-		end = start + 1;
+		i = ft_expand_modif_one(cmd->arg, i, &start, &end);
 		content = ft_itoa(t_envp->utils->return_code);
 	}
 	else if (type == 2)
 	{
 		while (cmd->arg[i])
 		{
-			if (cmd->arg[i] == '"')
-			{
-				d_quote = TRUE;
-				i++;
-			}
-			if (cmd->arg[i] == '\'' && d_quote == FALSE)
-			{
-				i++;
-				while (cmd->arg[i] != '\'')
-					i++;
-			}
-			else if (cmd->arg[i] == '"')
-			{
-				d_quote = FALSE;
-				i++;
-			}
+			i = ft_expand_modif_two_early(cmd->arg, i, &d_quote);
 			if (cmd->arg[i] == '$')
 			{
-				start = i;
-				i++;
-				while ((cmd->arg[i] >= 'a' && cmd->arg[i] <= 'z') || (cmd->arg[i] >= 'A' && cmd->arg[i] <= 'Z')
-						|| (cmd->arg[i] >= '0' && cmd->arg[i] <= '9'))
-					i++;
-				end = i;
+				i = ft_expand_modif_two_mid(&start, i, &end, cmd->arg);
 				name = ft_substr(cmd->arg, start + 1, end - start - 1);
 				content = ft_getenv(name, t_envp, 0);
 				start++;
@@ -197,20 +237,9 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type)
 			i++;
 		}
 	}
-	else if (type == 3)
-	{
-		content = "";
-		start = 0;
-		end = 0;
-	}
 	else
-	{
-		content = "";
-		start = 0;
-		end = 0;
-	}
+		ft_expand_modif_three(&content, &start, &end);
 	if (!content)
 		content = "";
-	ft_expand_do(cmd, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
+	ft_expd_do(cmd, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
 }
-

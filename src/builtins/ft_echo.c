@@ -52,7 +52,9 @@ static int	is_echo_option(t_exec *exec)
 		j = 1;
 		if (exec->flags[i][0] == '-' && exec->flags[i][1] == 'n')
 		{
-			while (j < (int)ft_strlen(exec->flags[i]) && (exec->flags[i][j] == 'n' || (exec->flags[i][j] == '-' && exec->flags[i][j + 1] == 'n')))
+			while (j < (int)ft_strlen(exec->flags[i])
+				&& (exec->flags[i][j] == 'n' || (exec->flags[i][j] == '-'
+				&& exec->flags[i][j + 1] == 'n')))
 				j++;
 			if (!exec->flags[i][j])
 				pos = i + 1;

@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/13 17:59:54 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:25:06 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	grab_token(t_input *cmd, t_token *token)
 				|| is_special_char(cmd->str, cmd->i + 1))))
 	{
 		cmd->i++;
-		if (quote == -1 && (cmd->str[cmd->i] == '\'' || cmd->str[cmd->i] == '"'))
+		if (quote == -1 && (cmd->str[cmd->i] == '\''
+				|| cmd->str[cmd->i] == '"'))
 			quote = cmd->i;
 		else if (quote != -1 && cmd->str[cmd->i] == cmd->str[quote])
 			quote = -1;
@@ -141,4 +142,3 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	//if (start)
 	//ft_lstclear_cmd(&start);
 }
-

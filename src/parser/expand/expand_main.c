@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:49:58 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/13 19:01:37 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:43:11 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,30 @@ t_bool	is_expandable_dollar(char *arg, int i, int *type, t_bool d_quote)
 		return (FALSE);
 }
 
-/*int	is_expendable_e(char *arg, int	i, t_bool *d_quote, t_bool *s_quote)
+int	is_expendable_e(char *arg, int i, t_bool *d_quote, t_bool *s_quote)
 {
-	if (arg[i] == '"' && !s_quote && arg[i + 1] != '"')
+	if (arg[i] == '"' && !*s_quote && arg[i + 1] != '"')
 	{
 		if (*d_quote == FALSE)
 			*d_quote = TRUE;
-		if (*d_quote == TRUE)
+		else
 			*d_quote = FALSE;
-		//d_quote = !d_quote;
 		i++;
 	}
-	else if (arg[i] == '"' && !s_quote)
+	else if (arg[i] == '"' && !*s_quote)
 		i++;
-	if (arg[i] == '\'' && !d_quote && arg[i + 1] != '\'')
+	if (arg[i] == '\'' && !*d_quote && arg[i + 1] != '\'')
 	{
 		if (*s_quote == FALSE)
 			*s_quote = TRUE;
-		if (*s_quote == TRUE)
+		else
 			*s_quote = FALSE;
-		//s_quote = !s_quote;
 		i++;
 	}
-	else if (arg[i] == '\'' && !s_quote)
+	else if (arg[i] == '\'' && !*s_quote)
 		i++;
 	return (i);
-}*/
+}
 
 static t_bool	is_expandable(char *arg, int *type, t_bool d_quote, int i)
 {
@@ -93,30 +91,12 @@ static t_bool	is_expandable(char *arg, int *type, t_bool d_quote, int i)
 	s_quote = FALSE;
 	while (arg && i < (int)ft_strlen(arg))
 	{
-		//i = is_expendable_e(arg, i, &d_quote, &s_quote);
-		if (arg[i] == '"' && !s_quote && arg[i + 1] != '"')
-		{
-			d_quote = !d_quote;
-			i++;
-		}
-		else if (arg[i] == '"' && !s_quote)
-			i++;
-		if (arg[i] == '\'' && !d_quote && arg[i + 1] != '\'')
-		{
-			s_quote = !s_quote;
-			i++;
-		}
-		else if (arg[i] == '\'' && !s_quote)
-			i++;
+		i = is_expendable_e(arg, i, &d_quote, &s_quote);
 		if (arg[i] == '$' && !s_quote)
 		{
 			b_dollar = is_expandable_dollar(arg, i, type, d_quote);
 			return (b_dollar);
 		}
-		/*else if (arg[i] == '"' && d_quote)
-			;
-		else if (arg[i] == '\'' && s_quote)
-			;*/
 		else
 			i++;
 	}
@@ -133,7 +113,7 @@ void	ft_expand(t_cmd **list, t_glob *t_envp)
 	while (tmp)
 	{
 		while (is_expandable(tmp->arg, &type, FALSE, 0))
-			ft_expand_modif(tmp, t_envp, type);
+			ft_expand_modif(tmp, t_envp, type, 0);
 		tmp = tmp->next;
 	}
 }

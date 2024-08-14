@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/07 17:08:37 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 17:40:10 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	generate_key_random(void)
 	ft_srand(pid);
 }
 
-static char *generate_rd_file(char *tmp_file)
+static char	*generate_rd_file(char *tmp_file)
 {
 	int		c_rand;
 	char	*suff;
@@ -39,7 +39,7 @@ static char *generate_rd_file(char *tmp_file)
 	return (final_file);
 }
 
-static char *create_rd_file(int *file_fd)
+static char	*create_rd_file(int *file_fd)
 {
 	char	*tmp_file;
 
@@ -58,7 +58,7 @@ static char *create_rd_file(int *file_fd)
 	return (tmp_file);
 }
 
-static void set_infile(int fd, char *limiter)
+static void	set_infile(int fd, char *limiter)
 {
 	char	*line;
 
@@ -76,16 +76,12 @@ static void set_infile(int fd, char *limiter)
 		free(line);
 }
 
-void	open_heredoc(char *limiter, t_exec *exec)
+void	open_heredoc(char *limiter, t_exec *exec, char *file, char *path)
 {
 	char	*file_limit;
-	char	*path;
-	char	*file;
 	int		file_fd;
 
 	file_limit = NULL;
-	path = NULL;
-	file = NULL;
 	file_limit = ft_strjoin(limiter, "\n");
 	if (!file_limit)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 06:19:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:27:44 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,13 @@ int	ft_cd(t_exec *exec, t_glob **t_envp)
 		return (0);
 	}
 	path_start = getcwd(NULL, 0);
-	path_join_half = ft_strjoin(path_start, "/");
-	path_join = ft_strjoin(path_join_half, path);
+	if (path_start)
+	{
+		path_join_half = ft_strjoin(path_start, "/");
+		path_join = ft_strjoin(path_join_half, path);
+	}
+	else
+		path_join = ft_strdup(path);
 	if (chdir(path_join) == -1)
 	{
 		ft_putstr_fd(" No such file or directory\n", 2);

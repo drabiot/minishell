@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 21:53:31 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/01 12:08:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:26:42 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static t_bool	multi_error(t_cmd *cmd, t_cmd *prev)
 		return (TRUE);
 	if ((prev->type == APPEND_REDIR || prev->type == TRUNC_REDIR
 			|| prev->type == INPUT) && (!cmd || cmd->type == PIPE
-		|| cmd->type == APPEND_REDIR || cmd->type == TRUNC_REDIR
+			|| cmd->type == APPEND_REDIR || cmd->type == TRUNC_REDIR
 			|| cmd->type == INPUT || cmd->type == HERE_DOC))
 		return (TRUE);
 	return (FALSE);
@@ -57,27 +57,27 @@ static void	check_pipe_start(t_cmd *cmd, t_cmd **prev, t_bool *error)
 	}
 }
 
-t_bool is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line)
+t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line)
 {
-    t_cmd	*prev;
+	t_cmd	*prev;
 	t_bool	error;
 
 	prev = NULL;
 	error = FALSE;
 	check_pipe_start(cmd, &prev, &error);
-    if (cmd)
+	if (cmd)
 	{
-    	prev = cmd;
+		prev = cmd;
 		cmd = cmd->next;
 	}
-    while (prev && error == FALSE)
-    {
-        error = multi_error(cmd, prev);
+	while (prev && error == FALSE)
+	{
+		error = multi_error(cmd, prev);
 		if (!cmd)
 			break ;
 		prev = cmd;
-        cmd = cmd->next;
-    }
+		cmd = cmd->next;
+	}
 	if (error)
 	{
 		write_syntax_error(prev, line, t_envp);

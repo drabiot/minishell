@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/13 17:57:30 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:22:20 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,24 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (WORD);
 }
 
+void	expendable_type_mid(t_cmd *exec, int ret, bool *have_cmd, t_cmd *prev)
+{
+	if (exec->arg && exec->arg[0] == '<' && exec->arg[1] == '\0')
+		exec->type = INPUT;
+	else if (exec->arg && exec->arg[0] == '>' && exec->arg[1] == '>')
+		exec->type = APPEND_REDIR;
+	else if (exec->arg && exec->arg[0] == '>')
+		exec->type = TRUNC_REDIR;
+	else if (ret == 3)
+		exec->type = LIMITER;
+	else if ((ret != 2) && (exec->type == COMMAND || (prev && *have_cmd == FALSE
+				&& (prev->type != WORD && prev->type != COMMAND))))
+	{
+		exec->type = COMMAND;
+		*have_cmd = TRUE;
+	}
+}
+
 void	expandable_type(t_cmd *exec)
 {
 	bool	have_cmd;
@@ -90,21 +108,7 @@ void	expandable_type(t_cmd *exec)
 		ret_path = is_path(exec, prev);
 		if (ret_path == 2)
 			exec->type = REDIR_FILE;
-		if (exec->arg && exec->arg[0] == '<' && exec->arg[1] == '\0')
-			exec->type = INPUT;
-		else if (exec->arg && exec->arg[0] == '>' && exec->arg[1] == '>')
-			exec->type = APPEND_REDIR;
-		else if (exec->arg && exec->arg[0] == '>')
-			exec->type = TRUNC_REDIR;
-		else if (ret_path == 3)
-			exec->type = LIMITER;
-		else if ((ret_path != 2) && (exec->type == COMMAND
-				|| (prev && have_cmd == FALSE
-					&& (prev->type != WORD && prev->type != COMMAND))))
-		{
-			exec->type = COMMAND;
-			have_cmd = TRUE;
-		}
+		expendable_type_mid(exec, ret_path, &have_cmd, prev);
 		if (exec->arg && exec->arg[0] == '|')
 		{
 			exec->type = PIPE;

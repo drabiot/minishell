@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/14 06:05:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:40:03 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,7 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 			current_node->have_heredoc = TRUE;
 		else if (current_node->limiter == NULL && cmd->type == LIMITER)
 			//current_node->limiter = cmd->arg;
-			open_heredoc(cmd->arg, current_node);
+			open_heredoc(cmd->arg, current_node, NULL, NULL);
 		cmd = cmd->next;
 	}
 	return (current_node);

@@ -3,36 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 05:31:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:31:26 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_verif_args(char *flag, t_glob *t_envp, t_bool error)
+static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 {
-	unsigned int	i;
-
-	i = 0;
-	if (!flag && !error)
+	if (!flg && !err)
 	{
 		t_envp->utils->return_code = 0;
 		return (0);
 	}
-	if (flag[0] == '=')
+	if (flg[0] == '=')
 	{
 		t_envp->utils->return_code = 1;
 		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
 	}
-	while (flag[i] && flag[i] != '=' )
+	while (flg[i] && flg[i] != '=' )
 	{
-		if (!ft_isalpha(flag[i]))
+		if (!ft_isalpha(flg[i]))
 		{
-			if (flag[i] == '+' && flag[i + 1] == '=')
+			if (flg[i] == '+' && flg[i + 1] == '=')
 				return (-1);
 			t_envp->utils->return_code = 1;
 			ft_putstr_fd(" not a valid identifier\n", 2);
@@ -56,13 +53,7 @@ static void	ft_env_print(int fd, t_glob *t_envp)
 		i = 0;
 		name_end = 0;
 		if (tmp->equal == 1)
-		{
-			ft_putstr_fd("declare -x ", fd);
-			ft_putstr_fd(tmp->name, fd);
-			ft_putstr_fd("=\"", fd);
-			ft_putstr_fd(tmp->content, fd);
-			ft_putstr_fd("\"\n", fd);
-		}
+			ft_env_print_one(fd, tmp);
 		else if (tmp->equal == 0)
 		{
 			ft_putstr_fd("declare -x ", fd);
@@ -156,10 +147,10 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 	}
 	while (exec->flags[i])
 	{
-		state = ft_verif_args(exec->flags[i], t_envp, error);
+		state = ft_verif_arg(exec->flags[i], t_envp, error, 0);
 		if (state < 1)
 		{
-			if (state == 0)
+			if (state == 0 || state == -1)
 			{
 				if (ft_check_quote_and_delete(&exec))
 					return (0);
@@ -169,19 +160,7 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 					ft_lstadd_back_alpha_envp(&t_envp, tmp);
 				}
 				else
-					change_glob(&t_envp, exec->flags[i], 0);
-			}
-			else if (state == -1)
-			{
-				if (ft_check_quote_and_delete(&exec))
-					return (0);
-				if (no_glob(&t_envp, exec->flags[i]))
-				{
-					tmp = ft_globsolo_creation(exec->flags[i]);
-					ft_lstadd_back_alpha_envp(&t_envp, tmp);
-				}
-				else
-					change_glob(&t_envp, exec->flags[i], 1);
+					change_glob(&t_envp, exec->flags[i], state);
 			}
 		}
 		else
@@ -190,4 +169,3 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 	}
 	return (error);
 }
-

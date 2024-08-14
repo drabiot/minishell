@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/18 23:09:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:34:32 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	ft_env_print_one(int fd, t_glob *tmp)
+{
+	(void)fd;
+	ft_putstr_fd("declare -x ", fd);
+	ft_putstr_fd(tmp->name, fd);
+	ft_putstr_fd("=\"", fd);
+	ft_putstr_fd(tmp->content, fd);
+	ft_putstr_fd("\"\n", fd);
+}
 
 static char	*ft_delete_quote(char *str)
 {
@@ -33,7 +43,8 @@ int	ft_check_quote_and_delete(t_exec **exec)
 	i = 0;
 	while ((*exec)->flags[1][i])
 	{
-		if (double_quote == 1 && (*exec)->flags[1][i] == '"' && (*exec)->flags[1][i + 1])
+		if (double_quote == 1 && (*exec)->flags[1][i] == '"'
+			&& (*exec)->flags[1][i + 1])
 			return (1);
 		if ((*exec)->flags[1][i] == '"')
 		{
