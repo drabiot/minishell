@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/06 14:57:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 06:19:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	refresh_pwd(t_glob ***t_envp)
 	old_pwd = NULL;
 	end = NULL;
 	path = getcwd(NULL, 0);
-	(**t_envp)->content = path;
-	content_pwd = (**t_envp)->content;
 	if (!path)
 		return ;
+	(**t_envp)->content = path;
+	content_pwd = (**t_envp)->content;
 	if (**t_envp)
 		start = **t_envp;
 	while (start)
@@ -42,7 +42,7 @@ void	refresh_pwd(t_glob ***t_envp)
 		end = start;
 		start = start->next;
 	}
-	if (!old_pwd) //redo if end doesn't exist & mke it work when no PWD
+	/*if (!old_pwd) //redo if end doesn't exist & mke it work when no PWD
 	{
 		old_pwd = malloc(sizeof(t_glob));
 		if (!old_pwd)
@@ -54,9 +54,8 @@ void	refresh_pwd(t_glob ***t_envp)
 		old_pwd->utils = end->utils;
 		old_pwd->next = NULL;
 		end->next = old_pwd;
-	}
-	else
-		old_pwd->content = content_pwd;
+	}*/
+	old_pwd->content = content_pwd;
 }
 
 int	ft_cd(t_exec *exec, t_glob **t_envp)

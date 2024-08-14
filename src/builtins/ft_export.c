@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 05:26:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 05:31:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 		ft_env_print(fd, t_envp);
 		return (0);
 	}
-	//ft_expand(&args, t_envp);
 	while (exec->flags[i])
 	{
 		state = ft_verif_args(exec->flags[i], t_envp, error);

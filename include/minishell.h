@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/09 16:30:17 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/14 05:47:25 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	ft_lstdelone_glob(t_glob *lst);
 t_glob	*ft_lstlast_glob(t_glob *lst);
 t_glob	*ft_lstnew_glob(char *name, int equal, char *content, char **env);
 t_glob	*ft_globsolo_creation(char *arg);
+t_glob	*ft_envp_creation(char **env);
 void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new);
 int		ft_name_len(char *tmp);
 

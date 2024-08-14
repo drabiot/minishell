@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/13 08:29:46 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 06:05:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,13 @@ static void	free_paths(char **path)
 	int	i;
 
 	i = 0;
-	while (path[i])
+	while (path && path[i])
 	{
 		free(path[i]);
 		i++;
 	}
-	free(path);
+	if (path)
+		free(path);
 }
 
 static char	*get_correct_path(char *cmd, char *content_path, t_bool is_path)

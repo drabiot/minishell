@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/18 23:21:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/14 06:15:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,45 @@ static void	delete_glob(t_glob **t_envp, char *del_arg)
 	tmp->next = next_node;
 }
 
+static void	delete_path(int	type, t_glob **t_envp)
+{
+	t_glob	*tmp;
+
+	tmp = NULL;
+	if (*t_envp)
+		tmp = *t_envp;
+	if (type == 0)
+	{
+		while (tmp && ft_strcmp(tmp->name, "PWD") != 0)
+			tmp = tmp->next;
+		tmp->equal = 10;
+	}
+	if (type == 1)
+	{
+		while (tmp && ft_strcmp(tmp->name, "OLDPWD") != 0)
+			tmp = tmp->next;
+		tmp->equal = 10;
+	}
+}
+
 int	ft_unset(t_glob **t_envp, t_exec *exec)
 {
 	int		i;
-	char	*last_word;
+	char	*word;
 
 	i = 0;
 	if (!exec->flags)
 		return (1);
-	while (exec->flags[i + 1])
+	while (exec->flags[i])
+	{
+		word = exec->flags[i];
+		if (word && ft_strcmp(word, "PWD") == 0)
+			delete_path(0, t_envp);
+		else if (word && ft_strcmp(word, "OLDPWD") == 0)
+			delete_path(1, t_envp);
+		else if (i != 0)
+			delete_glob(t_envp, word);
 		i++;
-	last_word = exec->flags[i];
-	if (i != 0)
-		delete_glob(t_envp, last_word);
+	}
 	return (0);
 }
