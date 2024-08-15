@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/13 08:22:18 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:30:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ void	free_exit(t_exec *exec, t_glob *t_envp)
 		if (tmp_exec->base_cmd)
 			free(tmp_exec->base_cmd);
 		tmp_exec->base_cmd = NULL;
+		if (tmp_exec->infile)
+			free(tmp_exec->infile);
+		tmp_exec->infile = NULL;
+		if (tmp_exec->outfile[0])
+			free(tmp_exec->outfile[0]);
+		tmp_exec->outfile[0] = NULL;
 		free(tmp_exec);
 		tmp_exec = NULL;
 	}

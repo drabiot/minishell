@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/15 08:50:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:55:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,10 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		exit(ret_execve);
 	}
 	else if (exec->flags)
+	{
+		rl_clear_history();
 		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
+	}
 	else
 	{
 		free_exit(list, *t_envp);
@@ -564,6 +567,12 @@ static void	free_exec(t_exec *exec)
 		if (tmp_exec->base_cmd)
 			free(tmp_exec->base_cmd);
 		tmp_exec->base_cmd = NULL;
+		if (tmp_exec->infile)
+			free(tmp_exec->infile);
+		tmp_exec->infile = NULL;
+		if (tmp_exec->outfile[0])
+			free(tmp_exec->outfile[0]);
+		tmp_exec->outfile[0] = NULL;
 		free(tmp_exec);
 		tmp_exec = NULL;
 	}
@@ -605,6 +614,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 			if (exec->fd_out == 1)
 				exec->fd_out = -1;
 			close_fds(exec);
+			free_exec(exec);
 			return (ret);
 		}
 	}

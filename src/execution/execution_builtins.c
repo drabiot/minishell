@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:50:05 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 17:31:28 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 11:33:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,19 @@ int	ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec)
 	return_value = -1;
 	if (!exec)
 		return (0);
-	else if (ft_strcmp(exec->cmd, "cd") == 0)//
+	else if (ft_strcmp(exec->cmd, "cd") == 0)
 		return_value = ft_cd(exec, t_envp);
-	else if (ft_strcmp(exec->cmd, "echo") == 0)//
+	else if (ft_strcmp(exec->cmd, "echo") == 0)
 		return_value = ft_echo(fd, exec, *t_envp);
 	else if (ft_strcmp(exec->cmd, "env") == 0)
 		return_value = ft_env(fd, t_envp);
-	else if (ft_strcmp(exec->cmd, "exit") == 0)//
-		ft_exit(fd, exec, t_envp, &return_value); // Have to do exit if pipeline
-	else if (ft_strcmp(exec->cmd, "export") == 0)//
+	else if (ft_strcmp(exec->cmd, "exit") == 0)
+		ft_exit(fd, exec, t_envp, &return_value);
+	else if (ft_strcmp(exec->cmd, "export") == 0)
 		return_value = ft_export(fd, *t_envp, exec);
 	else if (ft_strcmp(exec->cmd, "pwd") == 0)
 		return_value = ft_pwd(*t_envp);
-	else if (ft_strcmp(exec->cmd, "unset") == 0)//
+	else if (ft_strcmp(exec->cmd, "unset") == 0)
 		return_value = ft_unset(t_envp, exec);
 	(*t_envp)->utils->return_code = return_value;
 	return (return_value);
