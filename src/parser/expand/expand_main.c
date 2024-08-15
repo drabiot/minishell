@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:49:58 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/14 16:43:11 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 07:49:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,11 @@ void	ft_expand(t_cmd **list, t_glob *t_envp)
 	type = 0;
 	while (tmp)
 	{
-		while (is_expandable(tmp->arg, &type, FALSE, 0))
-			ft_expand_modif(tmp, t_envp, type, 0);
+		if (tmp->type != LIMITER)
+		{
+			while (is_expandable(tmp->arg, &type, FALSE, 0))
+				ft_expand_modif(tmp, t_envp, type, 0);
+		}
 		tmp = tmp->next;
 	}
 }

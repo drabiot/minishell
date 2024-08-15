@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/14 17:40:03 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 07:32:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,8 +382,8 @@ static void	create_pipe(t_exec *exec)
 	while (exec->next)
 	{
 		pipe_ret = pipe(fd_pipe);
-		if (pipe_ret == -1)
-			close_err();
+		//if (pipe_ret == -1)
+		//	close_err();
 		if (exec->outfile[0] && exec->file_error == FALSE)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
