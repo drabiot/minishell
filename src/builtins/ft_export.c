@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 15:39:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:52:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,11 @@ void	change_glob(t_glob **t_envp, char *glob, int type)
 	char	*content;
 	int		i;
 	int		start_content;
+	char	*tmp_content;
 	t_glob	*list;
 
 	name = NULL;
+	tmp_content = NULL;
 	i = 0;
 	if (*t_envp)
 		list = *t_envp;
@@ -130,8 +132,11 @@ void	change_glob(t_glob **t_envp, char *glob, int type)
 		while (list && ft_strcmp(name, list->name) != 0)
 			list = list->next;
 		list->equal = 1;
-		list->content = ft_strjoin(list->content, content);//free list->content
+		tmp_content = ft_strdup(list->content);
+		free(list->content);
+		list->content = ft_strjoin(tmp_content, content);//free list->content
 		free(content);
+		free(tmp_content);
 	}
 	free(name);
 }
