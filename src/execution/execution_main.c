@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/15 07:32:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 08:50:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	char	**flags;
 
 	i = 0;
+	line = NULL;
 	while (cmd && cmd->type != PIPE)
 	{
 		if (i == 0 && cmd->arg)
@@ -382,8 +383,8 @@ static void	create_pipe(t_exec *exec)
 	while (exec->next)
 	{
 		pipe_ret = pipe(fd_pipe);
-		//if (pipe_ret == -1)
-		//	close_err();
+		if (pipe_ret == -1)
+			close_err();
 		if (exec->outfile[0] && exec->file_error == FALSE)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
@@ -465,11 +466,15 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	else if (exec->flags)
 		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
 	else
+	{
+		free_exit(list, *t_envp);
 		exit(0);
+	}
 	if (ret_execve == -1)
 	{
 		if (ft_strchr(exec->base_cmd, '/')) {
 			//ft_errno();
+			free_exit(list, *t_envp);
 			if (errno == EACCES && (s_stat.st_mode & __S_IFMT) == __S_IFDIR)
 			{
 				ft_putstr_fd(" Is a directory\n", 2);
@@ -482,7 +487,10 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		}
 		//	ft_putstr_fd(" No such file or directory\n", 2);
 		else
+		{
 			ft_putstr_fd(" command not found\n", 2);
+			free_exit(list, *t_envp);
+		}
 		exit(127);
 	}
 }

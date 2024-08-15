@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/14 15:29:44 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 08:48:04 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ static void	add_new_node(t_cmd **list, char *argument, char *next_arg)
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		;
-		//exit
-	new_node->arg = next_arg;
+	//exit
+	if (next_arg)
+		new_node->arg = ft_strdup(next_arg);//
 	new_node->type = WORD;
 	if (list)
 		new_node->index = (*list)->index + 1;
@@ -49,9 +50,13 @@ static void	add_new_node(t_cmd **list, char *argument, char *next_arg)
 		new_node->next = NULL;
 	if (!list)
 		return ;
+	if ((*list)->arg)
+		free((*list)->arg);
 	(*list)->arg = argument;
 	if (next_arg)
 		(*list)->next = new_node;
+	else
+		free(new_node);
 }
 
 static char	**ft_define_split(char *full)
@@ -75,6 +80,22 @@ static char	**ft_define_split(char *full)
 	split_args = ft_split(full, '\b');
 	return (split_args);
 }
+
+/*static void	free_array(char ***array)
+{
+	int	i;
+
+	i = 0;
+	while (*array && (*array)[i])
+	{
+		free((*array)[i]);
+		(*array)[i] = NULL;
+		i++;
+	}
+	if (*array)
+		free(*array);
+	*array = NULL;
+}*/
 
 static void	split_full(char *full, t_cmd *list)
 {
@@ -103,6 +124,7 @@ static void	split_full(char *full, t_cmd *list)
 			i++;
 		}
 	}
+	free(args);
 }
 
 void	free_expand_do(char *a, char *b, char *c, char *d)
@@ -129,6 +151,15 @@ void	free_expand_do(char *a, char *b, char *c, char *d)
 	}
 }
 
+static void	free_char(char **c)
+{
+	if (*c)
+	{
+		free(*c);
+		*c = NULL;
+	}
+}
+
 static void	ft_expd_do(t_cmd *list, char *content, int start, int end)
 {
 	char	*first_part;
@@ -151,6 +182,7 @@ static void	ft_expd_do(t_cmd *list, char *content, int start, int end)
 	}
 	//free(list->arg);
 	split_full(full, list);
+	free_char(&full);
 	//list->arg = full;
 	free_expand_do(first_part, end_part, content, with_content);
 }
@@ -231,6 +263,11 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 				i = ft_expand_modif_two_mid(&start, i, &end, cmd->arg);
 				name = ft_substr(cmd->arg, start + 1, end - start - 1);
 				content = ft_getenv(name, t_envp, 0);
+				if (name)
+				{
+					free(name);
+					name = NULL;
+				}
 				start++;
 				break ;
 			}
