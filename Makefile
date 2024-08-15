@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/14 05:36:21 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/15 14:30:32 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ SRCS		=		main.c \
 					libft_cmd/ft_lstlast_cmd.c \
 					libft_cmd/ft_lstnew_cmd.c \
 					libft_cmd/ft_lstnmap_cmd.c \
+					libft_cmd/ft_lstsize_cmd.c \
 					libft_glob/ft_lstcreate_glob.c \
 					libft_glob/ft_lstadd_back_glob.c \
 					libft_glob/ft_lstadd_front_glob.c \

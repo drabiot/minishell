@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 16:25:06 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 14:43:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void	tokenizer(t_input *cmd, t_glob *t_envp)
 	// ft_lstclear_cmd(&test);
 	if (!is_error_syntax(start, t_envp, cmd))
 		t_envp->utils->return_code = ft_execution_main(&t_envp, start);
+	else
+		free_t_cmd(start);
 	// if (t_envp->utils->return_code)
 	// 	exit (t_envp->utils->return_code);
 	// ft_export(&t_envp, start);

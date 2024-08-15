@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/15 11:55:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:45:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	return (full_path);
 }
 
-static char *ft_strjoin_free(char *s1, char *s2)
+/*static char *ft_strjoin_free(char *s1, char *s2)
 {
 	char	*buffer;
 	size_t	len_s1;
@@ -160,7 +160,13 @@ static char *ft_strjoin_free(char *s1, char *s2)
 		buffer = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1));
 	}
 	if (!buffer)
+	{
+		if (s1)
+			free(s1);
+		if (s2)
+			free(s2);
 		return (NULL);
+	}
 	buffer = ft_strcat(s1, s2, buffer);
 	if (s1)
 		free(s1);
@@ -169,7 +175,7 @@ static char *ft_strjoin_free(char *s1, char *s2)
 	s1 = NULL;
 	s2 = NULL;
 	return (buffer);
-}
+}*/
 
 static char	**get_flags(t_cmd *cmd, char *path)
 {
@@ -179,23 +185,17 @@ static char	**get_flags(t_cmd *cmd, char *path)
 
 	i = 0;
 	line = NULL;
+	flags = ft_calloc(sizeof(char *), ft_lstsize_cmd(cmd) + 1);
+	if (!flags)
+		close_err();
 	while (cmd && cmd->type != PIPE)
 	{
-		if (i == 0 && cmd->arg)
-			line = ft_strdup(cmd->arg);
-		else if (cmd->arg && (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH))
+		if (cmd->arg && (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH || cmd->type == NONE))
 		{
-			line = ft_strjoin_free(line, ft_strdup("\b"));
-			line = ft_strjoin_free(line, ft_strdup(cmd->arg));
+			flags[i] = ft_strdup(cmd->arg);
+			i++;
 		}
-		i++;
 		cmd = cmd->next;
-	}
-	flags = ft_split(line, '\b');
-	if (line)
-	{
-		free(line);
-		line = NULL;
 	}
 	if (!path && (!flags || !*flags))
 		return (NULL);
@@ -294,9 +294,15 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 	while (cmd && cmd->type != PIPE)
 	{
 		if (cmd->type == INPUT || (cmd->next && cmd->next->type == PATH))
+		{
+			if (current_node->infile)
+				free(current_node->infile);
 			current_node->infile = grab_redir(cmd, current_node, 0, 0, glob);
+		}
 		else if (cmd->type == TRUNC_REDIR || cmd->type == APPEND_REDIR)
 		{
+			if (current_node->outfile[0])
+				free(current_node->outfile[0]);
 			current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1, glob);
 			current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1, glob);
 		}
@@ -451,11 +457,16 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	if (exec->file_error == TRUE)
 	{
 		ret_execve = (*t_envp)->utils->return_code;
-		free_exit(list, *t_envp);
 		if (exec->nb_cmd >= 2)
+		{
+			free_exit(list, *t_envp);
 			exit (1);
+		}
 		else
+		{
+			free_exit(list, *t_envp);
 			exit(ret_execve);
+		}
 	}
 	if (is_builtins(exec->cmd))
 	{
@@ -528,7 +539,7 @@ static int	start_exec(t_exec *exec, t_glob **t_envp)
 	return (ret);
 }
 
-static void	free_t_cmd(t_cmd *cmd)
+void	free_t_cmd(t_cmd *cmd)
 {
 	t_cmd	*next;
 
@@ -597,7 +608,10 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	// 	tmp = tmp->next;
 	// }
 	if (pipe_len == 1 && exec->file_error == TRUE)
+	{
+		free_exec(exec);
 		return (1);
+	}
 	if (pipe_len == 1 && is_builtins(exec->cmd))
 	{
 		if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)

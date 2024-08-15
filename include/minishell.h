@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 17:39:58 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 14:30:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 t_cmd	*ft_lstnew_cmd(char *arg, int type, int index);
 t_cmd	*ft_lstnmap_cmd(t_cmd *cmd, int npipe);
 t_cmd	*ft_cmd_creation(char *arg, int index, t_cmd *linked_list);
+int		ft_lstsize_cmd(t_cmd *lst);
 int		ft_find_type(char *arg, t_cmd *prev);
 void	expandable_type(t_cmd *exec);
 
@@ -132,6 +133,7 @@ void	tokenizer(t_input *cmd, t_glob *t_envp);
 void	handle_quote(t_cmd *start);
 void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line);
+void	free_t_cmd(t_cmd *cmd);
 
 /* ****************************************** */
 /*                 Execution                  */

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 11:36:15 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:39:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,20 @@ static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
 	}
-	while (flg[i] && flg[i] != '=' )
+	while (flg[i] && flg[i] != '=')
 	{
 		if (!ft_isalpha(flg[i]))
 		{
-			if (flg[i] == '+' && flg[i + 1] == '=')
-				return (-1);
+			if (flg[i] == '+' && flg[i + 1] == '=' )
+				return (-2);
 			t_envp->utils->return_code = 1;
 			ft_putstr_fd(" not a valid identifier\n", 2);
 			return (1);
 		}
 		i++;
 	}
+	if (flg[i] == '=')
+		return (-1);
 	return (0);
 }
 
@@ -111,20 +113,24 @@ void	change_glob(t_glob **t_envp, char *glob, int type)
 	if (glob[start_content == '='])
 		start_content++;
 	i = start_content;
-	while (glob && glob[i])
+	while (i < (int)ft_strlen(glob))
 		i++;
 	content = ft_substr(glob, start_content, i - start_content);
-	if (type == 0)
+	if (type == -1)
 	{
 		while (list && ft_strcmp(name, list->name) != 0)
 			list = list->next;
+		list->equal = 1;
+		if (list->content)
+			free(list->content);
 		list->content = content;
 	}
-	else if (type == 1)
+	else if (type == -2)
 	{
 		while (list && ft_strcmp(name, list->name) != 0)
 			list = list->next;
-		list->content = ft_strjoin(list->content, content);
+		list->equal = 1;
+		list->content = ft_strjoin(list->content, content);//free list->content
 		free(content);
 	}
 	free(name);
@@ -150,7 +156,7 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 		state = ft_verif_arg(exec->flags[i], t_envp, error, 0);
 		if (state < 1)
 		{
-			if (state == 0 || state == -1)
+			if (state == 0 || state == -1 || state == -2)
 			{
 				if (ft_check_quote_and_delete(&exec))
 					return (0);
@@ -159,7 +165,7 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 					tmp = ft_globsolo_creation(exec->flags[i]);
 					ft_lstadd_back_alpha_envp(&t_envp, tmp);
 				}
-				else
+				else if (state != 0)
 					change_glob(&t_envp, exec->flags[i], state);
 			}
 		}
