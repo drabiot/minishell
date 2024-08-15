@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 16:22:20 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 17:38:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	expendable_type_mid(t_cmd *exec, int ret, bool *have_cmd, t_cmd *prev)
 		exec->type = APPEND_REDIR;
 	else if (exec->arg && exec->arg[0] == '>')
 		exec->type = TRUNC_REDIR;
+	else if (exec->arg && exec->arg[0] == '<' && exec->arg[1] == '<')
+		exec->type = HERE_DOC;
 	else if (ret == 3)
 		exec->type = LIMITER;
 	else if ((ret != 2) && (exec->type == COMMAND || (prev && *have_cmd == FALSE

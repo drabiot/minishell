@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/15 15:45:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 20:30:25 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static void	close_fds(t_exec *list)
 	{
 		if (list->fd_in != -1)
 			close(list->fd_in);
+		list->fd_in = -1;
 		if (list->fd_out != -1)
 			close(list->fd_out);
+		list->fd_out = -1;
 		list = list->next;
 	}
 }
@@ -61,7 +63,22 @@ static void set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->cmd = NULL;
 	current_node->flags = NULL;
 	current_node->have_heredoc = FALSE;
-	current_node->limiter = NULL;
+	current_node->name_heredoc[0] = NULL;
+	current_node->name_heredoc[1] = NULL;
+	current_node->name_heredoc[2] = NULL;
+	current_node->name_heredoc[3] = NULL;
+	current_node->name_heredoc[4] = NULL;
+	current_node->name_heredoc[5] = NULL;
+	current_node->name_heredoc[6] = NULL;
+	current_node->name_heredoc[7] = NULL;
+	current_node->name_heredoc[8] = NULL;
+	current_node->name_heredoc[9] = NULL;
+	current_node->name_heredoc[10] = NULL;
+	current_node->name_heredoc[11] = NULL;
+	current_node->name_heredoc[12] = NULL;
+	current_node->name_heredoc[13] = NULL;
+	current_node->name_heredoc[14] = NULL;
+	current_node->name_heredoc[15] = NULL;
 	current_node->file_error = FALSE;
 	current_node->is_piped = FALSE;
 	if (pos_cmd >= 1)
@@ -315,9 +332,8 @@ static t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		}
 		else if (cmd->type == HERE_DOC)
 			current_node->have_heredoc = TRUE;
-		else if (current_node->limiter == NULL && cmd->type == LIMITER)
-			//current_node->limiter = cmd->arg;
-			open_heredoc(cmd->arg, current_node, NULL, NULL);
+		else if (cmd->type == LIMITER)
+			open_heredoc(cmd->arg, current_node);
 		cmd = cmd->next;
 	}
 	return (current_node);
@@ -417,10 +433,10 @@ static void	create_pipe(t_exec *exec)
 			| O_TRUNC, 0644);
 	if (exec->infile && exec->file_error == FALSE)
 	{
-		close(exec->fd_in);
+		if (exec->fd_in != -1)
+			close(exec->fd_in);
 		exec->fd_in = open(exec->infile, O_RDONLY);
 	}
-
 }
 
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
@@ -433,6 +449,9 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	dup_in = dup2(exec->fd_in, STDIN_FILENO);
 	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
 	ret_execve = 0;
+	if (dup_in == -1 || dup_out == -1)
+		close_err();
+	close_fds(list);
 	if (!exec->base_cmd)
 	{
 		free_exit(list, *t_envp);
@@ -451,9 +470,6 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		exit(2);
 	}
 	stat(list->cmd, &s_stat);
-	if (dup_in == -1 || dup_out == -1)
-		close_err();
-	close_fds(list);
 	if (exec->file_error == TRUE)
 	{
 		ret_execve = (*t_envp)->utils->return_code;
@@ -584,6 +600,7 @@ static void	free_exec(t_exec *exec)
 		if (tmp_exec->outfile[0])
 			free(tmp_exec->outfile[0]);
 		tmp_exec->outfile[0] = NULL;
+		destroy_tmp(&tmp_exec);
 		free(tmp_exec);
 		tmp_exec = NULL;
 	}
@@ -633,10 +650,11 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 		}
 	}
 	ret = start_exec(exec, t_envp);
+	//close_fds(exec);
 	// t_exec *tmp = exec;
 	// while (tmp)
 	// {
-	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nlimiter: %s\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->limiter, tmp->fd_in, tmp->fd_out);
+	// 	printf("EXEC:\nnb_cmd: %d\npos_cmd: %d\ninfile: %s\noutfile: %s, type: %s\ncmd: %s\nflags: %s %s\nheredoc: %d\nfd_in: %d      fd_out: %d\n", tmp->nb_cmd, tmp->pos_cmd, tmp->infile, tmp->outfile[0], tmp->outfile[1], tmp->cmd, tmp->flags[0], tmp->flags[1], tmp->have_heredoc, tmp->fd_in, tmp->fd_out);
 	// 	tmp = tmp->next;
 	// }
 	free_exec(exec);

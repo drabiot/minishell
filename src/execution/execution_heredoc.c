@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 17:40:10 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 21:00:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,31 @@ static void	set_infile(int fd, char *limiter)
 
 	line = NULL;
 	line = readline("> ");
-	line = ft_strjoin(line, "\n");
+	if (line)
+		line = ft_strjoin(line, "\n");
 	while (line && ft_strcmp(line, limiter) != 0)
 	{
 		ft_putstr_fd(line, fd);
 		free(line);
 		line = readline("> ");
-		line = ft_strjoin(line, "\n");
+		if (line)
+			line = ft_strjoin(line, "\n");
 	}
 	if (line)
 		free(line);
+	if (fd >= 3)
+		close(fd);
 }
 
-void	open_heredoc(char *limiter, t_exec *exec, char *file, char *path)
+void	open_heredoc(char *limiter, t_exec *exec)
 {
 	char	*file_limit;
+	char 	*file;
 	int		file_fd;
+	int		i;
 
+	i = 0;
+	file = NULL;
 	file_limit = NULL;
 	file_limit = ft_strjoin(limiter, "\n");
 	if (!file_limit)
@@ -88,17 +96,29 @@ void	open_heredoc(char *limiter, t_exec *exec, char *file, char *path)
 		ft_putstr_fd(" Failled Malloc\n", 2);
 		//error malloc
 	}
-	path = getcwd(NULL, 0);
+	/*path = getcwd(NULL, 0);
 	if (!path)
 	{
 		ft_putstr_fd(" Failled to create Here_doc\n", 2);
 		return ;
-	}
+	}*/
 	file = create_rd_file(&file_fd);
+	while (exec->name_heredoc[i])
+		i++;
+	if (i < 16)
+		exec->name_heredoc[i] = file;
+	else
+	{
+		if (file_fd >= 3)
+			close(file_fd);
+		unlink(file);
+	}
 	if (!exec->file_error)
 	{
 		//exec->fd_in = file_fd;
-		exec->infile = file;
+		if (exec->infile)
+			free(exec->infile);
+		exec->infile = ft_strdup(file);
 	}
 	set_infile(file_fd, file_limit);
 	//if (!unlink(file))

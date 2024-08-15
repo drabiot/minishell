@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 15:52:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:54:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	change_glob(t_glob **t_envp, char *glob, int type)
 		list->equal = 1;
 		tmp_content = ft_strdup(list->content);
 		free(list->content);
-		list->content = ft_strjoin(tmp_content, content);//free list->content
+		list->content = ft_strjoin(tmp_content, content);
 		free(content);
 		free(tmp_content);
 	}

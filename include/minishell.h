@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 14:30:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/15 19:27:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_exec
 	char			*cmd;
 	char			**flags;
 	bool			have_heredoc;
-	char			*limiter;
+	char			*name_heredoc[16];
 	bool			file_error;
 	bool			is_piped;
 	pid_t			pid;
@@ -143,7 +143,7 @@ int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
 void	generate_key_random(void);
-void    open_heredoc(char *limiter, t_exec *exec, char *file, char *path);
+void    open_heredoc(char *limiter, t_exec *exec);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -163,6 +163,8 @@ void	grab_token(t_input *cmd, t_token *token);
 
 int		have_call_function(char *line);
 char	*create_file(int *tmp_fd);
+void	destroy_tmp(t_exec **exec);
+void	free_tmp(t_exec **exec);
 
 void	ft_errno(void);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:10:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/07/09 15:02:43 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/15 19:30:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,39 @@ int	ft_have_heredoc(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	return (0);
+}
+
+void	destroy_tmp(t_exec **exec)
+{
+	int	i;
+
+	i = 0;
+	if (!*exec)
+		return ;
+	while (i < 16)
+	{
+		if ((*exec)->name_heredoc[i])
+		{
+			unlink((*exec)->name_heredoc[i]);
+			free((*exec)->name_heredoc[i]);
+		}
+		(*exec)->name_heredoc[i] = NULL;
+		i++;
+	}
+}
+
+void	free_tmp(t_exec **exec)
+{
+	int	i;
+
+	i = 0;
+	if (!*exec)
+		return ;
+	while (i < 16)
+	{
+		if ((*exec)->name_heredoc[i])
+			free((*exec)->name_heredoc[i]);
+		(*exec)->name_heredoc[i] = NULL;
+		i++;
+	}
 }
