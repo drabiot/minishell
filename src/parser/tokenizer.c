@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 19:02:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:49:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ static char	*check_arg(char *arg)
 			return (arg);
 		i++;
 	}
+	if (arg)
+		free(arg);
 	return (NULL);
 }
 
