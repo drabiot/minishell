@@ -6,9 +6,10 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/16 17:03:38 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/16 18:12:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../../include/minishell.h"
 
@@ -84,6 +85,7 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 	char	*name;
 	t_bool	d_quote;
 	t_bool	mal_cont;
+	t_bool	mal_cont;
 
 	start = 0;
 	end = 0;
@@ -91,10 +93,12 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 	content = NULL;
 	d_quote = FALSE;
 	mal_cont = FALSE;
+	mal_cont = FALSE;
 	if (type == 1)
 	{
 		i = ft_expand_modif_one(cmd->arg, i, &start, &end);
 		content = ft_itoa(t_envp->utils->return_code);
+		mal_cont = TRUE;
 		mal_cont = TRUE;
 	}
 	else if (type == 2)
@@ -123,6 +127,11 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 	if (!content)
 		content = "";
 	ft_expd_do(cmd, ft_substr(content, 0, ft_strlen(content)), start, end - 1);
+	if (mal_cont)
+	{
+		free (content);
+		content = NULL;
+	}
 	if (mal_cont && content)
 	{
 		free (content);
