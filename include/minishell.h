@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 19:27:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:58:43 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,20 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value);
 /* ****************************************** */
 int		prompt(t_glob *t_envp);
 char	**lexer(char *input, t_glob *t_envp);
-void	tokenizer(t_input *cmd, t_glob *t_envp);
+void	tokenizer(t_input *cmd, t_glob *t_envp, unsigned int index);
 void	handle_quote(t_cmd *start);
 void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line);
 void	free_t_cmd(t_cmd *cmd);
+
+char	*ft_getenv(char *name, t_glob *t_envp, int i);
+void	split_full(char *full, t_cmd *list);
+char	**ft_define_split(char *full);
+void	add_new_node(t_cmd **list, char *argument, char *next_arg);
+
+void	free_expand_do(char *a, char *b, char *c, char *d);
+void	free_char(char **c);
+void	ft_expd_do(t_cmd *list, char *content, int start, int end);
 
 /* ****************************************** */
 /*                 Execution                  */
@@ -174,5 +183,14 @@ void	free_exit(t_exec *exec, t_glob *t_envp);
 void	free_envp(t_glob *t_envp);
 void	ft_env_print_one(int fd, t_glob *tmp);
 int		ft_export_state(t_exec *exec, t_glob *t_envp, t_glob *tmp, int state);
+int		is_start(t_cmd *prev);
+t_bool	is_white_space(char *str, int i);
+int		ft_verif_arg_start(char *flg, t_bool err, t_glob *t_envp);
+void    change_glob_one(t_glob *list, char *name, char *content);
+void	change_glob_two(t_glob *list, char *name, char *content, char *tmp_con);
+int		change_glob_sign(char *glob, int start_content);
+
+void	free_exit_tmp_exec(t_exec *tmp_exec);
+void    free_exit_envp(t_glob *t_envp);
 
 #endif //MINISHELL_H

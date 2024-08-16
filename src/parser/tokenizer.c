@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 19:02:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:02:16 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-t_bool	is_white_space(char *str, int i)
-{
-	if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		return (1);
-	return (0);
-}
 
 t_bool	is_special_char(char *str, int i)
 {
@@ -78,18 +71,18 @@ static char	*check_arg(char *arg)
 			return (arg);
 		i++;
 	}
+	if (arg)
+		free(arg);
 	return (NULL);
 }
 
-void	tokenizer(t_input *cmd, t_glob *t_envp)
+void	tokenizer(t_input *cmd, t_glob *t_envp, unsigned int index)
 {
-	unsigned int		index;
 	t_token				token;
 	t_cmd				*start;
 	char				*arg;
 	char				c;
 
-	index = 0;
 	start = NULL;
 	token = (t_token){0};
 	while (cmd->str && cmd->str[cmd->i])

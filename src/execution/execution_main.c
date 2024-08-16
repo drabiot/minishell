@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/15 20:30:25 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:04:57 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -563,7 +563,8 @@ void	free_t_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		next = cmd->next;
-		free(cmd->arg);
+		if (cmd->arg)
+			free(cmd->arg);
 		cmd->arg = NULL;
 		free(cmd);
 		cmd = next;
@@ -613,7 +614,7 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	int		ret;
 
 	if (!cmd)
-		return (0);
+		return ((*t_envp)->utils->return_code);
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
 	ret = 0;

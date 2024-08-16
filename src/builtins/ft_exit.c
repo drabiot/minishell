@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 19:28:18 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:59:57 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,15 @@ static int	ft_get_alpha(char *arg)
 	return (0);
 }
 
-static t_bool	is_limit(char *number)
+static t_bool	is_limit(char *number, int i, int j)
 {
 	char	*long_max;
 	char	*long_min;
-	int		i;
-	int		j;
 	int		diff;
 	t_bool	is_out;
 
 	long_max = "9223372036854775807";
 	long_min = "-9223372036854775808";
-	i = 0;
-	j = 0;
 	diff = 1;
 	is_out = FALSE;
 	while (number[j] == ' ')
@@ -98,37 +94,12 @@ void	free_exit(t_exec *exec, t_glob *t_envp)
 			tmp_exec->flags[i] = NULL;
 			i++;
 		}
-		if (tmp_exec->flags)
-			free(tmp_exec->flags);
-		tmp_exec->flags = NULL;
-		tmp_exec->cmd = NULL;
-		if (tmp_exec->base_cmd)
-			free(tmp_exec->base_cmd);
-		tmp_exec->base_cmd = NULL;
-		if (tmp_exec->infile)
-			free(tmp_exec->infile);
-		tmp_exec->infile = NULL;
-		if (tmp_exec->outfile[0])
-			free(tmp_exec->outfile[0]);
-		tmp_exec->outfile[0] = NULL;
-		free_tmp(&tmp_exec);
-		free(tmp_exec);
-		tmp_exec = NULL;
+		free_exit_tmp_exec(tmp_exec);
 	}
 	tmp_glob = t_envp;
 	t_envp = t_envp->next;
 	free(tmp_glob);
-	while (t_envp)
-	{
-		tmp_glob = t_envp;
-		t_envp = t_envp->next;
-		if (tmp_glob->name)
-			free(tmp_glob->name);
-		if (tmp_glob->content)
-			free(tmp_glob->content);
-		free(tmp_glob);
-		tmp_glob = NULL;
-	}
+	free_exit_envp(t_envp);
 	rl_clear_history();
 }
 
@@ -145,7 +116,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 		free_exit(exec, *t_envp);
 		exit(exit_code);
 	}
-	if (!ft_get_alpha(exec->flags[1]) && is_limit(exec->flags[1]))
+	if (!ft_get_alpha(exec->flags[1]) && is_limit(exec->flags[1], 0, 0))
 		error_arg = TRUE;
 	if (exec->flags[2] && !error_arg && !ft_get_alpha(exec->flags[1]))
 	{

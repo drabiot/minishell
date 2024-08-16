@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 15:49:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:35:46 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	ft_verif_arg_start(char *flg, t_bool err, t_glob *t_envp)
+{
+	if (!flg && !err)
+	{
+		t_envp->utils->return_code = 0;
+		return (0);
+	}
+	if (flg[0] == '=')
+	{
+		t_envp->utils->return_code = 1;
+		ft_putstr_fd(" not a valid identifier\n", 2);
+		return (1);
+	}
+	return (2);
+}
 
 void	ft_env_print_one(int fd, t_glob *tmp)
 {

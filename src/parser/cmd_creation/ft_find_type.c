@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 17:38:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:20:56 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static int	is_start(t_cmd *prev)
+/*static int	is_start(t_cmd *prev)
 {
 	if (!prev)
 		return (0);
@@ -20,7 +20,7 @@ static int	is_start(t_cmd *prev)
 		|| prev->type == REDIR_FILE)
 		return (1);
 	return (0);
-}
+}*/
 
 static int	is_redir(t_cmd *prev)
 {

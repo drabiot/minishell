@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 16:52:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 16:29:47 by adorlac          ###   ########.fr       */
+/*   Created: 2024/08/16 16:23:01 by adorlac           #+#    #+#             */
+/*   Updated: 2024/08/16 16:23:57 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**lexer(char *input, t_glob *t_envp)
+t_bool	is_white_space(char *str, int i)
 {
-	t_input	cmd;
-
-	cmd = (t_input){0};
-	cmd.str = input;
-	cmd.i = 0;
-	tokenizer(&cmd, t_envp, 0);
-	return (NULL);
+	if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		return (1);
+	return (0);
 }

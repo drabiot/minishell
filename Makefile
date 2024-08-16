@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
+#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/15 14:30:32 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/16 17:59:00 by adorlac          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,22 +50,28 @@ SRCS		=		main.c \
 					parser/prompt.c \
 					parser/lexer.c \
 					parser/tokenizer.c \
+					parser/tokenizer_utils.c \
 					parser/quote_manager.c \
 					parser/error_syntax.c \
 					parser/expand/expand_main.c \
 					parser/expand/expand_verif.c \
 					parser/expand/expand_modif.c \
+					parser/expand/expand_modif_utils.c \
+					parser/expand/expand_modif_utils_two.c \
 					parser/expand/expand_tokenizer.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \
+					parser/cmd_creation/ft_find_type_utils.c \
 					builtins/ft_export.c \
 					builtins/ft_export_utils.c \
+					builtins/ft_export_utils_two.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
 					builtins/ft_env.c \
 					builtins/ft_unset.c \
 					builtins/ft_cd.c \
 					builtins/ft_exit.c \
+					builtins/ft_exit_utils.c \
 					libft_cmd/ft_lstadd_back_cmd.c \
 					libft_cmd/ft_lstadd_front_cmd.c \
 					libft_cmd/ft_lstclear_cmd.c \

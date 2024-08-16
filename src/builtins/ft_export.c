@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 15:54:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:52:21 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,11 @@
 
 static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 {
-	if (!flg && !err)
-	{
-		t_envp->utils->return_code = 0;
-		return (0);
-	}
-	if (flg[0] == '=')
-	{
-		t_envp->utils->return_code = 1;
-		ft_putstr_fd(" not a valid identifier\n", 2);
-		return (1);
-	}
+	int	r;
+
+	r = ft_verif_arg_start(flg, err, t_envp);
+	if (r == 0 || r == 1)
+		return (r);
 	while (flg[i] && flg[i] != '=')
 	{
 		if (!ft_isalpha(flg[i]))
@@ -92,52 +86,31 @@ t_bool	no_glob(t_glob **t_envp, char *glob)
 	return (TRUE);
 }
 
-void	change_glob(t_glob **t_envp, char *glob, int type)
+void	change_glob(t_glob **t_envp, char *glob, int type, int i)
 {
 	char	*name;
 	char	*content;
-	int		i;
 	int		start_content;
 	char	*tmp_content;
 	t_glob	*list;
 
 	name = NULL;
 	tmp_content = NULL;
-	i = 0;
 	if (*t_envp)
 		list = *t_envp;
 	while (glob[i] && glob[i] != '=' && glob[i] != '+')
 		i++;
 	name = ft_substr(glob, 0, i);
 	start_content = i;
-	if (glob[start_content] == '+' && glob[start_content + 1] == '=')
-		start_content++;
-	if (glob[start_content == '='])
-		start_content++;
+	start_content = change_glob_sign(glob, start_content);
 	i = start_content;
 	while (i < (int)ft_strlen(glob))
 		i++;
 	content = ft_substr(glob, start_content, i - start_content);
 	if (type == -1)
-	{
-		while (list && ft_strcmp(name, list->name) != 0)
-			list = list->next;
-		list->equal = 1;
-		if (list->content)
-			free(list->content);
-		list->content = content;
-	}
+		change_glob_one(list, name, content);
 	else if (type == -2)
-	{
-		while (list && ft_strcmp(name, list->name) != 0)
-			list = list->next;
-		list->equal = 1;
-		tmp_content = ft_strdup(list->content);
-		free(list->content);
-		list->content = ft_strjoin(tmp_content, content);
-		free(content);
-		free(tmp_content);
-	}
+		change_glob_two(list, name, content, tmp_content);
 	free(name);
 }
 
@@ -171,7 +144,7 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 					ft_lstadd_back_alpha_envp(&t_envp, tmp);
 				}
 				else if (state != 0)
-					change_glob(&t_envp, exec->flags[i], state);
+					change_glob(&t_envp, exec->flags[i], state, 0);
 			}
 		}
 		else
