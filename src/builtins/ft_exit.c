@@ -6,13 +6,13 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 19:01:27 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:18:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_get_alpha(char **arg)
+static int	ft_get_alpha(char *arg)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ static int	ft_get_alpha(char **arg)
 	return (0);
 }
 
-t_bool	is_limit(char **number, int i, int j)
+static t_bool	is_limit(char *number, int i, int j)
 {
 	char	*long_max;
 	char	*long_min;
@@ -47,13 +47,9 @@ t_bool	is_limit(char **number, int i, int j)
 	if (number[0] == '-')
 	{
 		flg = check_limits(number, long_min, i, j);
-		if (flg)
-			ft_putstr_fd("exit\n numeric argument required\n", 2);
 		return (flg);
 	}
 	flg = check_limits(number, long_max, i, j);
-	if (flg)
-		ft_putstr_fd("exit\n numeric argument required\n", 2);
 	return (flg);
 }
 
@@ -85,7 +81,7 @@ void	free_exit(t_exec *exec, t_glob *t_envp)
 	rl_clear_history();
 }
 
-void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
+void	ft_exit(t_exec *exec, t_glob **t_envp, int *return_value)
 {
 	int		exit_code;
 	t_bool	error_arg;
@@ -93,8 +89,8 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	exit_code = (*t_envp)->utils->return_code;
 	error_arg = FALSE;
 	if (!exec->flags[1] && !exec->is_piped)
-		handle_exit_error(0, *t_envp, exec, &exit_code);
-	if (is_limit(exec->flags, 0, 0) || ft_get_alpha(exec->flags))
+		handle_exit_error(*t_envp, exec, &exit_code);
+	if (is_limit(exec->flags[1], 0, 0) || ft_get_alpha(exec->flags[1]))
 		error_arg = TRUE;
 	if (exec->flags[2] && !error_arg && !ft_get_alpha(exec->flags[1]))
 	{
@@ -111,7 +107,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	*return_value = calculate_exit_code(exit_code);
 	(*t_envp)->utils->return_code = *return_value;
 	if (!exec->is_piped)
-		handle_exit_error(fd, *t_envp, exec, return_value);
+		handle_exit(*t_envp, exec, return_value);
 }
 
 void	free_envp(t_glob *t_envp)
@@ -120,6 +116,7 @@ void	free_envp(t_glob *t_envp)
 
 	tmp_glob = NULL;
 	tmp_glob = t_envp;
+	free_utils(t_envp->utils);
 	t_envp = t_envp->next;
 	free(tmp_glob);
 	while (t_envp)

@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/19 18:17:14 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/19 20:19:28 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CC			=		clang
 #=========== FLAGS ============#
 
 CFLAGS		=		-Wall -Wextra -Werror	#Usual flags
-GFLAGS		=		$(CFLAGS) -g		#Flag for gdb or valgrind
+GFLAGS		=		$(CFLAGS) -g #-fsanitize=address		#Flag for gdb or valgrind
 
 #=========== COLOR ============#
 

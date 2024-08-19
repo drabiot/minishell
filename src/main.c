@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:24:18 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:45:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char **envp)
 	path.return_code = 0;
 	t_envp = ft_envp_creation(env);
 	add_glob_utils(t_envp, &path);
-	create_env(&t_envp);
 	while (TRUE)
 	{
 		prompt(t_envp);

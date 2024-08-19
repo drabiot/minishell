@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:49:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:18:47 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		ft_unset(t_glob **envp, t_exec *exec);
 int		ft_export(int fd, t_glob *t_envp, t_exec *exec);
 int		ft_check_quote_and_delete(t_exec **exec);
 int		ft_cd(t_exec *exec, t_glob **t_envp);
-void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value);
+void	ft_exit(t_exec *exec, t_glob **t_envp, int *return_value);
 
 /* ****************************************** */
 /*                  Parser                    */
@@ -181,6 +181,7 @@ void	ft_errno(void);
 void	ft_signal(int sign);
 void	free_exit(t_exec *exec, t_glob *t_envp);
 void	free_envp(t_glob *t_envp);
+void	free_utils(t_cwd *utils);
 void	ft_env_print_one(int fd, t_glob *tmp);
 int		ft_export_state(t_exec *exec, t_glob *t_envp, t_glob *tmp, int state);
 int		is_start(t_cmd *prev);
@@ -199,7 +200,8 @@ void	change_glob(t_glob **t_envp, char *glob, int type, int i);
 
 t_bool	check_limits(const char *num, const char *limit, int i, int j);
 int		calculate_exit_code(int exit_code);
-void	handle_exit_error(int fd, t_glob *t_envp, t_exec *exec, int *exit_code);
+void	handle_exit_error(t_glob *t_envp, t_exec *exec, int *exit_code);
 void 	handle_error(int *exit_code, t_glob *envp, t_exec *exec);
+void	handle_exit(t_glob *t_envp, t_exec *exec, int *exit_code);
 
 #endif //MINISHELL_H

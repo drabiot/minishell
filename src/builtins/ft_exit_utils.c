@@ -6,18 +6,11 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 17:56:18 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 19:02:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:06:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	handle_exit_error(int fd, t_glob *t_envp, t_exec *exec, int *exit_code)
-{
-	ft_putstr_fd("exit\n", fd);
-	free_exit(exec, t_envp);
-	exit(*exit_code);
-}
 
 int	calculate_exit_code(int exit_code)
 {
@@ -44,11 +37,32 @@ t_bool	check_limits(const char *num, const char *limit, int i, int j)
 	return (diff > 0);
 }
 
+void	free_utils(t_cwd *utils)
+{
+	int		i;
+	t_cwd	*tmp;
+
+	i = 0;
+	if (!utils)
+		return ;
+	tmp = utils;
+	while (tmp->env && tmp->env[i])
+	{
+		free(tmp->env[i]);
+		tmp->env[i] = NULL;
+		i++;
+	}
+	if (tmp->env)
+		free(tmp->env);
+	tmp->env = NULL;
+}
+
 void	free_exit_envp(t_glob *t_envp)
 {
 	t_glob	*tmp_glob;
 
 	tmp_glob = NULL;
+	free_utils(t_envp->utils);
 	while (t_envp)
 	{
 		tmp_glob = t_envp;

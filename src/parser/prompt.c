@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:25:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:04:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int	prompt(t_glob *t_envp)
 	// 	return (0);
 	add_history(input);
 	arg = lexer(input, t_envp);
+	free_utils(t_envp->utils);
 	return (1);
 }

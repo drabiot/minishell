@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:50:05 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 11:33:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:13:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec)
 	else if (ft_strcmp(exec->cmd, "env") == 0)
 		return_value = ft_env(fd, t_envp);
 	else if (ft_strcmp(exec->cmd, "exit") == 0)
-		ft_exit(fd, exec, t_envp, &return_value);
+		ft_exit(exec, t_envp, &return_value);
 	else if (ft_strcmp(exec->cmd, "export") == 0)
 		return_value = ft_export(fd, *t_envp, exec);
 	else if (ft_strcmp(exec->cmd, "pwd") == 0)

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:27:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:13:40 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ void	create_env(t_glob **t_envp)
 	int		i;
 
 	i = 0;
+	new_env = NULL;
 	if (*t_envp)
 		start = *t_envp;
-	new_env = malloc(sizeof(char *) * ft_lstsize_glob(*t_envp) + 1);
+	new_env = ft_calloc(ft_lstsize_glob(*t_envp) + 1, sizeof(char *));
 	if (!new_env)
 		return ;
 	while (start)
@@ -37,10 +38,11 @@ void	create_env(t_glob **t_envp)
 				free(tmp);
 			if (current)
 			{
-				new_env[i] = ft_strdup(current);
-				free (current);
+				new_env[i] = current;
+				i++;
+				current = NULL;
+				//free (current);
 			}
-			i++;
 		}
 		start = start->next;
 	}
