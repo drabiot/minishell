@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:52:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:51:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 	{
 		if (!ft_isalpha(flg[i]))
 		{
-			if (flg[i] == '+' && flg[i + 1] == '=' )
+			if (i != 0  && flg[i] == '+' && flg[i + 1] == '=' )
 				return (-2);
 			t_envp->utils->return_code = 1;
 			ft_putstr_fd(" not a valid identifier\n", 2);

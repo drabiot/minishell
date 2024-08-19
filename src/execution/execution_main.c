@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/19 22:23:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:32:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,9 @@ static char	*get_cmd(char *arg, t_glob *glob)
 		path = path->next;
 	if (path)
 		content_path = path->content;
-	if ((arg && access(arg, X_OK) == 0) || (arg && is_builtins(arg)) || (arg[0] == '\0') || is_path)
+	if (arg && is_builtins(arg))
+		tmp_cmd = ft_strdup(arg);
+	else if (arg && ((access(arg, X_OK) == 0) || (arg[0] == '\0')) && is_path)
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
 		tmp_cmd = ft_strjoin("/", arg); //strdup arg et "/"
@@ -179,7 +181,11 @@ static char	**get_flags(t_cmd *cmd, char *path)
 		cmd = cmd->next;
 	}
 	if (!path && (!flags || !*flags))
+	{
+		if (flags)
+			free (flags);
 		return (NULL);
+	}
 	free(flags[0]);
 	flags[0] = path;
 	return (flags);
