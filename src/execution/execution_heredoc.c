@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 21:00:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:55:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*create_rd_file(int *file_fd)
 	if (!tmp_file)
 	{
 		ft_putstr_fd(" Failled Malloc\n", 2);
-		//error malloc
+		return (NULL);
 	}
 	while (*file_fd == -1)
 	{
@@ -83,7 +83,7 @@ static void	set_infile(int fd, char *limiter)
 void	open_heredoc(char *limiter, t_exec *exec)
 {
 	char	*file_limit;
-	char 	*file;
+	char	*file;
 	int		file_fd;
 	int		i;
 
@@ -94,15 +94,15 @@ void	open_heredoc(char *limiter, t_exec *exec)
 	if (!file_limit)
 	{
 		ft_putstr_fd(" Failled Malloc\n", 2);
-		//error malloc
-	}
-	/*path = getcwd(NULL, 0);
-	if (!path)
-	{
-		ft_putstr_fd(" Failled to create Here_doc\n", 2);
 		return ;
-	}*/
+	}
 	file = create_rd_file(&file_fd);
+	if (!file)
+	{
+		if (file_limit)
+			free(file_limit);
+		return ;
+	}
 	while (exec->name_heredoc[i])
 		i++;
 	if (i < 16)
@@ -115,14 +115,11 @@ void	open_heredoc(char *limiter, t_exec *exec)
 	}
 	if (!exec->file_error)
 	{
-		//exec->fd_in = file_fd;
 		if (exec->infile)
 			free(exec->infile);
 		exec->infile = ft_strdup(file);
 	}
 	set_infile(file_fd, file_limit);
-	//if (!unlink(file))
-	//	 ft_putstr_fd(" Failled to destroy tmp file\n", 2);
 	if (file_limit)
 		free (file_limit);
 }

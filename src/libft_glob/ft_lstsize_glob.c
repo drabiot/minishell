@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize_glob.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 18:24:18 by tchartie         ###   ########.fr       */
+/*   Created: 2024/08/19 18:16:13 by tchartie          #+#    #+#             */
+/*   Updated: 2024/08/19 18:22:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ft_lstsize_glob(t_glob *glob)
 {
-	t_glob	*t_envp;
-	t_cwd	path;
-	char	**env;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	env = NULL;
-	if (envp)
-		env = envp;
-	generate_key_random();
-	path = (t_cwd){0};
-	path.return_code = 0;
-	t_envp = ft_envp_creation(env);
-	add_glob_utils(t_envp, &path);
-	create_env(&t_envp);
-	while (TRUE)
+	i = 0;
+	while (glob)
 	{
-		prompt(t_envp);
+		glob = glob->next;
+		i++;
 	}
-	return (0);
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/19 17:16:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:29:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,38 +161,6 @@ static char	*get_cmd(char *arg, t_glob *glob)
 		return (NULL);
 	return (full_path);
 }
-
-/*static char *ft_strjoin_free(char *s1, char *s2)
-{
-	char	*buffer;
-	size_t	len_s1;
-	size_t	len_s2;
-
-	len_s2 = ft_strlen(s2);
-	if (!s1)
-		buffer = (char *)malloc(sizeof(char) * (len_s2 + 1));
-	else
-	{
-		len_s1 = ft_strlen(s1);
-		buffer = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1));
-	}
-	if (!buffer)
-	{
-		if (s1)
-			free(s1);
-		if (s2)
-			free(s2);
-		return (NULL);
-	}
-	buffer = ft_strcat(s1, s2, buffer);
-	if (s1)
-		free(s1);
-	if (s2)
-		free(s2);
-	s1 = NULL;
-	s2 = NULL;
-	return (buffer);
-}*/
 
 static char	**get_flags(t_cmd *cmd, char *path)
 {
@@ -489,7 +457,7 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 	else if (exec->flags)
 	{
 		rl_clear_history();
-		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->env);
+		ret_execve = execve(exec->cmd, exec->flags, (*t_envp)->utils->env);
 	}
 	else
 	{

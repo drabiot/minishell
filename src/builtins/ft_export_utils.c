@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 16:35:46 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:57:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ t_glob	*ft_globsolo_creation(char *arg)
 	content = ft_substr(arg, name_end + 1, ft_strlen(arg));
 	//redo miss env variable
 	if (arg[name_end] && arg[name_end] == '=')
-		tmp = ft_lstnew_glob(name, 1, content, NULL);
+		tmp = ft_lstnew_glob(name, 1, content);
 	else
-		tmp = ft_lstnew_glob(name, 0, content, NULL);
+		tmp = ft_lstnew_glob(name, 0, content);
 	return (tmp);
 }

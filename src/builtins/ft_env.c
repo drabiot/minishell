@@ -6,11 +6,46 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 05:27:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:27:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	create_env(t_glob **t_envp)
+{
+	t_glob	*start;
+	char	**new_env;
+	char	*tmp;
+	char	*current;
+	int		i;
+
+	i = 0;
+	if (*t_envp)
+		start = *t_envp;
+	new_env = malloc(sizeof(char *) * ft_lstsize_glob(*t_envp) + 1);
+	if (!new_env)
+		return ;
+	while (start)
+	{
+		if (start->equal == 1)
+		{
+			tmp = ft_strjoin(start->name, "=");
+			if (start->content)
+				current = ft_strjoin(tmp, start->content);
+			if (tmp)
+				free(tmp);
+			if (current)
+			{
+				new_env[i] = ft_strdup(current);
+				free (current);
+			}
+			i++;
+		}
+		start = start->next;
+	}
+	(*t_envp)->utils->env = new_env;
+}
 
 int	ft_env(int fd, t_glob **t_envp)
 {

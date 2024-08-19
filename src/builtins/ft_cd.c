@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:17:45 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 19:00:27 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,6 @@ void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 		end = start;
 		start = start->next;
 	}
-	/*if (!old_pwd) //redo if end doesn't exist & mke it work when no PWD
-	{
-		old_pwd = malloc(sizeof(t_glob));
-		if (!old_pwd)
-			exit (1); //free leak
-		old_pwd->name = "OLDPWD";
-		old_pwd->content = content_pwd;
-		old_pwd->env = end->env; //do it
-		old_pwd->equal = 1;
-		old_pwd->utils = end->utils;
-		old_pwd->next = NULL;
-		end->next = old_pwd;
-	}*/
 	old_pwd->content = content_pwd;
 }
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:24:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:49:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ typedef struct s_cmd
 
 typedef struct s_cwd
 {
-	char		*relative_path;
-	char		*absolute_path;
+	char		**env;
 	int			return_code;
 }				t_cwd;
 
@@ -66,7 +65,6 @@ typedef struct s_glob
 	char				*name;
 	int					equal;
 	char				*content;
-	char				**env;
 	struct s_glob		*next;
 	struct s_cwd		*utils;
 }						t_glob;
@@ -95,7 +93,8 @@ void	ft_lstadd_front_glob(t_glob **lst, t_glob *new);
 void	ft_lstclear_glob(t_glob **lst);
 void	ft_lstdelone_glob(t_glob *lst);
 t_glob	*ft_lstlast_glob(t_glob *lst);
-t_glob	*ft_lstnew_glob(char *name, int equal, char *content, char **env);
+t_glob	*ft_lstnew_glob(char *name, int equal, char *content);
+int		ft_lstsize_glob(t_glob *glob);
 t_glob	*ft_globsolo_creation(char *arg);
 t_glob	*ft_envp_creation(char **env);
 void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new);
@@ -117,6 +116,7 @@ t_cmd	*expand_tokenizer(t_input *cmd);
 int		ft_echo(int fd, t_exec *exec, t_glob *t_envp);
 int		ft_pwd(t_glob *t_envp);
 int		ft_env(int fd, t_glob **envp);
+void	create_env(t_glob **t_envp);
 int		ft_unset(t_glob **envp, t_exec *exec);
 int		ft_export(int fd, t_glob *t_envp, t_exec *exec);
 int		ft_check_quote_and_delete(t_exec **exec);
@@ -193,7 +193,7 @@ int		change_glob_sign(char *glob, int start_content);
 void	free_exit_tmp_exec(t_exec *tmp_exec);
 void    free_exit_envp(t_glob *t_envp);
 
-int		handle_state(t_glob **t_envp, t_exec *exec, int state, int *error);
+int		handle_state(t_glob **t_envp, t_exec *exec, int state, int i);
 t_bool	no_glob(t_glob **t_envp, char *glob);
 void	change_glob(t_glob **t_envp, char *glob, int type, int i);
 

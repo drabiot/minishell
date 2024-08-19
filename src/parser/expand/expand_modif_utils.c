@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 16:02:25 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/16 16:18:28 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:47:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ void	add_new_node(t_cmd **list, char *argument, char *next_arg)
 
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
-		;
-	//exit
+		return ;
 	add_new_node_arg(new_node, next_arg);
 	if (list)
 		new_node->index = (*list)->index + 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 14:56:19 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 18:52:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 	while (exec->flags[i])
 	{
 		state = ft_verif_arg(exec->flags[i], t_envp, error, 0);
-		flg = handle_state(&t_envp, exec, state, &error);
-		if (flg == 0)
-			return (0);
+		flg = handle_state(&t_envp, exec, state, i);
+		if (flg > 0)
+			error = TRUE;
 		i++;
 	}
 	return (error);
