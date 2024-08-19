@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 17:58:43 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:24:27 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,5 +192,14 @@ int		change_glob_sign(char *glob, int start_content);
 
 void	free_exit_tmp_exec(t_exec *tmp_exec);
 void    free_exit_envp(t_glob *t_envp);
+
+int		handle_state(t_glob **t_envp, t_exec *exec, int state, int *error);
+t_bool	no_glob(t_glob **t_envp, char *glob);
+void	change_glob(t_glob **t_envp, char *glob, int type, int i);
+
+t_bool	check_limits(const char *num, const char *limit, int i, int j);
+int		calculate_exit_code(int exit_code);
+void	handle_exit_error(int fd, t_glob *t_envp, t_exec *exec, int *exit_code);
+void 	handle_error(int *exit_code, t_glob *envp);
 
 #endif //MINISHELL_H

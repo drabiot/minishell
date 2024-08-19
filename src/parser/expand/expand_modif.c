@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/16 18:14:44 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 14:32:44 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 	char	*content;
 	char	*name;
 	t_bool	d_quote;
-	t_bool	mal_cont;
 	t_bool	mal_cont;
 
 	start = 0;

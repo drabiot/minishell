@@ -6,23 +6,17 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/14 14:27:44 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:30:03 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	refresh_pwd(t_glob ***t_envp)
+void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 {
-	t_glob	*start;
-	t_glob	*old_pwd;
-	t_glob	*end;
 	char	*content_pwd;
 	char	*path;
 
-	start = NULL;
-	old_pwd = NULL;
-	end = NULL;
 	path = getcwd(NULL, 0);
 	if (!path)
 		return ;
@@ -91,7 +85,7 @@ int	ft_cd(t_exec *exec, t_glob **t_envp)
 			ft_putstr_fd(" No such file or directory\n", 2);
 			return (1);
 		}
-		refresh_pwd(&t_envp);
+		fresh_pwd(&t_envp, NULL, NULL, NULL);
 		return (0);
 	}
 	path_start = getcwd(NULL, 0);
@@ -107,7 +101,7 @@ int	ft_cd(t_exec *exec, t_glob **t_envp)
 		ft_putstr_fd(" No such file or directory\n", 2);
 		return (1);
 	}
-	refresh_pwd(&t_envp);
+	fresh_pwd(&t_envp, NULL, NULL, NULL);
 	free(path_join);
 	free(path_start);
 	free(path_join_half);

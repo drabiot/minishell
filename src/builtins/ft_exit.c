@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 17:59:57 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:25:25 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,27 @@ static int	ft_get_alpha(char *arg)
 	return (0);
 }
 
-static t_bool	is_limit(char *number, int i, int j)
+t_bool	is_limit(char *number, int i, int j)
 {
 	char	*long_max;
 	char	*long_min;
-	int		diff;
-	t_bool	is_out;
+	t_bool	flg;
 
 	long_max = "9223372036854775807";
 	long_min = "-9223372036854775808";
-	diff = 1;
-	is_out = FALSE;
+	flg = FALSE;
 	while (number[j] == ' ')
 		j++;
-	if (number[0] == '-' && (int)ft_strlen(number) - j >= 21)
-		return (TRUE);
-	if (number[0] != '-' && (int)ft_strlen(number) - j >= 20)
+	if ((number[0] == '-' && (int)ft_strlen(number) - j >= 21)
+		|| (number[0] != '-' && (int)ft_strlen(number) - j >= 20))
 		return (TRUE);
 	if (number[0] == '-')
 	{
-		while (number[i + j] && !is_out)
-		{
-			diff = number[i + j] - long_min[i];
-			if (diff < 0)
-				is_out = TRUE;
-			i++;
-		}
-		if (diff > 0)
-			return (TRUE);
-		i++;
+		flg = check_limits(number, long_min, i, j);
+		return (flg);
 	}
-	else
-	{
-		while (number[i + j] && !is_out)
-		{
-			diff = number[i + j] - long_max[i];
-			if (diff < 0)
-				is_out = TRUE;
-			i++;
-		}
-		if (diff > 0)
-			return (TRUE);
-	}
-	return (FALSE);
+	flg = check_limits(number, long_max, i, j);
+	return (flg);
 }
 
 void	free_exit(t_exec *exec, t_glob *t_envp)
@@ -111,12 +89,8 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	exit_code = (*t_envp)->utils->return_code;
 	error_arg = FALSE;
 	if (!exec->flags[1] && !exec->is_piped)
-	{
-		ft_putstr_fd("exit\n", 0);
-		free_exit(exec, *t_envp);
-		exit(exit_code);
-	}
-	if (!ft_get_alpha(exec->flags[1]) && is_limit(exec->flags[1], 0, 0))
+		handle_exit_error(0, *t_envp, exec, &exit_code);
+	if ((ft_get_alpha(exec->flags[1]) || is_limit(exec->flags[1], 0, 0)))
 		error_arg = TRUE;
 	if (exec->flags[2] && !error_arg && !ft_get_alpha(exec->flags[1]))
 	{
@@ -126,28 +100,14 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 		*return_value = 1;
 		return ;
 	}
-	if (ft_get_alpha(exec->flags[1]) || error_arg)
-	{
-		(*t_envp)->utils->return_code = 2;
-		ft_putstr_fd(" numeric argument required\n", 2);
-		exit_code = 2;
-		*return_value = 2;
-		error_arg = TRUE;
-	}
-	if (exec->flags[1] && !error_arg)
+	if (error_arg)
+		handle_error(&exit_code, *t_envp);
+	else if (exec->flags[1])
 		exit_code = ft_atoi(exec->flags[1]);
-	if (exit_code >= 256)
-		exit_code %= 256;
-	if (exit_code < 0)
-		exit_code = 256 - (-exit_code) % 256;
-	*return_value = exit_code;
-	(*t_envp)->utils->return_code = exit_code;
-	if (!exec->is_piped) // change here
-	{
-		free_exit(exec, *t_envp);
-		ft_putstr_fd("exit\n", fd);
-		exit (exit_code);
-	}
+	*return_value = calculate_exit_code(exit_code);
+	(*t_envp)->utils->return_code = *return_value;
+	if (!exec->is_piped)
+		handle_exit_error(fd, *t_envp, exec, return_value);
 }
 
 void	free_envp(t_glob *t_envp)

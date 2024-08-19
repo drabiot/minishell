@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 16:52:21 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 14:56:19 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,14 @@ void	change_glob(t_glob **t_envp, char *glob, int type, int i)
 
 int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 {
-	t_glob	*tmp;
-	int		i;
-	t_bool	error;
-	int		state;
+	int	i;
+	int	error;
+	int	state;
+	int	flg;
 
 	i = 1;
+	flg = 0;
 	error = FALSE;
-	state = 0;
 	if (!exec->flags[1])
 	{
 		ft_env_print(fd, t_envp);
@@ -132,23 +132,9 @@ int	ft_export(int fd, t_glob *t_envp, t_exec *exec)
 	while (exec->flags[i])
 	{
 		state = ft_verif_arg(exec->flags[i], t_envp, error, 0);
-		if (state < 1)
-		{
-			if (state == 0 || state == -1 || state == -2)
-			{
-				if (ft_check_quote_and_delete(&exec))
-					return (0);
-				if (no_glob(&t_envp, exec->flags[i]))
-				{
-					tmp = ft_globsolo_creation(exec->flags[i]);
-					ft_lstadd_back_alpha_envp(&t_envp, tmp);
-				}
-				else if (state != 0)
-					change_glob(&t_envp, exec->flags[i], state, 0);
-			}
-		}
-		else
-			error = TRUE;
+		flg = handle_state(&t_envp, exec, state, &error);
+		if (flg == 0)
+			return (0);
 		i++;
 	}
 	return (error);
