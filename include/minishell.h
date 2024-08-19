@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 15:24:27 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:24:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,6 @@ void	change_glob(t_glob **t_envp, char *glob, int type, int i);
 t_bool	check_limits(const char *num, const char *limit, int i, int j);
 int		calculate_exit_code(int exit_code);
 void	handle_exit_error(int fd, t_glob *t_envp, t_exec *exec, int *exit_code);
-void 	handle_error(int *exit_code, t_glob *envp);
+void 	handle_error(int *exit_code, t_glob *envp, t_exec *exec);
 
 #endif //MINISHELL_H

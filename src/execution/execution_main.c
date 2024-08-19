@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/16 18:11:22 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:16:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,7 +406,7 @@ static void	create_pipe(t_exec *exec)
 	{
 		pipe_ret = pipe(fd_pipe);
 		if (pipe_ret == -1)
-			close_err();
+			return ;
 		if (exec->outfile[0] && exec->file_error == FALSE)
 		{
 			if (ft_strcmp(exec->outfile[1], "append") == 0)
@@ -442,15 +442,11 @@ static void	create_pipe(t_exec *exec)
 static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 {
 	int		ret_execve;
-	int		dup_in;
-	int		dup_out;
 	struct stat	s_stat;
 
-	dup_in = dup2(exec->fd_in, STDIN_FILENO);
-	dup_out = dup2(exec->fd_out, STDOUT_FILENO);
+	dup2(exec->fd_in, STDIN_FILENO);
+	dup2(exec->fd_out, STDOUT_FILENO);
 	ret_execve = 0;
-	if (dup_in == -1 || dup_out == -1)
-		close_err();
 	close_fds(list);
 	if (!exec->base_cmd)
 	{

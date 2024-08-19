@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_find_type.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/16 16:20:56 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:15:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ static int	is_path(t_cmd *current, t_cmd *prev)
 
 int	ft_find_type(char *arg, t_cmd *prev)
 {
-	if (prev && prev->type == HERE_DOC)
-		return (LIMITER);
-	else if (arg[0] == '|')
+	if (arg[0] == '|')
 		return (PIPE);
 	else if (arg[0] == '<' && arg[1] == '<')
 		return (HERE_DOC);
@@ -67,6 +65,8 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (APPEND_REDIR);
 	else if (arg[0] == '>')
 		return (TRUNC_REDIR);
+	else if (prev && prev->type == HERE_DOC)
+		return (LIMITER);
 	else if (is_redir(prev))
 		return (REDIR_FILE);
 	else if (is_start(prev) || !prev)

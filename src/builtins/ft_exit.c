@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 15:25:25 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:42:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_get_alpha(char *arg)
+static int	ft_get_alpha(char **arg)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ static int	ft_get_alpha(char *arg)
 	return (0);
 }
 
-t_bool	is_limit(char *number, int i, int j)
+t_bool	is_limit(char **number, int i, int j)
 {
 	char	*long_max;
 	char	*long_min;
@@ -47,9 +47,13 @@ t_bool	is_limit(char *number, int i, int j)
 	if (number[0] == '-')
 	{
 		flg = check_limits(number, long_min, i, j);
+		if (flg)
+			ft_putstr_fd("exit\n numeric argument required\n", 2);
 		return (flg);
 	}
 	flg = check_limits(number, long_max, i, j);
+	if (flg)
+			ft_putstr_fd("exit\n numeric argument required\n", 2);
 	return (flg);
 }
 
@@ -90,7 +94,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 	error_arg = FALSE;
 	if (!exec->flags[1] && !exec->is_piped)
 		handle_exit_error(0, *t_envp, exec, &exit_code);
-	if ((ft_get_alpha(exec->flags[1]) || is_limit(exec->flags[1], 0, 0)))
+	if (is_limit(exec->flags, 0, 0) || ft_get_alpha(exec->flags))
 		error_arg = TRUE;
 	if (exec->flags[2] && !error_arg && !ft_get_alpha(exec->flags[1]))
 	{
@@ -101,7 +105,7 @@ void	ft_exit(int fd, t_exec *exec, t_glob **t_envp, int *return_value)
 		return ;
 	}
 	if (error_arg)
-		handle_error(&exit_code, *t_envp);
+		handle_error(&exit_code, *t_envp, exec);
 	else if (exec->flags[1])
 		exit_code = ft_atoi(exec->flags[1]);
 	*return_value = calculate_exit_code(exit_code);
