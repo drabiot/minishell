@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 20:04:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:59:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ int	prompt(t_glob *t_envp)
 	char		**arg;
 	int			ret;
 
-	// rl_outstream = stdin;
-	//create_path(&path, t_envp);
-	//printf("\x1b[0;95m%s ", path.absolute_path);
-	//input = readline("uwushell> ");
 	ft_signal(1);
 	ret = 0;
 	create_env(&t_envp);
@@ -47,9 +43,6 @@ int	prompt(t_glob *t_envp)
 		printf("exit\n");
 		exit (ret);
 	}
-	//free(path.absolute_path);
-	// if (!(ft_strncmp(input, "exit", 4)))
-	// 	return (0);
 	add_history(input);
 	arg = lexer(input, t_envp);
 	free_utils(t_envp->utils);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 21:18:47 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:02:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
 void	generate_key_random(void);
-void    open_heredoc(char *limiter, t_exec *exec);
+void	open_heredoc(char *limiter, t_exec *exec);
 
 /* ****************************************** */
 /*             Execution utils                */
@@ -172,11 +172,11 @@ void	grab_token(t_input *cmd, t_token *token);
 
 int		have_call_function(char *line);
 char	*create_file(int *tmp_fd);
+t_bool	check_file(char **file_limit, char **file, int *file_fd, char *limiter);
 void	destroy_tmp(t_exec **exec);
 void	free_tmp(t_exec **exec);
 
 void	ft_errno(void);
-
 
 void	ft_signal(int sign);
 void	free_exit(t_exec *exec, t_glob *t_envp);
@@ -187,12 +187,12 @@ int		ft_export_state(t_exec *exec, t_glob *t_envp, t_glob *tmp, int state);
 int		is_start(t_cmd *prev);
 t_bool	is_white_space(char *str, int i);
 int		ft_verif_arg_start(char *flg, t_bool err, t_glob *t_envp);
-void    change_glob_one(t_glob *list, char *name, char *content);
+void	change_glob_one(t_glob *list, char *name, char *content);
 void	change_glob_two(t_glob *list, char *name, char *content, char *tmp_con);
 int		change_glob_sign(char *glob, int start_content);
 
 void	free_exit_tmp_exec(t_exec *tmp_exec);
-void    free_exit_envp(t_glob *t_envp);
+void	free_exit_envp(t_glob *t_envp);
 
 int		handle_state(t_glob **t_envp, t_exec *exec, int state, int i);
 t_bool	no_glob(t_glob **t_envp, char *glob);
@@ -201,7 +201,7 @@ void	change_glob(t_glob **t_envp, char *glob, int type, int i);
 t_bool	check_limits(const char *num, const char *limit, int i, int j);
 int		calculate_exit_code(int exit_code);
 void	handle_exit_error(t_glob *t_envp, t_exec *exec, int *exit_code);
-void 	handle_error(int *exit_code, t_glob *envp, t_exec *exec);
+void	handle_error(int *exit_code, t_glob *envp, t_exec *exec);
 void	handle_exit(t_glob *t_envp, t_exec *exec, int *exit_code);
 
 #endif //MINISHELL_H

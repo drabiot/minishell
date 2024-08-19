@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 16:02:25 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 17:47:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:01:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**ft_define_split(char *full)
 void	add_new_node_arg(t_cmd *new_node, char *next_arg)
 {
 	if (next_arg)
-		new_node->arg = ft_strdup(next_arg);//
+		new_node->arg = ft_strdup(next_arg);
 	new_node->type = WORD;
 }
 

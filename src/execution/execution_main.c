@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/19 20:05:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:23:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ static void	close_fds(t_exec *list)
 		list->fd_out = -1;
 		list = list->next;
 	}
-}
-
-static void	close_err()
-{
-	return ;
 }
 
 static int	wait_all_pid(t_exec *list)
@@ -156,7 +151,8 @@ static char	*get_cmd(char *arg, t_glob *glob)
 	else if (arg)
 		tmp_cmd = ft_strjoin("/", arg); //strdup arg et "/"
 	full_path = get_correct_path(tmp_cmd, content_path, is_path);
-	free(tmp_cmd);
+	if (tmp_cmd)
+		free(tmp_cmd);
 	if (!full_path)
 		return (NULL);
 	return (full_path);
@@ -172,7 +168,7 @@ static char	**get_flags(t_cmd *cmd, char *path)
 	line = NULL;
 	flags = ft_calloc(sizeof(char *), ft_lstsize_cmd(cmd) + 1);
 	if (!flags)
-		close_err();
+		return (NULL);
 	while (cmd && cmd->type != PIPE)
 	{
 		if (cmd->arg && (cmd->type == COMMAND || cmd->type == WORD || cmd->type == PATH || cmd->type == NONE))
@@ -331,17 +327,31 @@ static void	ft_add_back(t_exec **lst, t_exec *new)
 	}
 }
 
+static void	check_node(t_cmd *cmd, t_glob *t_envp, t_exec *list, t_exec *nd)
+{
+	if ((!nd->flags || !nd->cmd) && nd->base_cmd)
+	{
+		free_t_cmd(cmd);
+		free_exit(list, t_envp);
+		exit (0);
+	}
+}
+
 static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 {
 	t_exec	*last_node;
 	t_exec	*current_node;
 	t_exec	*first_node;
 	int		i;
+	t_cmd	*start;
 
 	last_node = NULL;
 	current_node = NULL;
 	first_node = NULL;
+	start = NULL;
 	i = 0;
+	if (cmd)
+		start = cmd;
 	while (i < len)
 	{
 		current_node = append_node(t_envp, cmd, len, i);
@@ -350,12 +360,11 @@ static t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 		while (cmd && cmd->type == PIPE)
 			cmd = cmd->next;
 		if (!current_node)
-		{
-			close_err();
-		}
+			return (NULL);
 		ft_add_back(&last_node, current_node);
 		if (i == 0)
 			first_node = last_node;
+		check_node(start, t_envp, first_node, current_node);
 		i++;
 	}
 	return(first_node);
@@ -479,7 +488,6 @@ static void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 				exit(126);
 			exit(127);
 		}
-		//	ft_putstr_fd(" No such file or directory\n", 2);
 		else
 		{
 			ft_putstr_fd(" command not found\n", 2);
@@ -494,7 +502,7 @@ static void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp)
 	exec->pid = fork();
 	ft_signal(2);
 	if (exec->pid == -1)
-		close_err();
+		return ;
 	else if (exec->pid == 0)
 		process(exec, list, t_envp);
 }

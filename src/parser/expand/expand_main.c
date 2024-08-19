@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:49:58 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/15 07:49:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:01:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static t_bool	other_expand(char *arg, int **type, int i, int quote)
 	}
 	while (arg[i])
 	{
-		//if (arg[i] == '"' || arg[i] == '\'')
-		//	quote = i;
 		if (!((arg[i] >= 'a' && arg[i] <= 'z')
 				&& (arg[i] >= 'A' && arg[i] <= 'Z')
 				&& (arg[i] >= '0' && arg[i] <= '9')))
@@ -35,8 +33,6 @@ static t_bool	other_expand(char *arg, int **type, int i, int quote)
 			**type = 2;
 			return (TRUE);
 		}
-		//if (arg[i] == arg[quote] && quote != -1 && i != quote)
-		//	quote = -1;
 		i++;
 	}
 	return (FALSE);

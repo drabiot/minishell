@@ -3,31 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 14:32:44 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 23:02:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../../include/minishell.h"
-
-/*static void	free_array(char ***array)
-{
-	int	i;
-
-	i = 0;
-	while (*array && (*array)[i])
-	{
-		free((*array)[i]);
-		(*array)[i] = NULL;
-		i++;
-	}
-	if (*array)
-		free(*array);
-	*array = NULL;
-}*/
 
 void	ft_expand_modif_three(char **content, int *start, int *end)
 {

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:57:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:40:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static char	*ft_delete_quote(char *str)
 
 	split_part = ft_split(str, '"');
 	tmp = ft_strjoin(split_part[0], split_part[1]);
-	// printf("%s\n", tmp);
 	return (tmp);
 }
 
@@ -84,7 +83,6 @@ t_glob	*ft_globsolo_creation(char *arg)
 	name_end = ft_name_len(arg);
 	name = ft_substr(arg, 0, name_end);
 	content = ft_substr(arg, name_end + 1, ft_strlen(arg));
-	//redo miss env variable
 	if (arg[name_end] && arg[name_end] == '=')
 		tmp = ft_lstnew_glob(name, 1, content);
 	else

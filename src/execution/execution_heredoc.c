@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:55:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:37:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,6 @@ void	generate_key_random(void)
 	if (pid == 0)
 		exit(0);
 	ft_srand(pid);
-}
-
-static char	*generate_rd_file(char *tmp_file)
-{
-	int		c_rand;
-	char	*suff;
-	char	*final_file;
-
-	c_rand = ft_rand(0, 51);
-	suff = ft_substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-			c_rand, 1);
-	final_file = ft_strjoin(tmp_file, suff);
-	if (tmp_file)
-		free(tmp_file);
-	if (suff)
-		free(suff);
-	return (final_file);
-}
-
-static char	*create_rd_file(int *file_fd)
-{
-	char	*tmp_file;
-
-	tmp_file = ft_strdup("tmp_");
-	*file_fd = -1;
-	if (!tmp_file)
-	{
-		ft_putstr_fd(" Failled Malloc\n", 2);
-		return (NULL);
-	}
-	while (*file_fd == -1)
-	{
-		tmp_file = generate_rd_file(tmp_file);
-		*file_fd = open(tmp_file, O_EXCL | O_WRONLY | O_CREAT, 0644);
-	}
-	return (tmp_file);
 }
 
 static void	set_infile(int fd, char *limiter)
@@ -80,6 +44,16 @@ static void	set_infile(int fd, char *limiter)
 		close(fd);
 }
 
+static void	modif_infile(t_exec *exec, char *file)
+{
+	if (!exec->file_error)
+	{
+		if (exec->infile)
+			free(exec->infile);
+		exec->infile = ft_strdup(file);
+	}
+}
+
 void	open_heredoc(char *limiter, t_exec *exec)
 {
 	char	*file_limit;
@@ -90,19 +64,7 @@ void	open_heredoc(char *limiter, t_exec *exec)
 	i = 0;
 	file = NULL;
 	file_limit = NULL;
-	file_limit = ft_strjoin(limiter, "\n");
-	if (!file_limit)
-	{
-		ft_putstr_fd(" Failled Malloc\n", 2);
-		return ;
-	}
-	file = create_rd_file(&file_fd);
-	if (!file)
-	{
-		if (file_limit)
-			free(file_limit);
-		return ;
-	}
+	check_file(&file_limit, &file, &file_fd, limiter);
 	while (exec->name_heredoc[i])
 		i++;
 	if (i < 16)
@@ -113,12 +75,7 @@ void	open_heredoc(char *limiter, t_exec *exec)
 			close(file_fd);
 		unlink(file);
 	}
-	if (!exec->file_error)
-	{
-		if (exec->infile)
-			free(exec->infile);
-		exec->infile = ft_strdup(file);
-	}
+	modif_infile(exec, file);
 	set_infile(file_fd, file_limit);
 	if (file_limit)
 		free (file_limit);

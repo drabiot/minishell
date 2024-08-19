@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif_utils_two.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 16:07:20 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/16 16:15:19 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 23:00:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ void	ft_expd_do(t_cmd *list, char *content, int start, int end)
 		with_content = ft_strjoin(first_part, content);
 		full = ft_strjoin(with_content, end_part);
 	}
-	//free(list->arg);
 	split_full(full, list);
 	free_char(&full);
-	//list->arg = full;
 	free_expand_do(first_part, end_part, content, with_content);
 }

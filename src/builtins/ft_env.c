@@ -6,19 +6,36 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:30:20 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 20:13:40 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:54:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static char	*create_current(t_glob *start)
+{
+	char	*tmp;
+	char	*current;
+
+	tmp = NULL;
+	current = NULL;
+	if (start->equal == 1)
+	{
+		tmp = ft_strjoin(start->name, "=");
+		if (start->content)
+			current = ft_strjoin(tmp, start->content);
+		if (tmp)
+			free(tmp);
+	}
+	return (current);
+}
+
 void	create_env(t_glob **t_envp)
 {
 	t_glob	*start;
 	char	**new_env;
-	char	*tmp;
-	char	*current;
 	int		i;
+	char	*current;
 
 	i = 0;
 	new_env = NULL;
@@ -29,20 +46,12 @@ void	create_env(t_glob **t_envp)
 		return ;
 	while (start)
 	{
-		if (start->equal == 1)
+		current = create_current(start);
+		if (current)
 		{
-			tmp = ft_strjoin(start->name, "=");
-			if (start->content)
-				current = ft_strjoin(tmp, start->content);
-			if (tmp)
-				free(tmp);
-			if (current)
-			{
-				new_env[i] = current;
-				i++;
-				current = NULL;
-				//free (current);
-			}
+			new_env[i] = current;
+			i++;
+			current = NULL;
 		}
 		start = start->next;
 	}

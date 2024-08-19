@@ -6,21 +6,11 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:15:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:00:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-/*static int	is_start(t_cmd *prev)
-{
-	if (!prev)
-		return (0);
-	if (prev->type == PIPE || prev->type == LIMITER
-		|| prev->type == REDIR_FILE)
-		return (1);
-	return (0);
-}*/
 
 static int	is_redir(t_cmd *prev)
 {
@@ -45,11 +35,6 @@ static int	is_path(t_cmd *current, t_cmd *prev)
 		return (1);
 	else
 		return (10);
-	/*if (access(current->arg, F_OK) == 0)
-		return (10);*/
-	// else if (current->arg && (current->arg[0] == '/'
-	// 		|| (current->arg[0] == '.' && current->arg[1] == '/')))
-	// 	return (1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:10:46 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 19:30:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:39:12 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,6 @@ int	ft_pipe_len(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	return (len);
-}
-
-int	ft_have_heredoc(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		if (cmd->type == HERE_DOC)
-			return (1);
-		cmd = cmd->next;
-	}
-	return (0);
 }
 
 void	destroy_tmp(t_exec **exec)
