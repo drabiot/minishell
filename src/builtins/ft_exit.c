@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:48:41 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:42:06 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:01:18 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_bool	is_limit(char **number, int i, int j)
 	}
 	flg = check_limits(number, long_max, i, j);
 	if (flg)
-			ft_putstr_fd("exit\n numeric argument required\n", 2);
+		ft_putstr_fd("exit\n numeric argument required\n", 2);
 	return (flg);
 }
 

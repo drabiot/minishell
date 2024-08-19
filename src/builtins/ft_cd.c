@@ -6,7 +6,7 @@
 /*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 15:30:03 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:17:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,50 @@ void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 	old_pwd->content = content_pwd;
 }
 
+int	change_directory(char *path, t_glob **t_envp)
+{
+	if (!path)
+	{
+		ft_putstr_fd(" Error: HOME environment variable not found\n", 2);
+		return (1);
+	}
+	if (chdir(path) == -1)
+	{
+		ft_putstr_fd(" No such file or directory\n", 2);
+		return (1);
+	}
+	fresh_pwd(&t_envp, NULL, NULL, NULL);
+	return (0);
+}
+
+char	*construct_path(char *path)
+{
+	char	*cwd;
+	char	*full_path;
+	char	*tmp;
+
+	cwd = getcwd(NULL, 0);
+	full_path = NULL;
+	if (cwd)
+	{
+		tmp = ft_strjoin(cwd, "/");
+		full_path = ft_strjoin(tmp, path);
+		free(tmp);
+		free(cwd);
+	}
+	else
+		full_path = ft_strdup(path);
+	return (full_path);
+}
+
 int	ft_cd(t_exec *exec, t_glob **t_envp)
 {
-	char	*path_start;
-	char	*path_join_half;
-	char	*path_join;
 	char	*path;
+	char	*full_path;
+	int		result;
 
-	path_start = NULL;
-	path_join_half = NULL;
-	path_join = NULL;
-	path = NULL;
 	if (!exec->flags[1])
-	{
-		path = getenv("HOME");
-		if (!path)
-			ft_putstr_fd(" Error: HOME environment variable not found\n", 2);
-		else if (path && chdir(path) != 0)
-			ft_putstr_fd(" Error: Can't change directory\n", 2);
-		return (0);
-	}
+		return (change_directory(getenv("HOME"), t_envp));
 	if (exec->flags[2])
 	{
 		ft_putstr_fd(" too many arguments\n", 2);
@@ -79,31 +103,9 @@ int	ft_cd(t_exec *exec, t_glob **t_envp)
 	}
 	path = exec->flags[1];
 	if (path[0] == '/')
-	{
-		if (chdir(path) == -1)
-		{
-			ft_putstr_fd(" No such file or directory\n", 2);
-			return (1);
-		}
-		fresh_pwd(&t_envp, NULL, NULL, NULL);
-		return (0);
-	}
-	path_start = getcwd(NULL, 0);
-	if (path_start)
-	{
-		path_join_half = ft_strjoin(path_start, "/");
-		path_join = ft_strjoin(path_join_half, path);
-	}
-	else
-		path_join = ft_strdup(path);
-	if (chdir(path_join) == -1)
-	{
-		ft_putstr_fd(" No such file or directory\n", 2);
-		return (1);
-	}
-	fresh_pwd(&t_envp, NULL, NULL, NULL);
-	free(path_join);
-	free(path_start);
-	free(path_join_half);
-	return (0);
+		return (change_directory(path, t_envp));
+	full_path = construct_path(path);
+	result = change_directory(full_path, t_envp);
+	free(full_path);
+	return (result);
 }

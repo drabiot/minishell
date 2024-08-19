@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 17:56:18 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 17:31:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:03:49 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,18 @@ void	handle_exit_error(int fd, t_glob *t_envp, t_exec *exec, int *exit_code)
 int	calculate_exit_code(int exit_code)
 {
 	if (exit_code >= 256)
-		return exit_code % 256;
+		return (exit_code % 256);
 	if (exit_code < 0)
-		return 256 - (-exit_code % 256);
-	return exit_code;
+		return (256 - (-exit_code % 256));
+	return (exit_code);
 }
 
 t_bool	check_limits(const char *num, const char *limit, int i, int j)
 {
-	int diff;
-	t_bool is_out = FALSE;
+	int		diff;
+	t_bool	is_out;
 
+	is_out = FALSE;
 	while (num[i + j] && !is_out)
 	{
 		diff = num[i + j] - limit[i];
@@ -43,12 +44,12 @@ t_bool	check_limits(const char *num, const char *limit, int i, int j)
 	return (diff > 0);
 }
 
-void    free_exit_envp(t_glob *t_envp)
+void	free_exit_envp(t_glob *t_envp)
 {
-    t_glob	*tmp_glob;
-    
-   	tmp_glob = NULL;
-    while (t_envp)
+	t_glob	*tmp_glob;
+
+	tmp_glob = NULL;
+	while (t_envp)
 	{
 		tmp_glob = t_envp;
 		t_envp = t_envp->next;
@@ -57,7 +58,7 @@ void    free_exit_envp(t_glob *t_envp)
 		if (tmp_glob->content)
 			free(tmp_glob->content);
 		free(tmp_glob);
-		tmp_glob = NULL;
+		tmp_glob = (NULL);
 	}
 }
 
@@ -80,4 +81,3 @@ void	free_exit_tmp_exec(t_exec *tmp_exec)
 	free(tmp_exec);
 	tmp_exec = NULL;
 }
-
