@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:47:57 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:29:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 		end = start;
 		start = start->next;
 	}
+	//printf("%s\n", content_pwd);
 	old_pwd->content = content_pwd;
 }
 
