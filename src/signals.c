@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:14:34 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 15:54:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:46:43 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	quit_n(int sign)
 
 void	quit_slash(int sign)
 {
-	printf("Quit\n");
 	(void)sign;
 }
 

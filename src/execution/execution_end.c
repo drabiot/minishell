@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:45:48 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 16:54:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:45:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,9 @@ int	wait_all_pid(t_exec *list)
 		ret = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))
 		ret = WTERMSIG(ret) + 128;
+    if (ret == 131)
+	{
+		printf("Quit\n");
+	}
 	return (ret);
 }

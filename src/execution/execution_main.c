@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/20 19:05:18 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 00:46:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,20 @@ void	handle_input(t_exec *exec)
 void	create_pipe(t_exec *exec)
 {
 	int	fd_pipe[2];
-	int	pipe_ret;
 
-	while (exec->next)
-	{
-		pipe_ret = pipe(fd_pipe);
-		if (pipe_ret == -1)
-			return ;
-		if (exec->outfile[0] && exec->file_error == FALSE)
-		{
-			handle_output(exec);
-			if (exec->fd_out != -1)
-				close(fd_pipe[1]);
-		}
-		if (exec->fd_out == -1)
-			exec->fd_out = fd_pipe[1];
-		if (exec->infile && exec->file_error == FALSE)
-			exec->fd_in = open(exec->infile, O_RDONLY);
-		exec->next->fd_in = fd_pipe[0];
-		exec = exec->next;
-	}
+	if (!exec->next || pipe(fd_pipe) == -1)
+		return ;
 	if (exec->outfile[0] && exec->file_error == FALSE)
+	{
 		handle_output(exec);
-	handle_input(exec);
+		if (exec->fd_out != -1)
+			close(fd_pipe[1]);
+	}
+	if (exec->fd_out == -1)
+		exec->fd_out = fd_pipe[1];
+	if (exec->infile && exec->file_error == FALSE)
+		handle_input(exec);
+	exec->next->fd_in = fd_pipe[0];
 }
 
 int	handle_builtin_output(t_exec *exec, t_glob *t_envp)

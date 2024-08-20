@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:47:37 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 19:05:20 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 00:45:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ int	start_exec(t_exec *exec, t_glob **t_envp)
 
 	ret = 0;
 	list = NULL;
-	create_pipe(exec);
 	if (exec)
 		list = exec;
 	while (exec)
 	{
+		create_pipe(exec);
 		init_process(list, exec, t_envp);
+		close(exec->fd_in);
+		close(exec->fd_out);
 		exec = exec->next;
 	}
 	close_fds(list);
