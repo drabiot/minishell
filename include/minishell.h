@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:07:07 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/20 17:22:46 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,9 @@ void	handle_exit(t_glob *t_envp, t_exec *exec, int *exit_code);
 void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd);
 t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len);
 t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd);
+void	set_infile(t_cmd *cmd, t_exec *current_node, t_glob *glob);
+void	set_outfile(t_cmd *cmd, t_exec *current_node, t_glob *glob);
+void	set_cmds(t_cmd *cmd, t_exec *current_node, t_glob *glob);
 
 t_exec	*ft_last_node(t_exec *lst);
 void	ft_add_back(t_exec **lst, t_exec *new);

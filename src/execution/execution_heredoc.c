@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 16:17:34 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:23:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*create_line(char *line)
 	return (finish_line);
 }
 
-static void	set_infile(int fd, char *limiter)
+static void	set_infile_here(int fd, char *limiter)
 {
 	char	*line;
 	char	*finish_line;
@@ -90,7 +90,7 @@ void	open_heredoc(char *limiter, t_exec *exec)
 		unlink(file);
 	}
 	modif_infile(exec, file);
-	set_infile(file_fd, file_limit);
+	set_infile_here(file_fd, file_limit);
 	if (file_limit)
 		free (file_limit);
 }

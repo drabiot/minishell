@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:35:40 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 16:38:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:34:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,14 @@ void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->next = NULL;
 }
 
+static void	skip_pipe(t_cmd **cmd)
+{
+	while (*cmd && (*cmd)->type != PIPE)
+		*cmd = (*cmd)->next;
+	while (*cmd && (*cmd)->type == PIPE)
+		*cmd = (*cmd)->next;
+}
+
 t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 {
 	t_exec	*last_node;
@@ -63,7 +71,6 @@ t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 	t_cmd	*start;
 
 	last_node = NULL;
-	current_node = NULL;
 	first_node = NULL;
 	start = NULL;
 	i = 0;
@@ -72,10 +79,7 @@ t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 	while (i < len)
 	{
 		current_node = append_node(t_envp, cmd, len, i);
-		while (cmd && cmd->type != PIPE)
-			cmd = cmd->next;
-		while (cmd && cmd->type == PIPE)
-			cmd = cmd->next;
+		skip_pipe(&cmd);
 		if (!current_node)
 			return (NULL);
 		ft_add_back(&last_node, current_node);
@@ -98,25 +102,11 @@ t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 	while (cmd && cmd->type != PIPE)
 	{
 		if (cmd->type == INPUT || (cmd->next && cmd->next->type == PATH))
-		{
-			if (current_node->infile)
-				free(current_node->infile);
-			current_node->infile = grab_redir(cmd, current_node, 0, 0, glob);
-		}
+			set_infile(cmd, current_node, glob);
 		else if (cmd->type == TRUNC_REDIR || cmd->type == APPEND_REDIR)
-		{
-			if (current_node->outfile[0])
-				free(current_node->outfile[0]);
-			current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1, glob);
-			current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1, glob);
-		}
+			set_outfile(cmd, current_node, glob);
 		else if (current_node->cmd == NULL && cmd->type == COMMAND)
-		{
-			current_node->cmd = get_cmd(cmd->arg, glob);
-			if (cmd->arg)
-				current_node->base_cmd = ft_strdup(cmd->arg);
-			current_node->flags = get_flags(cmd, current_node->cmd);
-		}
+			set_cmds(cmd, current_node, glob);
 		else if (cmd->type == HERE_DOC)
 			current_node->have_heredoc = TRUE;
 		else if (cmd->type == LIMITER)
