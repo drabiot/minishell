@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 23:14:04 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 23:18:12 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:27:52 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	swap_data(t_glob **i, t_glob **j)
 	(*j)->content = tmp->content;
 }
 
-t_glob *sort_env(t_glob *glob)
+t_glob	*sort_env(t_glob *glob)
 {
 	t_glob	*i;
 	t_glob	*j;
