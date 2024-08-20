@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 14:16:20 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/20 18:07:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 		return (r);
 	while (flg[i] && flg[i] != '=')
 	{
-		if (!ft_isalpha(flg[i]))
+		if (!ft_isalpha(flg[i]) && flg[i] != '_')
 		{
 			if (i != 0 && flg[i] == '+' && flg[i + 1] == '=' )
 				return (-2);

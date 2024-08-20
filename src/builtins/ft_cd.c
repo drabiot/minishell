@@ -6,11 +6,22 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 22:40:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:47:57 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	change_status(t_glob *start, int type, char **cont, char *path)
+{
+	if (type == 0)
+	{
+		*cont = start->content;
+		start->content = path;
+	}
+	if (start->equal == 30)
+		start->equal = 1;
+}
 
 void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 {
@@ -27,12 +38,12 @@ void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 	while (start)
 	{
 		if (ft_strcmp(start->name, "PWD") == 0)
-		{
-			content_pwd = start->content;
-			start->content = path;
-		}
+			change_status(start, 0, &content_pwd, path);
 		if (ft_strcmp(start->name, "OLDPWD") == 0)
+		{
 			old_pwd = start;
+			change_status(start, 1, NULL, NULL);
+		}
 		end = start;
 		start = start->next;
 	}

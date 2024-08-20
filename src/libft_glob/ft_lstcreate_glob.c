@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 05:34:01 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 17:58:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:43:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ static void	fill_node_glob(char **env, t_glob *list, int i)
 	name_end = ft_name_len(env[i]);
 	name = ft_substr(env[i], 0, name_end);
 	content = ft_substr(env[i], name_end + 1, ft_strlen(env[i]));
-	if (env[i][name_end] && env[i][name_end] == '=')
+	if (name[0] == '_' && ft_strlen(name) == 1)
+		tmp = ft_lstnew_glob(ft_strdup(name), 20, ft_strdup(content));
+	else if (env[i][name_end] && env[i][name_end] == '=')
 		tmp = ft_lstnew_glob(ft_strdup(name), 1, ft_strdup(content));
 	else
 		tmp = ft_lstnew_glob(ft_strdup(name), 0, ft_strdup(content));

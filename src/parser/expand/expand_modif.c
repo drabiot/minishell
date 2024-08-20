@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 14:14:45 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/20 18:11:44 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_expand_modif_two_mid(int *start, int i, int *end, char *arg)
 	*start = i;
 	i++;
 	while ((arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= 'A' && arg[i] <= 'Z')
-		|| (arg[i] >= '0' && arg[i] <= '9'))
+		|| (arg[i] >= '0' && arg[i] <= '9') || arg[i] == '_')
 		i++;
 	*end = i;
 	return (i);

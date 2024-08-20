@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:31:43 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 16:58:56 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/20 18:22:18 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@ void	handle_file_error(t_exec *list, t_glob *t_envp, t_exec *exec)
 {
 	int	ret_execve;
 
-	ret_execve = (*t_envp).utils->return_code;
+	(void)exec;
+	ret_execve = 0;
+	if (t_envp)
+		ret_execve = t_envp->utils->return_code;
 	free_exit(list, t_envp);
-	if (exec->nb_cmd >= 2)
-		exit(1);
-	else
-		exit(ret_execve);
+	exit(ret_execve);
 }
 
 void	handl_fail(t_exec *list, t_glob *t_env, t_exec *exe, struct stat s_stt)
 {
 	if (ft_strchr(exe->base_cmd, '/'))
 	{
-		//ft_errno();
 		free_exit(list, t_env);
 		if (errno == EACCES && (s_stt.st_mode & __S_IFMT) == __S_IFDIR)
 		{

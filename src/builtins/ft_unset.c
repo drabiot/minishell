@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:53 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/15 11:30:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:43:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static void	delete_path(int type, t_glob **t_envp)
 	{
 		while (tmp && ft_strcmp(tmp->name, "PWD") != 0)
 			tmp = tmp->next;
-		tmp->equal = 10;
+		tmp->equal = 30;
 	}
 	if (type == 1)
 	{
 		while (tmp && ft_strcmp(tmp->name, "OLDPWD") != 0)
 			tmp = tmp->next;
-		tmp->equal = 10;
+		tmp->equal = 30;
 	}
 }
 
