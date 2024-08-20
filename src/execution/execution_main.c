@@ -3,24 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   execution_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/20 16:46:05 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:05:18 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	create_pipe(t_exec *exec)
+void	handle_output(t_exec *exec)
 {
-	int		pipe_ret;
-	int		fd_pipe[2];
-	t_exec	*list;
+	if (ft_strcmp(exec->outfile[1], "append") == 0)
+		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+				| O_APPEND, 0644);
+	else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
+		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+				| O_TRUNC, 0644);
+}
 
-	list = NULL;
-	if (exec)
-		list = exec;
+void	handle_input(t_exec *exec)
+{
+	if (exec->infile && exec->file_error == FALSE)
+	{
+		if (exec->fd_in != -1)
+			close(exec->fd_in);
+		exec->fd_in = open(exec->infile, O_RDONLY);
+	}
+}
+
+void	create_pipe(t_exec *exec)
+{
+	int	fd_pipe[2];
+	int	pipe_ret;
+
 	while (exec->next)
 	{
 		pipe_ret = pipe(fd_pipe);
@@ -28,12 +44,7 @@ static void	create_pipe(t_exec *exec)
 			return ;
 		if (exec->outfile[0] && exec->file_error == FALSE)
 		{
-			if (ft_strcmp(exec->outfile[1], "append") == 0)
-				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-						| O_APPEND, 0644);
-			else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
-				exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-						| O_TRUNC, 0644);
+			handle_output(exec);
 			if (exec->fd_out != -1)
 				close(fd_pipe[1]);
 		}
@@ -44,40 +55,38 @@ static void	create_pipe(t_exec *exec)
 		exec->next->fd_in = fd_pipe[0];
 		exec = exec->next;
 	}
-	if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0
-		&& exec->file_error == FALSE)
-		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_APPEND, 0644);
-	else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0
-		&& exec->file_error == FALSE)
-		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-				| O_TRUNC, 0644);
-	if (exec->infile && exec->file_error == FALSE)
-	{
-		if (exec->fd_in != -1)
-			close(exec->fd_in);
-		exec->fd_in = open(exec->infile, O_RDONLY);
-	}
+	if (exec->outfile[0] && exec->file_error == FALSE)
+		handle_output(exec);
+	handle_input(exec);
 }
 
-int	start_exec(t_exec *exec, t_glob **t_envp)
+int	handle_builtin_output(t_exec *exec, t_glob *t_envp)
 {
-	int		ret;
-	t_exec	*list;
+	int	ret;
 
-	ret = 0;
-	list = NULL;
-	create_pipe(exec);
-	if (exec)
-		list = exec;
-	while (exec)
+	if (exec->outfile[0])
 	{
-		init_process(list, exec, t_envp);
-		exec = exec->next;
+		if (ft_strcmp(exec->outfile[1], "append") == 0)
+			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+					| O_APPEND, 0644);
+		else if (ft_strcmp(exec->outfile[1], "trunc") == 0)
+			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
+					| O_TRUNC, 0644);
+		else
+			exec->fd_out = 1;
 	}
-	close_fds(list);
-	ret = wait_all_pid(list);
-	return (ret);
+	else
+		exec->fd_out = 1;
+	ret = ft_find_builtins(exec->fd_out, &t_envp, exec);
+	if (ret != -1)
+	{
+		if (exec->fd_out == 1)
+			exec->fd_out = -1;
+		close_fds(exec);
+		free_exec(exec);
+		return (ret);
+	}
+	return (-1);
 }
 
 int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
@@ -99,23 +108,9 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	}
 	if (pipe_len == 1 && is_builtins(exec->cmd))
 	{
-		if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "append") == 0)
-			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_APPEND, 0644);
-		else if (exec->outfile[0] && ft_strcmp(exec->outfile[1], "trunc") == 0)
-			exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
-					| O_TRUNC, 0644);
-		else
-			exec->fd_out = 1;
-		ret = ft_find_builtins(exec->fd_out, t_envp, exec);
+		ret = handle_builtin_output(exec, *t_envp);
 		if (ret != -1)
-		{
-			if (exec->fd_out == 1)
-				exec->fd_out = -1;
-			close_fds(exec);
-			free_exec(exec);
 			return (ret);
-		}
 	}
 	ret = start_exec(exec, t_envp);
 	free_exec(exec);

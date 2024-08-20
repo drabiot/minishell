@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:22:46 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:07:01 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <stdbool.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 
 /*int	g_return_nbr;*/
 
@@ -234,5 +234,8 @@ char	*get_cor_path(char *cmd, char *content_path, t_bool is_path, int i);
 
 void	free_paths(char **path);
 void	free_exec(t_exec *exec);
+
+int		start_exec(t_exec *exec, t_glob **t_envp);
+void	create_pipe(t_exec *exec);
 
 #endif //MINISHELL_H
