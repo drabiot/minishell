@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
+#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/20 23:15:12 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/20 23:48:14 by adorlac          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRCS		=		main.c \
 					parser/expand/expand_modif.c \
 					parser/expand/expand_modif_utils.c \
 					parser/expand/expand_modif_utils_two.c \
+					parser/expand/expand_modif_utils_three.c \
 					parser/expand/expand_tokenizer.c \
 					parser/cmd_creation/cmd_creation.c \
 					parser/cmd_creation/ft_find_type.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_init_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:21:29 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:22:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:35:47 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ void	set_infile(t_cmd *cmd, t_exec *current_node, t_glob *glob)
 {
 	if (current_node->infile)
 		free(current_node->infile);
-	current_node->infile = grab_redir(cmd, current_node, 0, 0, glob);
+	current_node->infile = grab_redir(cmd, current_node, 0, glob);
 }
 
 void	set_outfile(t_cmd *cmd, t_exec *current_node, t_glob *glob)
 {
 	if (current_node->outfile[0])
 		free(current_node->outfile[0]);
-	current_node->outfile[0] = grab_redir(cmd, current_node, 0, 1, glob);
-	current_node->outfile[1] = grab_redir(cmd, current_node, 1, 1, glob);
+	current_node->outfile[0] = grab_redir(cmd, current_node, 1, glob);
+	current_node->outfile[1] = grab_redir(cmd, current_node, 11, glob);
 }
 
 void	set_cmds(t_cmd *cmd, t_exec *current_node, t_glob *glob)

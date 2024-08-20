@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 23:14:52 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:48:59 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@
 # include <sys/stat.h>
 
 /*int	g_return_nbr;*/
+
+typedef struct s_expand_ctx
+{
+	int		start;
+	int		end;
+	char	*content;
+	char	*name;
+	t_bool	d_quote;
+	t_bool	mal_cont;
+}			t_expand_ctx;
 
 typedef struct s_cmd
 {
@@ -228,7 +238,7 @@ void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp);
 void	handle_error_quit(t_exec *list, t_glob **t_envp, int code, char *msg);
 
 /* Access */
-char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file, t_glob *glob);
+char	*grab_redir(t_cmd *cmd, t_exec *node, int type, t_glob *glob);
 char	**get_flags(t_cmd *cmd, char *path);
 char	*get_cmd(char *arg, t_glob *glob);
 char	*get_cor_path(char *cmd, char *content_path, t_bool is_path, int i);
@@ -238,5 +248,10 @@ void	free_exec(t_exec *exec);
 
 int		start_exec(t_exec *exec, t_glob **t_envp);
 void	create_pipe(t_exec *exec);
+
+void	ft_expand_modif_three(char **content, int *start, int *end);
+int		ft_expand_modif_two_early(char *arg, int i, t_bool *d_quote);
+int		ft_expand_modif_two_mid(int *start, int i, int *end, char *arg);
+int		ft_expand_modif_one(char *arg, int i, int *start, int *end);
 
 #endif //MINISHELL_H
