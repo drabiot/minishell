@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
+#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/20 16:46:52 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/20 17:06:50 by adorlac          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,7 @@ SRCS		=		main.c \
 					execution/execution_access.c \
 					execution/execution_redir.c \
 					execution/execution_process.c \
+					execution/execution_process_utils.c \
 					execution/execution_builtins.c \
 					execution/execution_utils.c \
 					execution/execution_error.c \

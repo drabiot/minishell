@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 16:46:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:07:07 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ void	process(t_exec *exec, t_exec *list, t_glob **t_envp);
 void	close_fds(t_exec *list);
 int		wait_all_pid(t_exec *list);
 void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp);
+void	handle_error_quit(t_exec *list, t_glob **t_envp, int code, char *msg);
 
 /* Access */
 char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file, t_glob *glob);
