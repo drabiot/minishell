@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:25:49 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 16:33:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:38:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*create_tmp_cmd(char *arg, t_bool is_path)
 	tmp_cmd = NULL;
 	if (arg && is_builtins(arg))
 		tmp_cmd = ft_strdup(arg);
-	else if (arg && ((access(arg, X_OK) == 0) || (arg[0] == '\0')) && is_path)
+	else if ((arg && is_path) || (arg && arg[0] == '\0'))
 		tmp_cmd = ft_strdup(arg);
 	else if (arg)
 		tmp_cmd = ft_strjoin("/", arg);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:31:43 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 18:22:18 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:46:02 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,20 @@
 void	handle_file_error(t_exec *list, t_glob *t_envp, t_exec *exec)
 {
 	int	ret_execve;
+	int	cmd;
 
 	(void)exec;
 	ret_execve = 0;
+	cmd = 1;
+	if (exec)
+		cmd = exec->nb_cmd;
 	if (t_envp)
 		ret_execve = t_envp->utils->return_code;
 	free_exit(list, t_envp);
-	exit(ret_execve);
+	if (cmd >= 2)
+		exit(1);
+	else
+		exit(ret_execve);
 }
 
 void	handl_fail(t_exec *list, t_glob *t_env, t_exec *exe, struct stat s_stt)
