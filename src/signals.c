@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:14:34 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/14 05:42:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:38:02 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	replace_line(int sign)
 {
+	/*g_return_nbr = 130;*/
 	write (1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -23,12 +24,14 @@ void	replace_line(int sign)
 
 void	quit_n(int sign)
 {
+	/*g_return_nbr = 130;*/
 	write (1, "\n", 1);
 	(void)sign;
 }
 
 void	quit_slash(int sign)
 {
+	/*g_return_nbr = 131;*/
 	printf("Quit\n");
 	(void)sign;
 }

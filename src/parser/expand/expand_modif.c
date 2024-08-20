@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 23:02:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:14:45 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../include/minishell.h"
 
@@ -76,12 +75,10 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 	content = NULL;
 	d_quote = FALSE;
 	mal_cont = FALSE;
-	mal_cont = FALSE;
 	if (type == 1)
 	{
 		i = ft_expand_modif_one(cmd->arg, i, &start, &end);
 		content = ft_itoa(t_envp->utils->return_code);
-		mal_cont = TRUE;
 		mal_cont = TRUE;
 	}
 	else if (type == 2)
@@ -120,5 +117,4 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 		free (content);
 		content = NULL;
 	}
-
 }

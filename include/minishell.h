@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 23:02:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:29:49 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # include <unistd.h>
 # include <errno.h>
 # include <stdbool.h>
+#include <sys/stat.h>
+
+/*int	g_return_nbr;*/
 
 typedef struct s_cmd
 {
@@ -203,5 +206,18 @@ int		calculate_exit_code(int exit_code);
 void	handle_exit_error(t_glob *t_envp, t_exec *exec, int *exit_code);
 void	handle_error(int *exit_code, t_glob *envp, t_exec *exec);
 void	handle_exit(t_glob *t_envp, t_exec *exec, int *exit_code);
+
+/* Process */
+void	process(t_exec *exec, t_exec *list, t_glob **t_envp);
+void	close_fds(t_exec *list);
+void	init_process(t_exec *list, t_exec *exec, t_glob **t_envp);
+
+/* acces */
+char	*grab_redir(t_cmd *cmd, t_exec *node, int type, int file, t_glob *glob);
+char	**get_flags(t_cmd *cmd, char *path);
+char	*get_cmd(char *arg, t_glob *glob);
+char	*get_cor_path(char *cmd, char *content_path, t_bool is_path, int i);
+
+void	free_paths(char **path);
 
 #endif //MINISHELL_H

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
+#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/19 22:34:45 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/20 15:30:24 by adorlac          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,9 @@ SRCS		=		main.c \
 					libft_glob/ft_lstlast_glob.c \
 					libft_glob/ft_lstnew_glob.c \
 					libft_glob/ft_lstsize_glob.c \
+					execution/execution_access.c \
 					execution/execution_main.c \
+					execution/execution_process.c \
 					execution/execution_builtins.c \
 					execution/execution_utils.c \
 					execution/execution_error.c \

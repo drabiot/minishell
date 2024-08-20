@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 20:45:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:38:14 by adorlac          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char **argv, char **envp)
 	t_cwd	path;
 	char	**env;
 
+	/*g_return_nbr = 0;*/
 	(void)argc;
 	(void)argv;
 	env = NULL;
