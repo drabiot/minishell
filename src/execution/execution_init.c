@@ -6,24 +6,14 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:35:40 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 15:39:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:38:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
+static void	set_here_exec(t_exec *current_node)
 {
-	current_node->nb_cmd = nb_cmd;
-	current_node->pos_cmd = pos_cmd + 1;
-	current_node->infile = NULL;
-	current_node->outfile[0] = NULL;
-	current_node->outfile[1] = NULL;
-	current_node->fd_in = -1;
-	current_node->fd_out = -1;
-	current_node->base_cmd = NULL;
-	current_node->cmd = NULL;
-	current_node->flags = NULL;
 	current_node->have_heredoc = FALSE;
 	current_node->name_heredoc[0] = NULL;
 	current_node->name_heredoc[1] = NULL;
@@ -41,6 +31,21 @@ void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
 	current_node->name_heredoc[13] = NULL;
 	current_node->name_heredoc[14] = NULL;
 	current_node->name_heredoc[15] = NULL;
+}
+
+void	set_base_exec(t_exec *current_node, int nb_cmd, int pos_cmd)
+{
+	current_node->nb_cmd = nb_cmd;
+	current_node->pos_cmd = pos_cmd + 1;
+	current_node->infile = NULL;
+	current_node->outfile[0] = NULL;
+	current_node->outfile[1] = NULL;
+	current_node->fd_in = -1;
+	current_node->fd_out = -1;
+	current_node->base_cmd = NULL;
+	current_node->cmd = NULL;
+	current_node->flags = NULL;
+	set_here_exec(current_node);
 	current_node->file_error = FALSE;
 	current_node->is_piped = FALSE;
 	if (pos_cmd >= 1)
@@ -79,7 +84,7 @@ t_exec	*init_exec(t_cmd *cmd, t_glob *t_envp, int len)
 		check_node(start, t_envp, first_node, current_node);
 		i++;
 	}
-	return(first_node);
+	return (first_node);
 }
 
 t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)

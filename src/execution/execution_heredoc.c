@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 22:37:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:17:34 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,38 @@ void	generate_key_random(void)
 	ft_srand(pid);
 }
 
+static char	*create_line(char *line)
+{
+	char	*finish_line;
+
+	finish_line = NULL;
+	if (line)
+	{
+		finish_line = ft_strjoin(line, "\n");
+		free(line);
+		line = NULL;
+	}
+	return (finish_line);
+}
+
 static void	set_infile(int fd, char *limiter)
 {
 	char	*line;
+	char	*finish_line;
 
 	line = NULL;
+	finish_line = NULL;
 	line = readline("> ");
-	if (line)
-		line = ft_strjoin(line, "\n");
-	while (line && ft_strcmp(line, limiter) != 0)
+	finish_line = create_line(line);
+	while (finish_line && ft_strcmp(finish_line, limiter) != 0)
 	{
-		ft_putstr_fd(line, fd);
-		free(line);
+		ft_putstr_fd(finish_line, fd);
+		free(finish_line);
 		line = readline("> ");
-		if (line)
-			line = ft_strjoin(line, "\n");
+		finish_line = create_line(line);
 	}
-	if (line)
-		free(line);
+	if (finish_line)
+		free(finish_line);
 	if (fd >= 3)
 		close(fd);
 }

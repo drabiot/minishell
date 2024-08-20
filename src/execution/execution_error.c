@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 11:41:30 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/20 15:42:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:57:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,23 @@ void	free_t_cmd(t_cmd *cmd)
 	}
 }
 
+static void	free_inside_exec(t_exec *tmp_exec)
+{
+	if (tmp_exec->flags)
+		free(tmp_exec->flags);
+	tmp_exec->flags = NULL;
+	tmp_exec->cmd = NULL;
+	if (tmp_exec->base_cmd)
+		free(tmp_exec->base_cmd);
+	tmp_exec->base_cmd = NULL;
+	if (tmp_exec->infile)
+		free(tmp_exec->infile);
+	tmp_exec->infile = NULL;
+	if (tmp_exec->outfile[0])
+		free(tmp_exec->outfile[0]);
+	tmp_exec->outfile[0] = NULL;
+}
+
 void	free_exec(t_exec *exec)
 {
 	int		i;
@@ -55,19 +72,7 @@ void	free_exec(t_exec *exec)
 			tmp_exec->flags[i] = NULL;
 			i++;
 		}
-		if (tmp_exec->flags)
-			free(tmp_exec->flags);
-		tmp_exec->flags = NULL;
-		tmp_exec->cmd = NULL;
-		if (tmp_exec->base_cmd)
-			free(tmp_exec->base_cmd);
-		tmp_exec->base_cmd = NULL;
-		if (tmp_exec->infile)
-			free(tmp_exec->infile);
-		tmp_exec->infile = NULL;
-		if (tmp_exec->outfile[0])
-			free(tmp_exec->outfile[0]);
-		tmp_exec->outfile[0] = NULL;
+		free_inside_exec(tmp_exec);
 		destroy_tmp(&tmp_exec);
 		free(tmp_exec);
 		tmp_exec = NULL;

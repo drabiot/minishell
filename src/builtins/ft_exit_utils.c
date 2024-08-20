@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 17:56:18 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/19 22:40:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:02:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	free_exit_envp(t_glob *t_envp)
 	t_glob	*tmp_glob;
 
 	tmp_glob = NULL;
-	free_utils(t_envp->utils);
+	if (t_envp)
+		free_utils(t_envp->utils);
 	while (t_envp)
 	{
 		tmp_glob = t_envp;

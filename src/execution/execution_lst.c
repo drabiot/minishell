@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:40:22 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 15:40:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:54:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_exec	*ft_last_node(t_exec *lst)
 
 void	ft_add_back(t_exec **lst, t_exec *new)
 {
-	t_exec *buffer;
+	t_exec	*buffer;
 
 	if (!lst)
 		return ;

@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/20 15:44:27 by tchartie         ###   ########.fr        #
+#    Updated: 2024/08/20 16:46:52 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,12 +94,14 @@ SRCS		=		main.c \
 					execution/execution_init.c \
 					execution/execution_lst.c \
 					execution/execution_access.c \
+					execution/execution_redir.c \
 					execution/execution_process.c \
 					execution/execution_builtins.c \
 					execution/execution_utils.c \
 					execution/execution_error.c \
 					execution/execution_heredoc.c \
-					execution/execution_heredoc_utils.c
+					execution/execution_heredoc_utils.c \
+					execution/execution_end.c
 
 
 OBJS		=		$(SRCS:.c=.o)
