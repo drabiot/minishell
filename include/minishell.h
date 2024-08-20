@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 23:48:59 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 01:20:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_cmd	*expand_tokenizer(t_input *cmd);
 /*    Prototype for builtins's main fonction  */
 /* ****************************************** */
 int		ft_echo(int fd, t_exec *exec, t_glob *t_envp);
-int		ft_pwd(t_glob *t_envp);
+int		ft_pwd(t_glob *t_envp, int fd);
 int		ft_env(int fd, t_glob **envp);
 void	create_env(t_glob **t_envp);
 t_glob	*sort_env(t_glob *glob);
@@ -167,6 +167,7 @@ int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
 void	generate_key_random(void);
 void	open_heredoc(char *limiter, t_exec *exec);
+void	end_of_file(char *limiter);
 
 /* ****************************************** */
 /*             Execution utils                */

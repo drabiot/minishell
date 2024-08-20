@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:26:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 22:39:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 01:24:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,12 @@ t_bool	check_file(char **file_limit, char **file, int *file_fd, char *limiter)
 		return (FALSE);
 	}
 	return (TRUE);
+}
+
+void	end_of_file(char *limiter)
+{
+	ft_putstr_fd("warning: here-document delimited \
+by end-of-file (wanted `", 2);
+	ft_putstr_fd(limiter, 2);
+	ft_putstr_fd("')\n", 2);
 }

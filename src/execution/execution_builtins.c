@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:50:05 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 21:13:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 01:20:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec)
 	else if (ft_strcmp(exec->cmd, "export") == 0)
 		return_value = ft_export(fd, *t_envp, exec);
 	else if (ft_strcmp(exec->cmd, "pwd") == 0)
-		return_value = ft_pwd(*t_envp);
+		return_value = ft_pwd(*t_envp, fd);
 	else if (ft_strcmp(exec->cmd, "unset") == 0)
 		return_value = ft_unset(t_envp, exec);
 	(*t_envp)->utils->return_code = return_value;
