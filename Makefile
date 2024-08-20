@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+         #
+#    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 18:00:04 by tchartie          #+#    #+#              #
-#    Updated: 2024/08/20 19:05:37 by adorlac          ###   ########.fr        #
+#    Updated: 2024/08/20 23:15:12 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,7 @@ SRCS		=		main.c \
 					builtins/ft_echo.c \
 					builtins/ft_pwd.c \
 					builtins/ft_env.c \
+					builtins/sort_env.c \
 					builtins/ft_unset.c \
 					builtins/ft_cd.c \
 					builtins/ft_exit.c \

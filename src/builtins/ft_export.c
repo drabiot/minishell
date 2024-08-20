@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 18:07:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:18:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	ft_env_print(int fd, t_glob *t_envp)
 
 	(void)fd;
 	tmp = t_envp;
+	sort_env(tmp);
 	while (tmp)
 	{
 		i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 19:07:01 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/20 23:14:52 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		ft_echo(int fd, t_exec *exec, t_glob *t_envp);
 int		ft_pwd(t_glob *t_envp);
 int		ft_env(int fd, t_glob **envp);
 void	create_env(t_glob **t_envp);
+t_glob	*sort_env(t_glob *glob);
 int		ft_unset(t_glob **envp, t_exec *exec);
 int		ft_export(int fd, t_glob *t_envp, t_exec *exec);
 int		ft_check_quote_and_delete(t_exec **exec);
