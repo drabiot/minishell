@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 20:47:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 21:51:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	handle_type_two(t_cmd *cmd, t_glob *t_envp, t_expand_ctx *ctx, int *i)
 			ctx->name = ft_substr(cmd->arg, ctx->start + 1,
 					ctx->end - ctx->start - 1);
 			ctx->content = ft_getenv(ctx->name, t_envp);
-			free(ctx->name);
-			ctx->name = NULL;
 			ctx->start++;
 			break ;
 		}
@@ -71,6 +69,10 @@ void	ft_expand_modif(t_cmd *cmd, t_glob *t_envp, int type, int i)
 		handle_type_default(&ctx);
 	if (!ctx.content)
 		ctx.content = "";
+	check_pwd(&ctx, t_envp);
+	if (type == 2 && ctx.name)
+		free(ctx.name);
+	ctx.name = NULL;
 	ft_expd_do(cmd, ft_substr(ctx.content, 0, ft_strlen(ctx.content)),
 		ctx.start, ctx.end - 1);
 	free_content_if_needed(&ctx);

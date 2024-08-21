@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:25:49 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 20:50:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:59:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ char	*get_cmd(char *arg, t_glob *glob)
 		path = path->next;
 	if (path)
 		content_path = path->content;
+	else
+		content_path = ".";
 	tmp_cmd = create_tmp_cmd(arg, is_path);
 	full_path = get_cor_path(tmp_cmd, content_path, is_path, 0);
 	if (tmp_cmd)
 		free(tmp_cmd);
-	if (!full_path)
-		return (NULL);
 	return (full_path);
 }
 

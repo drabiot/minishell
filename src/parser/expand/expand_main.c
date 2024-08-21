@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:49:58 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 08:57:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 21:29:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,15 @@ int	is_expendable_e(char *arg, int i, t_bool *d_quote, t_bool *s_quote)
 	return (i);
 }
 
-static t_bool	is_expandable(char *arg, int *type, t_bool d_quote, int i)
+static t_bool	is_expandable(char *arg, int *type, t_bool d_quote)
 {
 	t_bool	s_quote;
 	t_bool	b_dollar;
+	int		i;
 
 	b_dollar = FALSE;
 	s_quote = FALSE;
+	i = 0;
 	while (arg && i < (int)ft_strlen(arg))
 	{
 		i = is_expendable_e(arg, i, &d_quote, &s_quote);
@@ -114,7 +116,7 @@ void	ft_expand(t_cmd **list, t_glob *t_envp)
 	{
 		if (tmp->type != LIMITER)
 		{
-			while (is_expandable(tmp->arg, &type, FALSE, 0))
+			while (is_expandable(tmp->arg, &type, FALSE))
 				ft_expand_modif(tmp, t_envp, type, 0);
 		}
 		tmp = tmp->next;

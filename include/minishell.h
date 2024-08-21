@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 20:47:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 21:52:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ void	ft_expand_modif_three(char **content, int *start, int *end);
 int		ft_expand_modif_two_early(char *arg, int i, t_bool *d_quote);
 int		ft_expand_modif_two_mid(int *start, int i, int *end, char *arg);
 int		ft_expand_modif_one(char *arg, int i, int *start, int *end);
+void	check_pwd(t_expand_ctx *ctx, t_glob *t_envp);
 
 void	replace_line(int sign);
 t_bool	check_sign(t_glob *t_envp, int fd, char *finish_line);
