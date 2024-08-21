@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:31:43 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 04:54:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 06:15:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 
 	dup2(exec->fd_in, STDIN_FILENO);
 	dup2(exec->fd_out, STDOUT_FILENO);
-	ret_execve = 0;
 	close_fds(list);
+	ret_execve = 0;
 	validate_base_cmd(list, *t_envp, exec);
 	stat(list->cmd, &s_stat);
 	if (exec->file_error == TRUE)
 		handle_file_error(list, *t_envp, exec);
 	if (is_builtins(exec->cmd))
 	{
-		ret_execve = ft_find_builtins(exec->fd_out, t_envp, exec);
+		ret_execve = ft_find_builtins(STDOUT_FILENO, t_envp, exec);
 		handle_error_quit(list, t_envp, ret_execve, NULL);
 	}
 	else if (exec->flags)

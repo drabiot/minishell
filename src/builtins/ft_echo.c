@@ -27,7 +27,7 @@ static void	exec_echo(t_exec *exec, int pos_flag, int fd)
 	int	i;
 
 	i = pos_flag;
-	while (exec->flags[i])
+	while (exec && exec->flags && exec->flags[i])
 	{
 		ft_putstr_fd(exec->flags[i], fd);
 		if (exec->flags[i + 1])

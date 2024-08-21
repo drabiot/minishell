@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/21 04:40:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 07:17:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	handle_output(t_exec *exec)
 {
+	if (!exec->outfile[0] || exec->file_error == TRUE)
+		return ;
 	if (ft_strcmp(exec->outfile[1], "append") == 0)
 		exec->fd_out = open(exec->outfile[0], O_WRONLY | O_CREAT
 				| O_APPEND, 0644);
@@ -36,24 +38,27 @@ void	create_pipe(t_exec *exec)
 {
 	int	fd_pipe[2];
 
-	if (pipe(fd_pipe) == -1)
-		return ;
-	if (exec->pos_cmd == 1)
-		close(fd_pipe[0]);
-	if (exec->pos_cmd == exec->nb_cmd)
-		close(fd_pipe[1]);
-	if (exec->outfile[0] && exec->file_error == FALSE)
+	if (exec && exec->pos_cmd < exec->nb_cmd)
+	{
+		if (pipe(fd_pipe) == -1)
+			return ;
+		if (exec->outfile[0] && exec->file_error == FALSE)
+		{
+			handle_output(exec);
+			if (exec->fd_out != 1)
+				close(fd_pipe[1]);
+		}
+		if (exec->fd_out == -1)
+			exec->fd_out = fd_pipe[1];
+		if (exec->infile && exec->file_error == FALSE)
+			exec->fd_in = open(exec->infile, O_RDONLY);
+		exec->next->fd_in = fd_pipe[0];
+	}
+	else
 	{
 		handle_output(exec);
-		if (exec->fd_out != -1)
-			close(fd_pipe[1]);
-	}
-	if (exec->next && exec->fd_out == -1)
-		exec->fd_out = fd_pipe[1];
-	if (exec->infile && exec->file_error == FALSE && exec->next)
 		handle_input(exec);
-	if (exec->next)
-		exec->next->fd_in = fd_pipe[0];
+	}
 }
 
 int	handle_builtin_output(t_exec *exec, t_glob *t_envp)
