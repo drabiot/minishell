@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:50:05 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 01:20:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 04:54:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec)
 	int		return_value;
 
 	return_value = -1;
+	if (fd == -1)
+		fd = 0;
 	if (!exec)
 		return (0);
 	else if (ft_strcmp(exec->cmd, "cd") == 0)

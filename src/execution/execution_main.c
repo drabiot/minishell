@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/21 03:11:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 04:40:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	create_pipe(t_exec *exec)
 
 	if (pipe(fd_pipe) == -1)
 		return ;
+	if (exec->pos_cmd == 1)
+		close(fd_pipe[0]);
+	if (exec->pos_cmd == exec->nb_cmd)
+		close(fd_pipe[1]);
 	if (exec->outfile[0] && exec->file_error == FALSE)
 	{
 		handle_output(exec);
@@ -46,7 +50,7 @@ void	create_pipe(t_exec *exec)
 	}
 	if (exec->next && exec->fd_out == -1)
 		exec->fd_out = fd_pipe[1];
-	if (exec->infile && exec->file_error == FALSE)
+	if (exec->infile && exec->file_error == FALSE && exec->next)
 		handle_input(exec);
 	if (exec->next)
 		exec->next->fd_in = fd_pipe[0];

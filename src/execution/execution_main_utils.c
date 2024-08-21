@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:47:37 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 03:16:44 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 04:11:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ int	start_exec(t_exec *exec, t_glob **t_envp)
 	{
 		create_pipe(exec);
 		init_process(list, exec, t_envp);
-		close(exec->fd_in);
-		close(exec->fd_out);
+		if (exec->fd_in != -1)
+			close(exec->fd_in);
+		exec->fd_in = -1;
+		if (exec->fd_out != -1)
+			close(exec->fd_out);
+		exec->fd_out = -1;
 		exec = exec->next;
 	}
 	close_fds(list);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:31:43 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 02:22:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 04:54:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	process(t_exec *exec, t_exec *list, t_glob **t_envp)
 		handle_file_error(list, *t_envp, exec);
 	if (is_builtins(exec->cmd))
 	{
-		ret_execve = ft_find_builtins(STDOUT_FILENO, t_envp, exec);
+		ret_execve = ft_find_builtins(exec->fd_out, t_envp, exec);
 		handle_error_quit(list, t_envp, ret_execve, NULL);
 	}
 	else if (exec->flags)
