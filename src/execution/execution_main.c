@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:36:16 by nberduck          #+#    #+#             */
-/*   Updated: 2024/08/21 00:58:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 03:11:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,15 @@ int	ft_execution_main(t_glob **t_envp, t_cmd *cmd)
 	t_exec	*exec;
 	int		ret;
 
+	g_sig = 0;
 	if (!cmd)
 		return ((*t_envp)->utils->return_code);
 	pipe_len = ft_pipe_len(cmd);
 	exec = init_exec(cmd, *t_envp, pipe_len);
-	ret = 0;
 	free_t_cmd(cmd);
-	if (pipe_len == 1 && exec->file_error == TRUE)
-	{
-		free_exec(exec);
-		return (1);
-	}
+	ret = return_error(t_envp, exec, pipe_len);
+	if (ret != 0)
+		return (ret);
 	if (pipe_len == 1 && is_builtins(exec->cmd))
 	{
 		ret = handle_builtin_output(exec, *t_envp);

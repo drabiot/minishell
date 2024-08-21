@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 01:20:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 03:16:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <errno.h>
-# include <stdbool.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 
-/*int	g_return_nbr;*/
+extern int	g_sig;
 
 typedef struct s_expand_ctx
 {
@@ -52,6 +52,7 @@ typedef struct s_cwd
 {
 	char		**env;
 	int			return_code;
+	t_bool		failled_here;
 }				t_cwd;
 
 typedef struct s_exec
@@ -65,10 +66,10 @@ typedef struct s_exec
 	char			*base_cmd;
 	char			*cmd;
 	char			**flags;
-	bool			have_heredoc;
+	t_bool			have_heredoc;
 	char			*name_heredoc[16];
-	bool			file_error;
-	bool			is_piped;
+	t_bool			file_error;
+	t_bool			is_piped;
 	pid_t			pid;
 	struct s_exec	*next;
 }					t_exec;
@@ -166,7 +167,7 @@ int		ft_execution_main(t_glob **t_envp, t_cmd *cmd);
 int		ft_find_builtins(int fd, t_glob **t_envp, t_exec *exec);
 int		is_builtins(char *arg);
 void	generate_key_random(void);
-void	open_heredoc(char *limiter, t_exec *exec);
+void	open_heredoc(char *limiter, t_exec *exec, t_glob *t_envp, int i);
 void	end_of_file(char *limiter);
 
 /* ****************************************** */
@@ -226,6 +227,7 @@ t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd);
 void	set_infile(t_cmd *cmd, t_exec *current_node, t_glob *glob);
 void	set_outfile(t_cmd *cmd, t_exec *current_node, t_glob *glob);
 void	set_cmds(t_cmd *cmd, t_exec *current_node, t_glob *glob);
+int		return_error(t_glob **t_envp, t_exec *exec, int pipe_len);
 
 t_exec	*ft_last_node(t_exec *lst);
 void	ft_add_back(t_exec **lst, t_exec *new);
@@ -254,5 +256,8 @@ void	ft_expand_modif_three(char **content, int *start, int *end);
 int		ft_expand_modif_two_early(char *arg, int i, t_bool *d_quote);
 int		ft_expand_modif_two_mid(int *start, int i, int *end, char *arg);
 int		ft_expand_modif_one(char *arg, int i, int *start, int *end);
+
+void	replace_line(int sign);
+t_bool	check_sign(t_glob *t_envp, int fd, char *finish_line);
 
 #endif //MINISHELL_H

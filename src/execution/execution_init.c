@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:35:40 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:34:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 03:12:21 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,11 @@ t_exec	*append_node(t_glob *glob, t_cmd *cmd, int nb_cmd, int pos_cmd)
 		else if (cmd->type == HERE_DOC)
 			current_node->have_heredoc = TRUE;
 		else if (cmd->type == LIMITER)
-			open_heredoc(cmd->arg, current_node);
+		{
+			ft_signal(3);
+			open_heredoc(cmd->arg, current_node, glob, 0);
+			ft_signal(1);
+		}
 		cmd = cmd->next;
 	}
 	return (current_node);

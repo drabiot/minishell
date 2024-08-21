@@ -6,11 +6,13 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:37:32 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 19:26:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:47:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	g_sig;
 
 static void	create_pwds(t_glob **glob)
 {
@@ -35,11 +37,13 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = NULL;
+	g_sig = 0;
 	if (envp)
 		env = envp;
 	generate_key_random();
 	path = (t_cwd){0};
 	path.return_code = 0;
+	path.failled_here = FALSE;
 	t_envp = ft_envp_creation(env);
 	add_glob_utils(t_envp, &path);
 	if (!*envp)

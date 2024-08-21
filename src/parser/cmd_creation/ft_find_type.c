@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 23:44:59 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 23:00:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:42:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_find_type(char *arg, t_cmd *prev)
 		return (WORD);
 }
 
-void	expendable_type_mid(t_cmd *exec, int ret, bool *have_cmd, t_cmd *prev)
+void	expendable_type_mid(t_cmd *exec, int ret, t_bool *have_cmd, t_cmd *prev)
 {
 	if (exec->arg && exec->arg[0] == '<' && exec->arg[1] == '\0')
 		exec->type = INPUT;
@@ -82,7 +82,7 @@ void	expendable_type_mid(t_cmd *exec, int ret, bool *have_cmd, t_cmd *prev)
 
 void	expandable_type(t_cmd *exec)
 {
-	bool	have_cmd;
+	t_bool	have_cmd;
 	t_cmd	*prev;
 	int		ret_path;
 

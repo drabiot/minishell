@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 01:18:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 03:16:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,30 @@ static char	*create_line(char *line)
 	return (finish_line);
 }
 
-static void	set_infile_here(int fd, char *limiter, char *base_limiter)
+static void	set_infile_here(int fd, char *limiter, char *base, t_glob *t_envp)
 {
 	char	*line;
-	char	*finish_line;
+	char	*f_line;
 
 	line = NULL;
-	finish_line = NULL;
+	f_line = NULL;
 	line = readline("> ");
 	if (!line)
-		end_of_file(base_limiter);
-	finish_line = create_line(line);
-	while (finish_line && ft_strcmp(finish_line, limiter) != 0)
+		end_of_file(base);
+	f_line = create_line(line);
+	if (check_sign(t_envp, fd, f_line))
+		return ;
+	while (!(g_sig == SIGINT) && f_line && ft_strcmp(f_line, limiter) != 0)
 	{
-		ft_putstr_fd(finish_line, fd);
-		free(finish_line);
+		ft_putstr_fd(f_line, fd);
+		free(f_line);
 		line = readline("> ");
 		if (!line)
-			end_of_file(base_limiter);
-		finish_line = create_line(line);
+			end_of_file(base);
+		f_line = create_line(line);
 	}
-	if (finish_line)
-		free(finish_line);
+	if (f_line)
+		free(f_line);
 	if (fd >= 3)
 		close(fd);
 }
@@ -72,29 +74,31 @@ static void	modif_infile(t_exec *exec, char *file)
 	}
 }
 
-void	open_heredoc(char *limiter, t_exec *exec)
+void	open_heredoc(char *limiter, t_exec *exec, t_glob *t_envp, int i)
 {
 	char	*file_limit;
 	char	*file;
 	int		file_fd;
-	int		i;
 
-	i = 0;
+	g_sig = 0;
 	file = NULL;
 	file_limit = NULL;
-	check_file(&file_limit, &file, &file_fd, limiter);
-	while (exec->name_heredoc[i])
-		i++;
-	if (i < 16)
-		exec->name_heredoc[i] = file;
-	else
+	if (t_envp && t_envp->utils->failled_here == FALSE)
 	{
-		if (file_fd >= 3)
-			close(file_fd);
-		unlink(file);
+		check_file(&file_limit, &file, &file_fd, limiter);
+		while (exec->name_heredoc[i])
+			i++;
+		if (i < 16)
+			exec->name_heredoc[i] = file;
+		else
+		{
+			if (file_fd >= 3)
+				close(file_fd);
+			unlink(file);
+		}
+		modif_infile(exec, file);
+		set_infile_here(file_fd, file_limit, limiter, t_envp);
+		if (file_limit)
+			free (file_limit);
 	}
-	modif_infile(exec, file);
-	set_infile_here(file_fd, file_limit, limiter);
-	if (file_limit)
-		free (file_limit);
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:14:34 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/21 00:46:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:40:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	replace_line(int sign)
 {
+	g_sig = SIGINT;
 	write (1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -21,14 +22,28 @@ void	replace_line(int sign)
 	(void)sign;
 }
 
+void	here_doc(int sign)
+{
+	char	c;
+
+	g_sig = SIGINT;
+	c = '\n';
+	ioctl(0, TIOCSTI, &c);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	(void)sign;
+}
+
 void	quit_n(int sign)
 {
+	g_sig = SIGINT;
 	write (1, "\n", 1);
 	(void)sign;
 }
 
 void	quit_slash(int sign)
 {
+	g_sig = 131;
 	(void)sign;
 }
 
@@ -43,5 +58,9 @@ void	ft_signal(int sign)
 	{
 		signal(SIGINT, quit_n);
 		signal(SIGQUIT, quit_slash);
+	}
+	if (sign == 3)
+	{
+		signal(SIGINT, here_doc);
 	}
 }
