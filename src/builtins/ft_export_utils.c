@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:36:39 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/19 22:40:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:48:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	ft_check_quote_and_delete(t_exec **exec)
 {
 	unsigned int	i;
 	int				double_quote;
-	unsigned int	first_quote;
 
 	double_quote = 0;
 	i = 0;
@@ -62,10 +61,7 @@ int	ft_check_quote_and_delete(t_exec **exec)
 			&& (*exec)->flags[1][i + 1])
 			return (1);
 		if ((*exec)->flags[1][i] == '"')
-		{
-			first_quote = i;
 			double_quote = 1;
-		}
 		i++;
 	}
 	if (double_quote == 1)

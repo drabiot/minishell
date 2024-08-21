@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:55:34 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 03:06:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:46:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ static void	failled_input(t_glob *t_envp)
 int	prompt(t_glob *t_envp)
 {
 	char		*input;
-	char		**arg;
-	int			ret;
 
 	ft_signal(1);
-	ret = 0;
 	create_env(&t_envp);
 	input = readline("\001\033[0;95m\002uwushell> \001\033[0m\002");
 	if (t_envp)
@@ -57,7 +54,7 @@ int	prompt(t_glob *t_envp)
 	}
 	if (input[0] != '\0')
 		add_history(input);
-	arg = lexer(input, t_envp);
+	lexer(input, t_envp);
 	free_utils(t_envp->utils);
 	if (input)
 		free (input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:50:01 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 23:19:26 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 20:47:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_type_two(t_cmd *cmd, t_glob *t_envp, t_expand_ctx *ctx, int *i)
 			*i = ft_expand_modif_two_mid(&ctx->start, *i, &ctx->end, cmd->arg);
 			ctx->name = ft_substr(cmd->arg, ctx->start + 1,
 					ctx->end - ctx->start - 1);
-			ctx->content = ft_getenv(ctx->name, t_envp, 0);
+			ctx->content = ft_getenv(ctx->name, t_envp);
 			free(ctx->name);
 			ctx->name = NULL;
 			ctx->start++;

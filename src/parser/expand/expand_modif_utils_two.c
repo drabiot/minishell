@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_modif_utils_two.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 16:07:20 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 23:22:17 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 20:46:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char	*ft_getenv(char *name, t_glob *t_envp, int i)
+char	*ft_getenv(char *name, t_glob *t_envp)
 {
 	t_glob	*tmp;
 	char	*name_tmp;
@@ -20,7 +20,6 @@ char	*ft_getenv(char *name, t_glob *t_envp, int i)
 	tmp = t_envp;
 	while (tmp)
 	{
-		i = 0;
 		name_tmp = (char *)tmp->name;
 		if (!ft_strcmp(name_tmp, name))
 			return (tmp->content);

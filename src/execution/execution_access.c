@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:25:49 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 19:38:45 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:50:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,9 @@ static t_bool	fill_flags(t_cmd *cmd, char **flags, int i)
 char	**get_flags(t_cmd *cmd, char *path)
 {
 	int		i;
-	char	*line;
 	char	**flags;
 
 	i = 0;
-	line = NULL;
 	flags = ft_calloc(sizeof(char *), ft_lstsize_cmd(cmd) + 1);
 	if (!flags)
 		return (NULL);

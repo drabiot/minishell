@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 05:34:01 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 17:43:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:50:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static t_bool	is_not_equal(t_glob *tmp, t_glob *new)
 void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
 {
 	t_glob	*tmp;
-	t_glob	*last;
 
 	if (!*list)
 	{
@@ -53,12 +52,10 @@ void	ft_lstadd_back_alpha_envp(t_glob **list, t_glob *new)
 		return ;
 	}
 	tmp = *list;
-	last = NULL;
 	while (tmp->next)
 	{
 		if (!is_not_equal(tmp, new))
 			return ;
-		last = tmp;
 		tmp = tmp->next;
 	}
 	if (new->equal != 10)

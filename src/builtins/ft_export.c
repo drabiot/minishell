@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:19:50 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 23:18:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:48:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,12 @@ static int	ft_verif_arg(char *flg, t_glob *t_envp, t_bool err, unsigned int i)
 static void	ft_env_print(int fd, t_glob *t_envp)
 {
 	t_glob			*tmp;
-	unsigned int	i;
-	int				name_end;
 
 	(void)fd;
 	tmp = t_envp;
 	sort_env(tmp);
 	while (tmp)
 	{
-		i = 0;
-		name_end = 0;
 		if (tmp->equal == 1)
 			ft_env_print_one(fd, tmp);
 		else if (tmp->equal == 0)

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:58:00 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 03:16:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:47:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,14 @@ void	ft_exit(t_exec *exec, t_glob **t_envp, int *return_value);
 /*       Prototype for Parser fonction        */
 /* ****************************************** */
 int		prompt(t_glob *t_envp);
-char	**lexer(char *input, t_glob *t_envp);
+void	lexer(char *input, t_glob *t_envp);
 void	tokenizer(t_input *cmd, t_glob *t_envp, unsigned int index);
 void	handle_quote(t_cmd *start);
 void	add_glob_utils(t_glob *t_envp, t_cwd *utils);
 t_bool	is_error_syntax(t_cmd *cmd, t_glob *t_envp, t_input *line);
 void	free_t_cmd(t_cmd *cmd);
 
-char	*ft_getenv(char *name, t_glob *t_envp, int i);
+char	*ft_getenv(char *name, t_glob *t_envp);
 void	split_full(char *full, t_cmd *list);
 char	**ft_define_split(char *full);
 void	add_new_node(t_cmd **list, char *argument, char *next_arg);

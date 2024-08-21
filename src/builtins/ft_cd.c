@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:27:33 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/20 19:53:12 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:49:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	change_status(t_glob *start, int type, char **cont, char *path)
 		start->equal = 1;
 }
 
-void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
+static void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd)
 {
 	char	*content_pwd;
 	char	*path;
@@ -44,7 +44,6 @@ void	fresh_pwd(t_glob ***t_envp, t_glob *start, t_glob *old_pwd, t_glob *end)
 			old_pwd = start;
 			change_status(start, 1, NULL, NULL);
 		}
-		end = start;
 		start = start->next;
 	}
 	old_pwd->content = content_pwd;
@@ -62,7 +61,7 @@ int	change_directory(char *path, t_glob **t_envp)
 		ft_putstr_fd(" No such file or directory\n", 2);
 		return (1);
 	}
-	fresh_pwd(&t_envp, NULL, NULL, NULL);
+	fresh_pwd(&t_envp, NULL, NULL);
 	return (0);
 }
 
