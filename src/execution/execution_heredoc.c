@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:49:49 by tchartie          #+#    #+#             */
-/*   Updated: 2024/08/21 03:16:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:42:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ static void	set_infile_here(int fd, char *limiter, char *base, t_glob *t_envp)
 		if (!line)
 			end_of_file(base);
 		f_line = create_line(line);
+		if (check_sign(t_envp, fd, f_line))
+			return ;
 	}
-	if (f_line)
-		free(f_line);
+	free(f_line);
 	if (fd >= 3)
 		close(fd);
 }
