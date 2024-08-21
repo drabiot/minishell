@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adorlac <adorlac@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:49:58 by adorlac           #+#    #+#             */
-/*   Updated: 2024/08/20 22:23:13 by adorlac          ###   ########.fr       */
+/*   Updated: 2024/08/21 08:57:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ int	is_expendable_e(char *arg, int i, t_bool *d_quote, t_bool *s_quote)
 		else
 			*s_quote = FALSE;
 		i++;
+	}
+	else if (arg[i] == '\'' && !*d_quote && *s_quote)
+	{
+		*s_quote = !*s_quote;
 	}
 	else if (arg[i] == '\'' && !*s_quote)
 		i++;
